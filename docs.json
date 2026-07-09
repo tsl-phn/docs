@@ -1,72 +1,118 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Transatel Developer Platform",
+  "theme": "sequoia",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#ef7025",
+    "light": "#eec9bc",
+    "dark": "#4fa1ab"
   },
   "favicon": "/favicon.svg",
-  "navigation": {
-    "pages": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
-  "navbar": {
-    "links": [
+  "navigation": {
+    "tabs": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "authentication",
+              "eligibility"
+            ]
+          },
+          {
+            "group": "Connectivity Management",
+            "pages": [
+              "connectivity/overview",
+              "connectivity/subscribers",
+              "connectivity/portability",
+              "connectivity/iot-lifecycle"
+            ]
+          },
+          {
+            "group": "Network",
+            "pages": [
+              "network/overview",
+              "network/attach",
+              "network/sms",
+              "network/ota",
+              "network/data-session",
+              "network/usage"
+            ]
+          },
+          {
+            "group": "OCS Catalog",
+            "pages": [
+              "ocs/overview",
+              "ocs/products",
+              "ocs/options",
+              "ocs/product-factory"
+            ]
+          },
+          {
+            "group": "Events & Webhooks",
+            "pages": [
+              "events/overview",
+              "events/connectivity-events",
+              "events/network-events"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Authentication",
+            "pages": [
+              "api-reference/authentication/overview",
+              "api-reference/authentication/token"
+            ]
+          },
+          {
+            "group": "Connectivity Management",
+            "pages": [
+              "api-reference/connectivity/subscribers-overview",
+              "api-reference/connectivity/activate",
+              "api-reference/connectivity/modify",
+              "api-reference/connectivity/suspend-reactivate",
+              "api-reference/connectivity/terminate",
+              "api-reference/connectivity/sim-swap",
+              "api-reference/connectivity/portability-fr",
+              "api-reference/connectivity/portability-be",
+              "api-reference/connectivity/portability-uk",
+              "api-reference/connectivity/transactions"
+            ]
+          },
+          {
+            "group": "Network",
+            "pages": [
+              "api-reference/network/attach-history",
+              "api-reference/network/detach",
+              "api-reference/network/sms-send",
+              "api-reference/network/sms-retrieve",
+              "api-reference/network/ota-switch",
+              "api-reference/network/data-session",
+              "api-reference/network/cdr",
+              "api-reference/network/cdr-aggregates"
+            ]
+          },
+          {
+            "group": "OCS Catalog",
+            "pages": [
+              "api-reference/ocs/products",
+              "api-reference/ocs/options",
+              "api-reference/ocs/product-models",
+              "api-reference/ocs/publications"
+            ]
+          }
+        ]
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
     ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
   }
 }

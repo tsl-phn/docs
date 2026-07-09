@@ -1,0 +1,219 @@
+---
+title: "GET /history — Location Update History"
+sidebarTitle: "Attach History"
+description: "GET /api/history returns paginated location update events for a SIM card. Filter by eventType accepted or denied."
+---
+
+The Attach History API gives you a full audit trail of every time a SIM card attempts to register on the network. Each event records whether the location update was accepted or denied, along with the serving operator, subscriber identifiers, and — for denials — the reason code. You can page through results, sort by event date, and scope requests down to a single SIM serial number.
+
+All requests must be authenticated with a bearer token that carries the `NETWORK-ATTACH_HISTORY_READ` scope.
+
+**Base URL:** `https://api.transatel.com/network/attach`
+
+---
+
+## GET /api/history
+
+Returns a paginated list of location update events across all SIMs in your account. Use `simSerial` to narrow results to a single card, and `eventType` to focus on accepted or denied attempts only.
+
+### Query Parameters
+
+<ParamField query="simSerial" type="string" required>
+  The SIM serial (ICCID) to filter on. Must match the pattern `[0-9]{13,20}`.
+</ParamField>
+
+<ParamField query="eventType" type="string">
+  Filter by outcome. Accepted values: `accepted`, `denied`.
+</ParamField>
+
+<ParamField query="size" type="integer">
+  Number of results per page. Range: `1–10000`. Default: `50`.
+</ParamField>
+
+<ParamField query="page" type="integer">
+  Page number to retrieve. Range: `1–200`. Default: `1`.
+</ParamField>
+
+<ParamField query="sort" type="string">
+  Sort field and direction. Prefix with `+` for ascending or `-` for descending. Default: `-eventDate`. Example: `+eventDate`.
+</ParamField>
+
+### Response Fields
+
+Each item in the response contains a `header` and a `body`.
+
+#### header
+
+<ResponseField name="eventId" type="string">
+  Unique identifier for this event.
+</ResponseField>
+
+<ResponseField name="eventType" type="string">
+  One of `NETWORK/LOCATION-UPDATE/ACCEPTED` or `NETWORK/LOCATION-UPDATE/DENIED`.
+</ResponseField>
+
+<ResponseField name="eventDate" type="string">
+  ISO 8601 timestamp of the event.
+</ResponseField>
+
+#### body
+
+<ResponseField name="mvnoRef" type="string">
+  Your account reference name.
+</ResponseField>
+
+<ResponseField name="msisdn" type="string">
+  The subscriber's MSISDN.
+</ResponseField>
+
+<ResponseField name="imsi" type="string">
+  The International Mobile Subscriber Identity.
+</ResponseField>
+
+<ResponseField name="simSerial" type="string">
+  The SIM card serial number (ICCID).
+</ResponseField>
+
+<ResponseField name="subscriberNumber" type="string">
+  Internal subscriber number.
+</ResponseField>
+
+<ResponseField name="externalReference" type="string">
+  Your own reference identifier for this subscriber.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Network attach type: `CS` (Circuit Switched), `PS` (Packet Switched), or `EPS` (Evolved Packet System / LTE).
+</ResponseField>
+
+<ResponseField name="mcc" type="string">
+  Mobile Country Code of the serving operator.
+</ResponseField>
+
+<ResponseField name="mnc" type="string">
+  Mobile Network Code of the serving operator.
+</ResponseField>
+
+<ResponseField name="iso2" type="string">
+  Two-letter ISO 3166-1 country code of the serving network.
+</ResponseField>
+
+<ResponseField name="iso3" type="string">
+  Three-letter ISO 3166-1 country code.
+</ResponseField>
+
+<ResponseField name="operatorName" type="string">
+  Human-readable name of the serving operator.
+</ResponseField>
+
+<ResponseField name="imei" type="string">
+  The device IMEI reported at attach time, when available.
+</ResponseField>
+
+<ResponseField name="errorCode" type="string">
+  Present only for `DENIED` events. Contains the rejection reason code returned by the network.
+</ResponseField>
+
+### Error Responses
+
+| HTTP Status | Error Code              | Meaning                                                       |
+|-------------|-------------------------|---------------------------------------------------------------|
+| 400         | `BAD_REQUEST`           | One or more query parameters are malformed or out of range.   |
+| 400         | `INVALID_SIM_SERIAL`    | The `simSerial` value does not match `[0-9]{13,20}`.         |
+| 403         | `INSUFFICIENT_PERMISSION` | Your token does not carry the required scope.               |
+| 500         | `INTERNAL_ERROR`        | An unexpected server-side error occurred.                     |
+
+<CodeGroup>
+```bash Accepted events (last 10)
+curl --request GET \
+  --url "https://api.transatel.com/network/attach/api/history?simSerial=8933012345678901234&eventType=accepted&size=10&page=1&sort=-eventDate" \
+  --header "Authorization: Bearer <token>"
+```
+
+```bash Denied events (ascending date)
+curl --request GET \
+  --url "https://api.transatel.com/network/attach/api/history?simSerial=8933012345678901234&eventType=denied&size=50&sort=%2BeventDate" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "content": [
+    {
+      "header": {
+        "eventId": "evt_01HX4KZMB3QW2Y5N8R7DJVCTPE",
+        "eventType": "NETWORK/LOCATION-UPDATE/ACCEPTED",
+        "eventDate": "2024-06-01T10:23:45Z"
+      },
+      "body": {
+        "mvnoRef": "my-mvno",
+        "msisdn": "33612345678",
+        "imsi": "208930000012345",
+        "simSerial": "8933012345678901234",
+        "subscriberNumber": "SUB-00123",
+        "externalReference": "CRM-ABC-001",
+        "type": "EPS",
+        "mcc": "208",
+        "mnc": "01",
+        "iso2": "FR",
+        "iso3": "FRA",
+        "operatorName": "Orange France",
+        "imei": "353123456789012"
+      }
+    }
+  ],
+  "pageNumber": 1,
+  "totalPages": 3,
+  "totalElements": 142
+}
+```
+</CodeGroup>
+
+---
+
+## GET /api/sim-serial/{sim-serial}/last
+
+Returns the single most recent location update event for a given SIM card. The response shape is identical to a single item from `/api/history`. Use this endpoint when you only need the current attach state of a subscriber without paging through full history.
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM serial (ICCID). Must match `[0-9]{13,20}`.
+</ParamField>
+
+<Note>
+  This endpoint requires the same `NETWORK-ATTACH_HISTORY_READ` scope as the history list endpoint.
+</Note>
+
+<CodeGroup>
+```bash Get last attach event
+curl --request GET \
+  --url "https://api.transatel.com/network/attach/api/sim-serial/8933012345678901234/last" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "header": {
+    "eventId": "evt_01HX4KZMB3QW2Y5N8R7DJVCTPE",
+    "eventType": "NETWORK/LOCATION-UPDATE/ACCEPTED",
+    "eventDate": "2024-06-01T10:23:45Z"
+  },
+  "body": {
+    "mvnoRef": "my-mvno",
+    "msisdn": "33612345678",
+    "imsi": "208930000012345",
+    "simSerial": "8933012345678901234",
+    "subscriberNumber": "SUB-00123",
+    "externalReference": "CRM-ABC-001",
+    "type": "EPS",
+    "mcc": "208",
+    "mnc": "01",
+    "iso2": "FR",
+    "iso3": "FRA",
+    "operatorName": "Orange France",
+    "imei": "353123456789012"
+  }
+}
+```
+</CodeGroup>

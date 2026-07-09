@@ -1,0 +1,172 @@
+---
+title: "SIM Network Attach History and Remote Detach"
+sidebarTitle: "Attach"
+description: "Retrieve the location update history and last known attach for a SIM card, and send a remote network detach command."
+---
+
+Every time a SIM card registers on a mobile network — whether it powers on, moves to a new cell, or is rejected by the network — the event is recorded as a **location update**. The Network Attach API exposes this history so you can track where your SIMs have been active, understand why an attach was denied, and take action by sending a remote detach command when needed. All requests require a Bearer token and at minimum the `NETWORK-ATTACH_HISTORY_READ` scope.
+
+## Attach event types
+
+Each location update is classified as either **ACCEPTED** or **DENIED**, and carries a connection type:
+
+| Connection type | Meaning |
+|-----------------|---------|
+| `CS` | Circuit-Switched — traditional voice/SMS bearer |
+| `PS` | Packet-Switched — 2G/3G data bearer |
+| `EPS` | Evolved Packet System — 4G LTE data bearer |
+
+A `DENIED` event includes an `errorCode` in the response body explaining the rejection reason (for example, a roaming restriction or an unknown IMSI). Monitoring denied events is useful for detecting misconfigured SIMs or unexpected roaming attempts.
+
+## Query location update history
+
+Use `GET /api/history` to retrieve a paginated list of location update events for a SIM. You can filter by event type and control sorting and page size.
+
+**Required scope:** `NETWORK-ATTACH_HISTORY_READ`
+
+### Query parameters
+
+<ParamField query="simSerial" type="string" required>
+  The SIM card serial number (ICCID) to query.
+</ParamField>
+
+<ParamField query="size" type="integer">
+  Number of results per page. Example: `50`.
+</ParamField>
+
+<ParamField query="page" type="integer">
+  Page number, starting at `1`.
+</ParamField>
+
+<ParamField query="sort" type="string">
+  Sort field with optional direction prefix. Use `-eventDate` for descending (most recent first).
+</ParamField>
+
+<ParamField query="eventType" type="string">
+  Filter by event type. Accepted values: `accepted`, `denied`. Separate multiple values with `|`.
+</ParamField>
+
+<CodeGroup>
+```bash Accepted events only
+curl -X GET \
+  "https://api.transatel.com/network/attach/api/history?simSerial=8933012345678901234&size=50&page=1&sort=-eventDate&eventType=accepted" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+```bash Denied events only
+curl -X GET \
+  "https://api.transatel.com/network/attach/api/history?simSerial=8933012345678901234&size=50&page=1&sort=-eventDate&eventType=denied" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+```bash All events
+curl -X GET \
+  "https://api.transatel.com/network/attach/api/history?simSerial=8933012345678901234&size=50&page=1&sort=-eventDate" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+</CodeGroup>
+
+### Response structure
+
+Each item in the response contains a `header` and a `body`:
+
+```json
+{
+  "content": [
+    {
+      "header": {
+        "eventId": "evt-0001-abc",
+        "eventType": "NETWORK/LOCATION-UPDATE/ACCEPTED",
+        "eventDate": "2024-06-15T10:23:45Z"
+      },
+      "body": {
+        "mvnoRef": "my-mvno",
+        "msisdn": "33612345678",
+        "imsi": "234858800000000",
+        "simSerial": "8933012345678901234",
+        "subscriberNumber": "SUB-001",
+        "externalReference": "RX12345ZVGT",
+        "type": "EPS",
+        "mcc": "208",
+        "mnc": "10",
+        "iso2": "FR",
+        "iso3": "FRA",
+        "operatorName": "SFR",
+        "imei": "353991008863904"
+      }
+    }
+  ],
+  "totalElements": 142,
+  "totalPages": 3,
+  "pageNumber": 1
+}
+```
+
+For `DENIED` events, the `body` also includes an `errorCode` field explaining the rejection.
+
+<Note>
+  The `eventType` field in the response uses the full path form: `NETWORK/LOCATION-UPDATE/ACCEPTED` or `NETWORK/LOCATION-UPDATE/DENIED`. This differs from the `eventType` query parameter which accepts the shorthand `accepted` or `denied`.
+</Note>
+
+## Get the last attach event
+
+To retrieve only the most recent location update for a SIM — useful for a quick status check — use the `/last` endpoint.
+
+**Required scope:** `NETWORK-ATTACH_HISTORY_READ`
+
+```bash
+curl -X GET \
+  "https://api.transatel.com/network/attach/api/sim-serial/8933012345678901234/last" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+The response has the same structure as a single history item (`header` + `body`). If the SIM has never attached, the API returns a 404.
+
+<Tip>
+  Use this endpoint in a support flow to instantly check whether a subscriber's SIM is currently attached and which network it last registered on, without paging through the full history.
+</Tip>
+
+## Remote detach
+
+The detach command instructs the network to forcibly disconnect a SIM. This is useful when:
+
+- A SIM is lost or suspected to be compromised and you need to cut connectivity immediately.
+- You want to force a SIM to re-register, for example after a provisioning change.
+- You need to move a SIM from one network context to another (often combined with an OTA switch).
+
+**Required scope:** `NETWORK-ATTACH_DETACH_WRITE`
+
+```bash
+curl -X POST \
+  "https://api.transatel.com/network/attach/api/sim-serial/8933012345678901234/detach" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+A successful detach returns HTTP **204 No Content** with an empty body.
+
+<Warning>
+  The detach command disconnects the SIM from the network immediately. Any active data session or call in progress will be terminated. The SIM will re-attach automatically when the device next attempts to register, unless you have also suspended the subscription.
+</Warning>
+
+## Event fields reference
+
+<Accordion title="Full body field descriptions">
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `mvnoRef` | string | Your MVNO account identifier |
+| `msisdn` | string | The subscriber's phone number in E.164 format |
+| `imsi` | string | International Mobile Subscriber Identity |
+| `simSerial` | string | SIM card serial number (ICCID) |
+| `subscriberNumber` | string | Your internal subscriber reference |
+| `externalReference` | string | Optional external reference you assigned to the subscriber |
+| `type` | string | Connection type: `CS`, `PS`, or `EPS` |
+| `mcc` | string | Mobile Country Code of the visited network |
+| `mnc` | string | Mobile Network Code of the visited network |
+| `iso2` | string | Two-letter ISO country code |
+| `iso3` | string | Three-letter ISO country code |
+| `operatorName` | string | Human-readable name of the visited operator |
+| `imei` | string | Device IMEI (when reported by the network) |
+| `errorCode` | string | Rejection reason, present on `DENIED` events only |
+
+</Accordion>

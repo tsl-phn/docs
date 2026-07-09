@@ -1,0 +1,83 @@
+---
+title: "Webhook Events: Real-Time Platform Notifications"
+sidebarTitle: "Overview"
+description: "Receive real-time webhook POST requests for subscriber lifecycle, portability, SMS delivery, and network location update events."
+---
+
+Transatel's webhook system pushes events to your infrastructure the moment something meaningful happens on the platform — no polling required. Whenever a subscriber is activated, a SIM is swapped, an SMS is delivered, or a device attaches to a network, Transatel sends an HTTP `POST` request containing a structured JSON payload to the endpoint URL you have registered. Your server simply needs to return an HTTP `204 No Content` response to acknowledge receipt.
+
+## How webhooks work
+
+When an event occurs, Transatel:
+
+1. Constructs a JSON payload containing a `header` (with a unique event ID, the event type, and a timestamp) and a `body` (with event-specific data).
+2. Sends an HTTP `POST` request with `Content-Type: application/json` to your registered endpoint.
+3. Expects your server to respond with **HTTP `204 No Content`** within a reasonable timeout window.
+
+<Note>
+  Your endpoint must return `204 No Content`. Any other response code will be treated as a failed delivery attempt.
+</Note>
+
+## The event envelope
+
+Every event — regardless of type — shares the same top-level structure. The `header` tells you what happened and when; the `body` carries the event-specific detail.
+
+```json
+{
+  "header": {
+    "eventId": "627e77fc-7694-4188-8f19-13ca3dbf8f51",
+    "eventType": "CONNECTIVITY-MANAGEMENT/SUBSCRIBER/ACTIVATED",
+    "eventDate": "2023-05-19T13:30:00Z"
+  },
+  "body": { ... }
+}
+```
+
+### Header fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `eventId` | UUID | Globally unique identifier for this event occurrence. |
+| `eventType` | string | Slash-delimited type string identifying the event (e.g. `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/ACTIVATED`). |
+| `eventDate` | ISO 8601 | UTC timestamp of when the event was generated. |
+
+## Idempotency
+
+Each event carries a unique `eventId` in its header. Under certain failure scenarios (such as a network timeout before your `204` is received), Transatel may re-deliver the same event. You should store processed `eventId` values and skip any duplicate deliveries to keep your system idempotent.
+
+<Tip>
+  Store the `eventId` in a fast lookup store (e.g. a Redis set with a short TTL) so you can check for duplicates before processing an event.
+</Tip>
+
+## Registering your endpoint
+
+Webhook endpoints are configured by your Transatel account manager. Contact your account manager to:
+
+- Register one or more HTTPS endpoint URLs.
+- Select which event types you want to receive.
+- Rotate or update your endpoint URL at any time.
+
+<Warning>
+  Your endpoint must be reachable over public HTTPS. Plain HTTP endpoints are not supported.
+</Warning>
+
+## Event families
+
+Transatel events are grouped into two families based on what part of the platform generated them.
+
+<CardGroup cols={2}>
+  <Card
+    title="Connectivity Management Events"
+    icon="sim-card"
+    href="/events/connectivity-events"
+  >
+    Subscriber lifecycle changes (activation, suspension, termination), IoT test mode and tariff holidays, and mobile number portability for France, Belgium, and the UK.
+  </Card>
+  <Card
+    title="Network Events"
+    icon="tower-cell"
+    href="/events/network-events"
+  >
+    Inbound SMS messages (MO), SMS delivery reports (DLR), and network location update events for device attach accepted and denied scenarios.
+  </Card>
+</CardGroup>

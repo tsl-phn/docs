@@ -1,0 +1,493 @@
+---
+title: "Manage Subscribers and SIM Cards"
+sidebarTitle: "Subscribers"
+description: "Activate, modify, suspend, swap, and terminate subscribers. Retrieve SIM card details and track provisioning transactions."
+---
+
+The Subscribers API gives you full control over the lifecycle of every SIM card on your account — from the moment a SIM is loaded into the platform through its eventual termination. You can look up a subscriber by SIM serial or MSISDN, activate it onto a rate plan, adjust its service profile or options at any time, swap the physical card or phone number, and permanently terminate service. All write operations are asynchronous: the platform returns a `transactionId` immediately and you poll `GET /api/transactions/{transactionId}` until `asyncStatus` is `DONE` or `ERROR`. See the [Connectivity Management Overview](/connectivity/overview) for a full explanation of the async pattern.
+
+## Retrieve a Subscriber
+
+You can look up any subscriber using either its SIM serial number (ICCID) or its MSISDN. Both endpoints return the same response shape.
+
+<CodeGroup>
+```bash By SIM serial
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567" \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+```bash By MSISDN
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/msisdn/33612345678" \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+</CodeGroup>
+
+**Response fields**
+
+<ResponseField name="msisdn" type="string">
+  The subscriber's mobile phone number in international format (without leading `+`).
+</ResponseField>
+<ResponseField name="simSerial" type="string">
+  The SIM card's ICCID (19–20 digit unique identifier).
+</ResponseField>
+<ResponseField name="primaryImsi" type="string">
+  The primary IMSI currently assigned to this SIM.
+</ResponseField>
+<ResponseField name="group" type="string">
+  The subscriber group this SIM belongs to.
+</ResponseField>
+<ResponseField name="groupReference" type="string">
+  An optional external reference for the group.
+</ResponseField>
+<ResponseField name="ratePlan" type="string">
+  The currently active rate plan identifier.
+</ResponseField>
+<ResponseField name="status" type="string">
+  Current subscriber status. See the [status table](/connectivity/overview#subscriber-statuses) for all possible values.
+</ResponseField>
+<ResponseField name="lastModifiedDate" type="string">
+  ISO-8601 timestamp of the most recent status change.
+</ResponseField>
+<ResponseField name="activationDate" type="string">
+  ISO-8601 timestamp when the subscriber was first activated.
+</ResponseField>
+<ResponseField name="endCommitmentDate" type="string">
+  End of the subscriber's contractual commitment period.
+</ResponseField>
+<ResponseField name="holidayRemainingDays" type="integer">
+  Number of tariff holiday days remaining in the current period.
+</ResponseField>
+<ResponseField name="holidayScheduled" type="boolean">
+  Whether a tariff holiday is scheduled for the next billing cycle.
+</ResponseField>
+<ResponseField name="serviceProfile" type="string">
+  The active service profile name (e.g. `default_data`).
+</ResponseField>
+<ResponseField name="serviceProfileDeviation" type="object">
+  Any per-subscriber deviations from the base service profile.
+</ResponseField>
+<ResponseField name="options" type="array">
+  List of add-on options currently active on the subscriber.
+</ResponseField>
+<ResponseField name="metadata" type="object">
+  Arbitrary key-value pairs attached to the subscriber (max 10 entries).
+</ResponseField>
+
+---
+
+## Subscriber Status Lifecycle
+
+| Status | Meaning | Transitions to |
+|--------|---------|----------------|
+| `Loaded` | SIM provisioned, not yet activated | `Available`, `Pre-Activated` |
+| `Available` | Ready for activation | `Pre-Activated` |
+| `Pre-Activated` | Activation submitted, pending completion | `Active`, `TestMode` |
+| `TestMode` | IoT SIM in restricted test environment | `Active`, `Tariff_Holiday` (via exit test mode) |
+| `Active` | Fully operational | `Suspended`, `Tariff_Holiday`, `Terminated` |
+| `Suspended` | Connectivity suspended | `Active` (via reactivate), `Terminated` |
+| `Tariff_Holiday` | IoT periodic rest period | `Active` (via exit tariff holiday) |
+| `Operator_Barred` | Barred by the network operator | Requires operator action |
+| `Terminated` | Permanently deactivated | — (irreversible) |
+
+---
+
+## Activate a Subscriber
+
+Activation moves a SIM from `Available` (or `Loaded`) to `Active` (or `TestMode` for IoT SIMs). You must supply a `ratePlan` and either a `serviceProfile` or an `options` array — not both.
+
+<CodeGroup>
+```bash Activate with serviceProfile
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/activate" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "serviceProfile": "default_data",
+    "externalReference": "RX12345ZVGT",
+    "group": "Group A1",
+    "subscriberCountryOfResidence": "FR"
+  }'
+```
+
+```bash Activate with options
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/activate" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "options": [
+      { "name": "M2M_TSL_BAR_DATA", "value": "on" }
+    ],
+    "externalReference": "RX12345ZVGT",
+    "group": "Group A1",
+    "subscriberCountryOfResidence": "FR"
+  }'
+```
+</CodeGroup>
+
+**Request fields**
+
+<ParamField body="ratePlan" type="string" required>
+  The rate plan identifier to assign at activation.
+</ParamField>
+<ParamField body="serviceProfile" type="string">
+  Service profile name (e.g. `default_data`). Use this **or** `options`, not both.
+</ParamField>
+<ParamField body="options" type="array">
+  List of option objects (`name`, `value`) to apply. Use this **or** `serviceProfile`, not both.
+</ParamField>
+<ParamField body="externalReference" type="string">
+  Your own reference identifier for this subscriber (stored for correlation).
+</ParamField>
+<ParamField body="group" type="string">
+  The subscriber group to assign the SIM to.
+</ParamField>
+<ParamField body="subscriberCountryOfResidence" type="string">
+  ISO 3166-1 alpha-2 country code for the subscriber's country of residence.
+</ParamField>
+
+**Response (HTTP 201)**
+
+```json
+{
+  "transactionId": "c1e2fac8-1234-5678-abcd-ef0123456789",
+  "simSerial": "8944133012341234567",
+  "transactionStatus": "PENDING"
+}
+```
+
+---
+
+## Modify a Subscriber
+
+Use the modify endpoint to change a subscriber's rate plan, group, service profile, options, or metadata while the subscriber remains in its current status.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/modify" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "group": "Group B2",
+    "serviceProfile": "default_data",
+    "metadata": {
+      "deviceType": "smart-meter",
+      "contractId": "CTR-00123"
+    }
+  }'
+```
+
+<ParamField body="ratePlan" type="string" required>
+  The rate plan to apply after modification.
+</ParamField>
+<ParamField body="group" type="string">
+  Move the subscriber to a different group.
+</ParamField>
+<ParamField body="serviceProfile" type="string">
+  Replace the active service profile. Use this **or** `options`.
+</ParamField>
+<ParamField body="options" type="array">
+  Replace the active options list. Use this **or** `serviceProfile`.
+</ParamField>
+<ParamField body="metadata" type="object">
+  Key-value pairs to merge into the subscriber's metadata. Set a key to `""` to delete it.
+</ParamField>
+
+---
+
+## Suspend a Subscriber
+
+Suspending a subscriber disables all connectivity. The subscriber can be reactivated later.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/suspend" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "metadata": {
+      "suspendReason": "non-payment"
+    }
+  }'
+```
+
+---
+
+## Reactivate a Subscriber
+
+Reactivation restores connectivity for a previously suspended subscriber.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/reactivate" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "metadata": {}
+  }'
+```
+
+---
+
+## SIM Swap
+
+A SIM swap replaces a physical SIM card while keeping the same subscriber record, MSISDN, and service profile. The old SIM is permanently and irrevocably deactivated the moment the transaction completes.
+
+<Warning>
+The old SIM card is permanently deactivated when the SIM swap completes. You cannot undo this operation. Ensure the new SIM is physically deployed and ready before submitting the request.
+</Warning>
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/sim-swap" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "newSimSerial": "8944133098769876543",
+    "metadata": {
+      "reason": "device-replacement"
+    }
+  }'
+```
+
+<ParamField body="ratePlan" type="string" required>
+  Rate plan to apply to the subscriber after the swap.
+</ParamField>
+<ParamField body="newSimSerial" type="string" required>
+  ICCID of the replacement SIM card. It must exist in your account inventory.
+</ParamField>
+<ParamField body="metadata" type="object">
+  Optional key-value pairs to update on the subscriber record.
+</ParamField>
+
+---
+
+## MSISDN Swap
+
+An MSISDN swap assigns a new phone number to an existing subscriber. You can either supply a specific `msisdn` or omit it and let the platform assign one automatically.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/msisdn-swap" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "msisdn": "33612345678",
+    "metadata": {}
+  }'
+```
+
+<ParamField body="ratePlan" type="string" required>
+  Rate plan to apply after the MSISDN change.
+</ParamField>
+<ParamField body="msisdn" type="string">
+  The new MSISDN to assign (international format, no leading `+`). If omitted, the platform selects an available number automatically.
+</ParamField>
+<ParamField body="metadata" type="object">
+  Optional key-value pairs to update.
+</ParamField>
+
+---
+
+## Terminate a Subscriber
+
+Termination permanently deactivates a subscriber and releases its MSISDN back to the number pool. This action cannot be reversed.
+
+<Warning>
+Termination is **irreversible**. Once a subscriber is terminated, it cannot be reactivated and its MSISDN may be reassigned. Use suspend instead if you only need to pause service temporarily.
+</Warning>
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/terminate" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "metadata": {
+      "terminationReason": "end-of-contract"
+    }
+  }'
+```
+
+---
+
+## Update Contact Information
+
+You can update the subscriber's personal details and external reference without changing their service configuration.
+
+```bash
+curl --request PUT \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/contact-info" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "subscriberInfo": {
+      "firstName": "John",
+      "lastName": "Doe",
+      "contactEmail": "john.doe@example.com",
+      "group": "Group A1",
+      "externalReference": "RX12345ZVGT"
+    }
+  }'
+```
+
+<ParamField body="ratePlan" type="string" required>
+  The subscriber's current rate plan. Must match what is currently assigned.
+</ParamField>
+<ParamField body="subscriberInfo" type="object" required>
+  Contact details to update. All sub-fields are optional — include only the ones you want to change.
+</ParamField>
+<ParamField body="subscriberInfo.firstName" type="string">
+  Subscriber's first name.
+</ParamField>
+<ParamField body="subscriberInfo.lastName" type="string">
+  Subscriber's last name.
+</ParamField>
+<ParamField body="subscriberInfo.contactEmail" type="string">
+  Subscriber's contact email address.
+</ParamField>
+<ParamField body="subscriberInfo.group" type="string">
+  Subscriber group name.
+</ParamField>
+<ParamField body="subscriberInfo.externalReference" type="string">
+  Your own reference identifier for correlation with external systems.
+</ParamField>
+
+---
+
+## SIM Card Details
+
+Retrieve physical SIM card attributes, including PIN and PUK codes, for a given SIM serial.
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/simcards/sim-serial/8944133012341234567" \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+<ResponseField name="simSerial" type="string">
+  The ICCID of the SIM card.
+</ResponseField>
+<ResponseField name="manufacturer" type="string">
+  Name of the SIM card manufacturer.
+</ResponseField>
+<ResponseField name="pin1" type="string">
+  PIN1 code for the SIM.
+</ResponseField>
+<ResponseField name="pin2" type="string">
+  PIN2 code for the SIM.
+</ResponseField>
+<ResponseField name="puk1" type="string">
+  PUK1 (PIN Unblocking Key) — use this to unblock a SIM locked after too many wrong PIN1 attempts.
+</ResponseField>
+<ResponseField name="puk2" type="string">
+  PUK2 — use this to unblock a SIM locked after too many wrong PIN2 attempts.
+</ResponseField>
+<ResponseField name="electricalProfile" type="string">
+  The electrical profile identifier associated with this SIM.
+</ResponseField>
+<ResponseField name="release" type="string">
+  SIM card firmware or release version.
+</ResponseField>
+
+<Note>
+PIN and PUK codes are sensitive credentials. Only expose them to users who have been verified as the owner of the physical SIM.
+</Note>
+
+---
+
+## Track Transaction Status
+
+Every write operation returns a `transactionId`. Use this endpoint to determine whether the operation succeeded.
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/transactions/c1e2fac8-1234-5678-abcd-ef0123456789" \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+<ResponseField name="transactionId" type="string">
+  Unique identifier for this transaction (UUID).
+</ResponseField>
+<ResponseField name="syncStatus" type="string">
+  Synchronous validation result: `SUCCESS` or `ERROR`. An `ERROR` here means the request was rejected before async processing began.
+</ResponseField>
+<ResponseField name="asyncStatus" type="string">
+  Asynchronous processing result: `PENDING`, `DONE`, or `ERROR`. Poll until this is no longer `PENDING`.
+</ResponseField>
+<ResponseField name="creationDate" type="string">
+  ISO-8601 timestamp when the transaction was created.
+</ResponseField>
+<ResponseField name="simSerial" type="string">
+  The SIM serial the transaction was applied to.
+</ResponseField>
+<ResponseField name="externalReference" type="string">
+  The `externalReference` you supplied at request time, if any.
+</ResponseField>
+<ResponseField name="serviceRef" type="string">
+  Internal service reference for the operation.
+</ResponseField>
+
+**Polling pattern**
+
+<Steps>
+  <Step title="Submit the write operation">
+    Call activate, modify, suspend, or any other write endpoint. Store the `transactionId` from the response.
+  </Step>
+  <Step title="Wait briefly">
+    Most transactions complete within 5–30 seconds. Start polling after a short initial delay.
+  </Step>
+  <Step title="Poll until terminal status">
+    Call `GET /api/transactions/{transactionId}` repeatedly. Stop when `asyncStatus` is `DONE` or `ERROR`.
+  </Step>
+  <Step title="Handle errors">
+    If `asyncStatus` is `ERROR`, check `syncStatus` and any error detail in the response. A `409 CONFLICT` on the original request means a previous transaction for this SIM is still `PENDING` — wait for it to finish before retrying.
+  </Step>
+</Steps>
+
+<Tip>
+Subscribe to [connectivity webhook events](/events/connectivity-events) to eliminate polling entirely. The platform pushes a notification to your endpoint the instant any transaction reaches a terminal state.
+</Tip>
+
+---
+
+## The `metadata` Field
+
+The `metadata` object is an arbitrary key-value store you can attach to any subscriber. Use it to keep your own identifiers, device types, or business context alongside the subscriber record without needing a separate data store.
+
+<Accordion title="metadata rules and behaviour">
+- Maximum **10 key-value pairs** per subscriber.
+- Key names must be **50 characters or fewer**.
+- Values are strings.
+- Set a key's value to `""` (empty string) to **remove** that key from the record.
+- You can write `metadata` on activate, modify, suspend, reactivate, SIM swap, MSISDN swap, and terminate operations.
+- The `metadata` object is returned in full on every `GET` subscriber response.
+</Accordion>
+
+```bash Example: set and remove metadata keys
+# Set two keys during a modify
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/modify" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "metadata": {
+      "deviceType": "smart-meter",
+      "contractId": "CTR-00123",
+      "legacyId": ""
+    }
+  }'
+# "legacyId" is removed; "deviceType" and "contractId" are set.
+```

@@ -1,0 +1,202 @@
+---
+title: "Belgian MNP Portability API Reference"
+sidebarTitle: "Portability BE"
+description: "API reference for Belgium number portability: activate a new subscriber with port-in request and retrieve portability status."
+---
+
+The Belgian Mobile Number Portability (MNP) endpoints let you port an existing Belgian mobile number onto the Transatel network as part of a new subscriber activation. Belgium's portability process distinguishes between prepaid and postpaid subscribers at the donor operator, which determines which identifier you must provide to authenticate the port-in. You specify this via the `requestType` field.
+
+<Note>
+  Belgian portability regulations require specific identifiers depending on the donor account type. Make sure you collect the correct identifier from the subscriber before submitting a port-in request.
+</Note>
+
+---
+
+## Request Types
+
+The `requestType` field controls which authentication identifier you must supply:
+
+| `requestType` | Description | Required identifier |
+|---|---|---|
+| `PREPAID` | The subscriber's current Belgian number is on a prepaid plan | `donorSimSerial` — the ICCID of the donor SIM |
+| `POSTPAID_SIMPLE` | Standard postpaid contract with a single account | `donorSimSerial` — the ICCID of the donor SIM |
+| `POSTPAID_COMPLEX` | Postpaid account with corporate or multi-line billing | `donorAccountNumber` — the account number from the donor operator |
+
+---
+
+## POST /portability/be/.../activate-request
+
+Activate a new subscriber on Transatel and simultaneously initiate a Belgian port-in request. The subscriber's existing Belgian number is ported from their current operator onto the new Transatel SIM.
+
+### Endpoint
+
+```
+POST /api/portability/be/sim-serial/{sim-serial}/activate-request
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID) for the new Transatel subscriber. Must match the pattern `[0-9]{13,20}`.
+</ParamField>
+
+### Request Body
+
+<ParamField body="portabilityMsisdn" type="string" required>
+  The Belgian mobile number to port in. Must match the format `324[5-9][0-9]{7}` (E.164 without `+`, Belgian mobile prefix).
+</ParamField>
+
+<ParamField body="requestType" type="string" required>
+  The type of portability request that reflects the subscriber's account type at the donor operator. One of: `PREPAID`, `POSTPAID_SIMPLE`, `POSTPAID_COMPLEX`.
+</ParamField>
+
+<ParamField body="donorSimSerial" type="string">
+  The ICCID of the subscriber's current (donor) SIM card. Required when `requestType` is `PREPAID` or `POSTPAID_SIMPLE`.
+</ParamField>
+
+<ParamField body="donorAccountNumber" type="string">
+  The account number at the donor operator. Required when `requestType` is `POSTPAID_COMPLEX`.
+</ParamField>
+
+<ParamField body="ratePlan" type="string">
+  The rate plan to assign at activation. Maximum 50 characters. Mutually exclusive with `serviceProfile`.
+</ParamField>
+
+<ParamField body="serviceProfile" type="string">
+  A pre-configured service profile to apply at activation. Mutually exclusive with `ratePlan`.
+</ParamField>
+
+<ParamField body="externalReference" type="string">
+  Your reference identifier for this activation and portability event.
+</ParamField>
+
+<ParamField body="group" type="string">
+  Logical grouping label for the subscriber.
+</ParamField>
+
+<ParamField body="subscriberCountryOfResidence" type="string">
+  ISO 3166-1 alpha-2 country code (e.g. `BE`).
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Key-value map of custom attributes. Maximum 10 string entries.
+</ParamField>
+
+### Request Examples
+
+<CodeGroup>
+
+```bash PREPAID / POSTPAID_SIMPLE (donorSimSerial)
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/be/sim-serial/8932100000000012345/activate-request" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "portabilityMsisdn": "32478123456",
+    "requestType": "PREPAID",
+    "donorSimSerial": "8932099900000056789",
+    "ratePlan": "VOICE_DATA_BE",
+    "externalReference": "port-be-00321",
+    "group": "consumer-be",
+    "subscriberCountryOfResidence": "BE",
+    "metadata": {
+      "customerId": "CUS-BE-00881"
+    }
+  }'
+```
+
+```bash POSTPAID_COMPLEX (donorAccountNumber)
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/be/sim-serial/8932100000000012345/activate-request" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "portabilityMsisdn": "32479876543",
+    "requestType": "POSTPAID_COMPLEX",
+    "donorAccountNumber": "BE-ACC-987654321",
+    "ratePlan": "VOICE_DATA_BE_CORP",
+    "externalReference": "port-be-corp-00322",
+    "group": "corporate-be",
+    "subscriberCountryOfResidence": "BE",
+    "metadata": {
+      "customerId": "CUS-BE-CORP-00099"
+    }
+  }'
+```
+
+</CodeGroup>
+
+### Example Response
+
+```json
+{
+  "transactionId": "d4e5f6a7-1234-4890-b012-def012345678",
+  "simSerial": "8932100000000012345",
+  "transactionStatus": "PENDING"
+}
+```
+
+<Note>
+  Poll `GET /api/transactions/{transactionId}` until `asyncStatus` is `DONE` or `ERROR`. See the [Transactions reference](/api-reference/connectivity/transactions) for details.
+</Note>
+
+---
+
+## GET /portability/be
+
+List all Belgian portability requests associated with your account, along with their current statuses and associated SIM serials.
+
+### Endpoint
+
+```
+GET /api/portability/be
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_READ`
+
+### Request Example
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/be" \
+  --header "Authorization: Bearer <token>"
+```
+
+### Example Response
+
+```json
+{
+  "portabilityRequests": [
+    {
+      "simSerial": "8932100000000012345",
+      "portabilityMsisdn": "32478123456",
+      "requestType": "PREPAID",
+      "status": "PENDING",
+      "requestDate": "2024-08-01T14:30:00Z"
+    },
+    {
+      "simSerial": "8932100000000099901",
+      "portabilityMsisdn": "32479876543",
+      "requestType": "POSTPAID_COMPLEX",
+      "status": "DONE",
+      "requestDate": "2024-07-20T09:00:00Z"
+    }
+  ]
+}
+```
+
+---
+
+## Error Responses
+
+| HTTP Status | Code | Description |
+|---|---|---|
+| `400` | `BAD_REQUEST` | Invalid MSISDN format, missing `donorSimSerial` or `donorAccountNumber` for the given `requestType`, or other validation failure |
+| `403` | `INSUFFICIENT_PERMISSION` | Token does not carry the required scope |
+| `404` | `SUBSCRIBER_NOT_FOUND` | No subscriber found for the provided SIM serial number |
+| `404` | `PORTABILITY_NOT_FOUND` | No portability request found for this subscriber |
+| `409` | `CONFLICT` | Another provisioning or portability request is already pending on this SIM |
+| `500` | `INTERNAL_ERROR` | An unexpected server-side error occurred |
+| `501` | `NOT_IMPLEMENTED` | The operation is not available for this account configuration |

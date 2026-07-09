@@ -1,0 +1,415 @@
+---
+title: "CDR Count and Usage Aggregates"
+sidebarTitle: "CDR Aggregates"
+description: "Count CDRs and retrieve time-sliced data, voice, SMS, and MMS usage aggregates broken down by APN, RAT type, or country."
+---
+
+The CDR Aggregates API provides pre-computed summaries of your usage data without requiring you to download raw CDRs and aggregate them yourself. You can count CDRs by event type, retrieve time-sliced data consumption per SIM broken down by APN or RAT type, and get similar summaries for voice, SMS, and MMS. All endpoints support the same rich filter set as the [CDR list endpoint](/api-reference/network/cdr).
+
+All requests require the `NETWORK-USAGE_CDR_READ` scope.
+
+**Base URL:** `https://api.transatel.com/network/usage`
+
+---
+
+## GET /api/cdr/count
+
+Returns the total number of CDRs matching your filter criteria, along with counts broken down by key dimensions. Use this to build dashboards, monitor usage trends, or detect anomalies without retrieving full CDR payloads.
+
+### Query Parameters
+
+Accepts the same filter parameters as [GET /api/cdr](/api-reference/network/cdr) — `eventDate`, `eventType`, `msisdn`, `imsi`, `simSerial`, `mvnoRef`, `serviceType`, `rat`, `apn`, `originCountry`, `mcc`, `mnc`, `serviceOutcome`, `switchingDomain`, and all others.
+
+### Response Fields
+
+<ResponseField name="count" type="integer">
+  Total number of CDRs matching the filter criteria.
+</ResponseField>
+
+<ResponseField name="counts" type="object[]">
+  Array of breakdown objects, each representing one dimension.
+</ResponseField>
+
+<ResponseField name="counts[].name" type="string">
+  The dimension name. Possible values: `eventType`, `serviceType`, `rat`, `apn`, `originCountry`, `mcc`, `mnc`, `serviceOutcome`, `switchingDomain`.
+</ResponseField>
+
+<ResponseField name="counts[].count" type="integer">
+  Total CDR count for this dimension.
+</ResponseField>
+
+<ResponseField name="counts[].values" type="object[]">
+  Per-value breakdown within this dimension.
+</ResponseField>
+
+<ResponseField name="counts[].values[].value" type="string">
+  The dimension value (e.g. `CDR/DATA`, `FR`, `6`).
+</ResponseField>
+
+<ResponseField name="counts[].values[].count" type="integer">
+  Number of CDRs with this value.
+</ResponseField>
+
+<CodeGroup>
+```bash Count CDRs for a SIM in June
+curl --request GET \
+  --url "https://api.transatel.com/network/usage/api/cdr/count?simSerial=8933012345678901234&eventDate=gte%3A2024-06-01T00%3A00%3A00Z&eventDate=lte%3A2024-06-30T23%3A59%3A59Z" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "count": 342,
+  "counts": [
+    {
+      "name": "eventType",
+      "count": 342,
+      "values": [
+        { "value": "CDR/DATA", "count": 280 },
+        { "value": "CDR/SMS",  "count": 52  },
+        { "value": "CDR/VOICE","count": 10  }
+      ]
+    },
+    {
+      "name": "originCountry",
+      "count": 342,
+      "values": [
+        { "value": "FR", "count": 290 },
+        { "value": "DE", "count": 52  }
+      ]
+    },
+    {
+      "name": "rat",
+      "count": 280,
+      "values": [
+        { "value": "6", "count": 240 },
+        { "value": "9", "count": 40  }
+      ]
+    }
+  ]
+}
+```
+</CodeGroup>
+
+---
+
+## GET /api/data/aggregates/sim-serial/{sim-serial}
+
+Returns time-sliced data usage aggregates for a specific SIM card. Results can be broken down by APN, RAT type, or origin country, and sliced into hourly, daily, or monthly intervals.
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match `[0-9]{19,20}`.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="interval" type="string">
+  Time bucket size for the intervals array. Options: `hourly`, `daily`, `monthly`. Default: `daily`.
+</ParamField>
+
+<ParamField query="breakdown" type="string">
+  Dimension to break results down by. Options: `apn`, `rat`, `originCountry`. Default: `apn`.
+</ParamField>
+
+<ParamField query="eventDate" type="string">
+  ISO 8601 date-time filter. Provide twice (`gte:` and `lte:`) for a range.
+</ParamField>
+
+<ParamField query="serviceType" type="string">
+  Filter by service type code.
+</ParamField>
+
+<ParamField query="rat" type="integer">
+  Filter by RAT type.
+</ParamField>
+
+<ParamField query="apn" type="string">
+  Filter by APN.
+</ParamField>
+
+<ParamField query="originCountry" type="string">
+  Filter by origin country ISO code.
+</ParamField>
+
+<ParamField query="mcc" type="string">
+  Filter by Mobile Country Code.
+</ParamField>
+
+<ParamField query="mnc" type="string">
+  Filter by Mobile Network Code.
+</ParamField>
+
+<ParamField query="serviceOutcome" type="string">
+  Filter by service outcome.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="count" type="integer">
+  Total number of data CDRs in the result.
+</ResponseField>
+
+<ResponseField name="uplink" type="integer">
+  Total uplink bytes.
+</ResponseField>
+
+<ResponseField name="downlink" type="integer">
+  Total downlink bytes.
+</ResponseField>
+
+<ResponseField name="total" type="integer">
+  Total bytes (uplink + downlink).
+</ResponseField>
+
+<ResponseField name="breakdown" type="object[]">
+  Array of breakdown groups for the selected dimension.
+</ResponseField>
+
+<ResponseField name="breakdown[].name" type="string">
+  Breakdown dimension name (e.g. `apn`).
+</ResponseField>
+
+<ResponseField name="breakdown[].value" type="string">
+  Dimension value (e.g. `iot.private.apn`).
+</ResponseField>
+
+<ResponseField name="breakdown[].count" type="integer">
+  CDR count for this dimension value.
+</ResponseField>
+
+<ResponseField name="breakdown[].uplink" type="integer">
+  Uplink bytes for this dimension value.
+</ResponseField>
+
+<ResponseField name="breakdown[].downlink" type="integer">
+  Downlink bytes for this dimension value.
+</ResponseField>
+
+<ResponseField name="breakdown[].total" type="integer">
+  Total bytes for this dimension value.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals" type="object[]">
+  Time-sliced breakdown within this dimension value.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].startDate" type="string">
+  ISO 8601 start of this time bucket.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].count" type="integer">
+  CDR count in this interval.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].uplink" type="integer">
+  Uplink bytes in this interval.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].downlink" type="integer">
+  Downlink bytes in this interval.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].total" type="integer">
+  Total bytes in this interval.
+</ResponseField>
+
+<CodeGroup>
+```bash Daily data usage by APN for a SIM in June
+curl --request GET \
+  --url "https://api.transatel.com/network/usage/api/data/aggregates/sim-serial/8933012345678901234?interval=daily&breakdown=apn&eventDate=gte%3A2024-06-01T00%3A00%3A00Z&eventDate=lte%3A2024-06-30T23%3A59%3A59Z" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "count": 280,
+  "uplink": 10485760,
+  "downlink": 52428800,
+  "total": 62914560,
+  "breakdown": [
+    {
+      "name": "apn",
+      "value": "iot.private.apn",
+      "count": 280,
+      "uplink": 10485760,
+      "downlink": 52428800,
+      "total": 62914560,
+      "intervals": [
+        {
+          "startDate": "2024-06-01T00:00:00Z",
+          "count": 12,
+          "uplink": 409600,
+          "downlink": 2097152,
+          "total": 2506752
+        },
+        {
+          "startDate": "2024-06-02T00:00:00Z",
+          "count": 10,
+          "uplink": 348160,
+          "downlink": 1572864,
+          "total": 1921024
+        }
+      ]
+    }
+  ]
+}
+```
+</CodeGroup>
+
+---
+
+## GET /api/voice/aggregates/sim-serial/{sim-serial}
+
+Returns time-sliced voice usage aggregates for a specific SIM card.
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  SIM card serial number (ICCID). Must match `[0-9]{19,20}`.
+</ParamField>
+
+### Query Parameters
+
+Same `interval`, `eventDate`, `serviceType`, `originCountry`, `mcc`, `mnc`, `serviceOutcome` filters as the data aggregates endpoint.
+
+<ParamField query="breakdown" type="string">
+  Breakdown dimension. Options: `switchingDomain`, `originCountry`. Default: `switchingDomain`.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="count" type="integer">
+  Total voice CDR count.
+</ResponseField>
+
+<ResponseField name="usedServiceUnits" type="integer">
+  Total call duration in seconds.
+</ResponseField>
+
+<ResponseField name="breakdown[].name" type="string">
+  Breakdown dimension name.
+</ResponseField>
+
+<ResponseField name="breakdown[].value" type="string">
+  Dimension value (e.g. `CS`, `FR`).
+</ResponseField>
+
+<ResponseField name="breakdown[].count" type="integer">
+  CDR count.
+</ResponseField>
+
+<ResponseField name="breakdown[].usedServiceUnits" type="integer">
+  Total seconds for this dimension value.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].startDate" type="string">
+  Start of the interval.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].count" type="integer">
+  CDR count in interval.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].usedServiceUnits" type="integer">
+  Total seconds in interval.
+</ResponseField>
+
+<CodeGroup>
+```bash Monthly voice usage broken down by origin country
+curl --request GET \
+  --url "https://api.transatel.com/network/usage/api/voice/aggregates/sim-serial/8933012345678901234?interval=monthly&breakdown=originCountry" \
+  --header "Authorization: Bearer <token>"
+```
+</CodeGroup>
+
+---
+
+## GET /api/sms/aggregates/sim-serial/{sim-serial}
+
+Returns time-sliced SMS usage aggregates for a specific SIM card. The response shape is identical to voice aggregates.
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  SIM card serial number (ICCID). Must match `[0-9]{19,20}`.
+</ParamField>
+
+### Query Parameters
+
+Same filters as voice aggregates. `breakdown` options: `switchingDomain`, `originCountry`.
+
+<CodeGroup>
+```bash Daily SMS usage broken down by switching domain
+curl --request GET \
+  --url "https://api.transatel.com/network/usage/api/sms/aggregates/sim-serial/8933012345678901234?interval=daily&breakdown=switchingDomain" \
+  --header "Authorization: Bearer <token>"
+```
+</CodeGroup>
+
+---
+
+## GET /api/mms/aggregates/sim-serial/{sim-serial}
+
+Returns time-sliced MMS usage aggregates for a specific SIM card. MMS aggregates include message size in addition to counts.
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  SIM card serial number (ICCID). Must match `[0-9]{19,20}`.
+</ParamField>
+
+### Query Parameters
+
+Same filters as other aggregate endpoints.
+
+<ParamField query="breakdown" type="string">
+  Breakdown dimension. Options: `mmsType`, `switchingDomain`, `originCountry`. Default: `mmsType`.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="count" type="integer">
+  Total MMS CDR count.
+</ResponseField>
+
+<ResponseField name="mmsSize" type="integer">
+  Total MMS payload size in bytes.
+</ResponseField>
+
+<ResponseField name="breakdown[].name" type="string">
+  Breakdown dimension name.
+</ResponseField>
+
+<ResponseField name="breakdown[].value" type="string">
+  Dimension value.
+</ResponseField>
+
+<ResponseField name="breakdown[].count" type="integer">
+  CDR count.
+</ResponseField>
+
+<ResponseField name="breakdown[].mmsSize" type="integer">
+  Total MMS size in bytes for this dimension value.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].startDate" type="string">
+  Start of the interval.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].count" type="integer">
+  CDR count in interval.
+</ResponseField>
+
+<ResponseField name="breakdown[].intervals[].mmsSize" type="integer">
+  Total MMS size in interval.
+</ResponseField>
+
+<CodeGroup>
+```bash Monthly MMS usage by type
+curl --request GET \
+  --url "https://api.transatel.com/network/usage/api/mms/aggregates/sim-serial/8933012345678901234?interval=monthly&breakdown=mmsType" \
+  --header "Authorization: Bearer <token>"
+```
+</CodeGroup>

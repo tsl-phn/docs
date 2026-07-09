@@ -1,0 +1,189 @@
+---
+title: "GET /products — Retrieve Catalog Products"
+sidebarTitle: "Products"
+description: "Retrieve One-off, Recurring, and Add-on products from your OCS catalog. Filter by category, tags, or subscriber eligibility."
+---
+
+The Products API lets you browse the full product catalog defined for a Class of Service (CoS). Products represent the commercial offers you can assign to subscribers — they cover recurring plans (such as monthly data bundles), one-off top-ups, and add-ons that extend or modify a parent product. You can filter by category and tags to build dynamic offer selection interfaces, and pass an MSISDN to scope results to what a specific subscriber is currently eligible to purchase.
+
+All requests require a bearer token with the `CATALOG_PRODUCTS_READ` scope.
+
+**Base URL:** `https://api.transatel.com/ocs/catalog`
+
+---
+
+## GET /api/cos/{cosRef}/products
+
+Returns all products available in the specified Class of Service catalog. Combine query parameters to filter the result set.
+
+### Path Parameters
+
+<ParamField path="cosRef" type="string" required>
+  The Class of Service reference identifier. 1–100 characters.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="categories" type="string">
+  Filter by product category. Accepted values: `Add-on`, `One-off`, `Recurring`. This parameter is repeatable — pass it multiple times to include more than one category, e.g. `categories=One-off&categories=Recurring`.
+</ParamField>
+
+<ParamField query="childOf" type="string">
+  When filtering for add-ons, restrict results to add-ons that are children of the specified parent `productId`. Only meaningful in combination with `categories=Add-on`.
+</ParamField>
+
+<ParamField query="tags" type="string">
+  Filter by tag. Repeatable — pass multiple times to filter for products carrying all specified tags.
+</ParamField>
+
+<ParamField query="msisdn" type="string">
+  Subscriber MSISDN in international format without the leading `+`. Must match `[0-9]{6,15}`. When provided, only products the subscriber is eligible to purchase are returned.
+</ParamField>
+
+<ParamField query="availabilityStatus" type="string">
+  Controls which products are returned based on their availability window. `AVAILABLE` (default) returns only currently available products; `ALL` includes unavailable and expired products.
+</ParamField>
+
+### Request Headers
+
+<ParamField header="Accept-Language" type="string">
+  Preferred language for product labels and descriptions, in BCP 47 format (e.g. `fr-FR`, `en-GB`). Falls back to the catalog's default locale if the requested language is not available.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="cos" type="string">
+  The Class of Service reference echoed back.
+</ResponseField>
+
+<ResponseField name="currentLocale" type="string">
+  The locale used to return localised product content (BCP 47).
+</ResponseField>
+
+<ResponseField name="products" type="Product[]">
+  Array of product objects matching your filters.
+</ResponseField>
+
+<ResponseField name="links" type="object[]">
+  Pagination or related-resource links following the same conventions as the request.
+</ResponseField>
+
+<CodeGroup>
+```bash All recurring and one-off products
+curl --request GET \
+  --url "https://api.transatel.com/ocs/catalog/api/cos/COS-IOT-EU/products?categories=Recurring&categories=One-off&availabilityStatus=AVAILABLE" \
+  --header "Authorization: Bearer <token>" \
+  --header "Accept-Language: en-GB"
+```
+
+```bash Add-ons for a specific parent product
+curl --request GET \
+  --url "https://api.transatel.com/ocs/catalog/api/cos/COS-IOT-EU/products?categories=Add-on&childOf=PROD-DATA-1GB" \
+  --header "Authorization: Bearer <token>" \
+  --header "Accept-Language: en-GB"
+```
+
+```bash Products available for a specific subscriber
+curl --request GET \
+  --url "https://api.transatel.com/ocs/catalog/api/cos/COS-IOT-EU/products?msisdn=33612345678" \
+  --header "Authorization: Bearer <token>" \
+  --header "Accept-Language: fr-FR"
+```
+
+```json Response (200 OK)
+{
+  "cos": "COS-IOT-EU",
+  "currentLocale": "en-GB",
+  "products": [
+    {
+      "productId": "PROD-DATA-1GB",
+      "name": "1 GB Monthly Data Bundle",
+      "description": "1 GB of data valid for 30 days.",
+      "category": "Recurring",
+      "tags": ["data", "eu-roaming"],
+      "allowances": [
+        {
+          "resourceName": "DATA",
+          "resourceValue": 1024,
+          "resourceUnit": "KB"
+        }
+      ],
+      "validityPeriod": {
+        "validityDuration": 30,
+        "validityDurationUnit": "days"
+      },
+      "availabilityStatus": "AVAILABLE"
+    }
+  ],
+  "links": []
+}
+```
+</CodeGroup>
+
+---
+
+## GET /api/cos/{cosRef}/products/{productId}
+
+Returns products matching a specific `productId` within the Class of Service. All query parameters from the list endpoint are also supported here.
+
+### Path Parameters
+
+<ParamField path="cosRef" type="string" required>
+  The Class of Service reference. 1–100 characters.
+</ParamField>
+
+<ParamField path="productId" type="string" required>
+  The product identifier to retrieve.
+</ParamField>
+
+### Query Parameters
+
+Same as `GET /api/cos/{cosRef}/products`: `categories`, `childOf`, `tags`, `msisdn`, `availabilityStatus`.
+
+### Request Headers
+
+<ParamField header="Accept-Language" type="string">
+  BCP 47 language code for localised content.
+</ParamField>
+
+<Note>
+  A product ID may map to more than one product entry if the catalog contains multiple variants (e.g. different localizations or validity windows). The response is always an array wrapped in the same `ProductCatalog` envelope.
+</Note>
+
+<CodeGroup>
+```bash Retrieve a specific product by ID
+curl --request GET \
+  --url "https://api.transatel.com/ocs/catalog/api/cos/COS-IOT-EU/products/PROD-DATA-1GB" \
+  --header "Authorization: Bearer <token>" \
+  --header "Accept-Language: en-GB"
+```
+
+```json Response (200 OK)
+{
+  "cos": "COS-IOT-EU",
+  "currentLocale": "en-GB",
+  "products": [
+    {
+      "productId": "PROD-DATA-1GB",
+      "name": "1 GB Monthly Data Bundle",
+      "description": "1 GB of data valid for 30 days.",
+      "category": "Recurring",
+      "tags": ["data", "eu-roaming"],
+      "allowances": [
+        {
+          "resourceName": "DATA",
+          "resourceValue": 1024,
+          "resourceUnit": "KB"
+        }
+      ],
+      "validityPeriod": {
+        "validityDuration": 30,
+        "validityDurationUnit": "days"
+      },
+      "availabilityStatus": "AVAILABLE"
+    }
+  ],
+  "links": []
+}
+```
+</CodeGroup>

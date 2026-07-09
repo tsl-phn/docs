@@ -1,0 +1,47 @@
+---
+title: "Network APIs: Attach, SMS, OTA, and Usage"
+sidebarTitle: "Overview"
+description: "Monitor network attach history, send and receive SMS, trigger OTA network switches, inspect data sessions, and retrieve CDRs."
+---
+
+The Transatel Network APIs give you real-time and historical visibility into how your SIM cards interact with mobile networks worldwide. Whether you need to investigate a connectivity problem, dispatch an SMS, push a SIM onto a private network over the air, or pull detailed usage records for billing and analytics, every operation is available as a straightforward REST call authenticated with your Bearer token.
+
+All Network API requests require an `Authorization: Bearer <token>` header. Individual endpoints are guarded by fine-grained OAuth 2.0 scopes, so you can grant each integration only the permissions it needs.
+
+<CardGroup cols={2}>
+  <Card title="Attach" icon="tower-cell" href="/network/attach">
+    Query location update history, retrieve the last known attach event for a SIM, and send a remote detach command to force a SIM off the network.
+  </Card>
+  <Card title="SMS" icon="message-sms" href="/network/sms">
+    Send text and binary SMS messages to subscribers, request delivery reports, and search inbound and outbound message history with flexible filters.
+  </Card>
+  <Card title="OTA" icon="sim-card" href="/network/ota">
+    Trigger an over-the-air network switch to move a SIM card from a public network to its configured private network, identified by ICCID or MSISDN.
+  </Card>
+  <Card title="Data Session" icon="wifi" href="/network/data-session">
+    Retrieve active data session details for a subscriber by IMSI or MSISDN to diagnose connectivity issues in real time.
+  </Card>
+  <Card title="Usage" icon="chart-bar" href="/network/usage">
+    Pull CDRs for data, voice, SMS, and MMS traffic. Use time-sliced aggregation endpoints to analyze usage by interval, country, APN, or RAT type.
+  </Card>
+</CardGroup>
+
+## Authentication
+
+Every request must include a valid Bearer token obtained from the Transatel authorization server. Pass it in the `Authorization` header:
+
+```http
+Authorization: Bearer <your_access_token>
+```
+
+Each API section documents the specific OAuth 2.0 scopes required for its endpoints. Request only the scopes your integration needs.
+
+## Base URLs
+
+| API | Base URL |
+|-----|----------|
+| Attach | `https://api.transatel.com/network/attach` |
+| SMS | `https://api.transatel.com/network/sms` |
+| OTA | `https://api.transatel.com/network/ota` |
+| Data Session | `https://api.transatel.com/network/data-session` |
+| Usage | `https://api.transatel.com/network/usage` |

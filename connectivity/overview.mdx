@@ -1,0 +1,117 @@
+---
+title: "Connectivity Management API Overview"
+sidebarTitle: "Overview"
+description: "Manage MVNO and IoT subscribers, SIM cards, and mobile number portability through Transatel's Connectivity Management API."
+---
+
+The Connectivity Management API is the central control plane for your mobile subscribers and SIM cards. Through a single authenticated REST interface, you can activate new subscribers, modify service profiles, handle SIM and MSISDN swaps, orchestrate mobile number portability (MNP) across France, Belgium, and the UK, and manage IoT-specific lifecycle states such as test mode and tariff holidays. Every write operation is processed asynchronously — the platform accepts your request immediately and returns a `transactionId` you can poll until provisioning completes.
+
+## Base URL
+
+All Connectivity Management endpoints share the following base URL:
+
+```
+https://api.transatel.com/connectivity-management/subscribers
+```
+
+## Authentication and Scopes
+
+All requests must include a Bearer token in the `Authorization` header. The Connectivity Management API uses two permission scopes:
+
+| Scope | Used for |
+|-------|----------|
+| `CONNECTIVITY_MANAGEMENT_READ` | `GET` endpoints — retrieve subscriber, SIM, transaction, and portability data |
+| `CONNECTIVITY_MANAGEMENT_WRITE` | `POST` / `PUT` endpoints — activate, modify, suspend, terminate, swap, and port |
+
+<Note>
+Your access token may carry one or both scopes depending on the role your account manager has provisioned. A `403 INSUFFICIENT_PERMISSION` error means the token you are using lacks the required scope for that operation.
+</Note>
+
+## Async Transaction Pattern
+
+Every write operation (activate, modify, suspend, SIM swap, portability request, etc.) returns an HTTP `201` or `202` with a body that includes `transactionStatus: "PENDING"`. Provisioning continues in the background — the platform queues the instruction to its downstream systems and processes it asynchronously.
+
+To check the outcome, poll the transaction status endpoint until `asyncStatus` is either `DONE` or `ERROR`:
+
+```
+GET /api/transactions/{transactionId}
+```
+
+<Steps>
+  <Step title="Submit the write operation">
+    Call any write endpoint (for example, activate or suspend). The platform returns a `transactionId` immediately — there is no need to wait.
+  </Step>
+  <Step title="Poll for completion">
+    Call `GET /api/transactions/{transactionId}` every few seconds. The `asyncStatus` field starts as `PENDING` and transitions to `DONE` on success or `ERROR` on failure.
+  </Step>
+  <Step title="React to the outcome">
+    When `asyncStatus` is `DONE`, the subscriber's state has been updated across all network elements. When it is `ERROR`, inspect `syncStatus` and the error detail to determine what went wrong and whether you should retry.
+  </Step>
+</Steps>
+
+```bash Example: polling a transaction
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/transactions/c1e2fac8-1234-5678-abcd-ef0123456789" \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+<Tip>
+For production workloads, configure a [webhook](/events/connectivity-events) to receive a push notification the moment a transaction completes, instead of polling on a timer.
+</Tip>
+
+## Endpoint Categories
+
+| Category | Path prefix | What it covers |
+|----------|-------------|----------------|
+| Subscribers | `/api/subscribers/` | Full subscriber lifecycle — activate, modify, suspend, reactivate, swap, terminate, contact info |
+| SIM Cards | `/api/simcards/` | Read SIM card details including PIN/PUK codes |
+| Transactions | `/api/transactions/` | Track the status of any asynchronous write operation |
+| Portability — France | `/api/portability/fr/` | MNP requests, RIO codes, and cancellations for French numbers |
+| Portability — Belgium | `/api/portability/be/` | MNP activate-requests and details for Belgian numbers |
+| Portability — UK | `/api/portability/uk/` | PAC/STAC codes, portability requests, ETF, and cancellations for UK numbers |
+
+## Subscriber Statuses
+
+A subscriber moves through several statuses over its lifetime. Understanding these statuses helps you interpret `GET` responses and choose the correct write operation.
+
+| Status | Meaning |
+|--------|---------|
+| `Loaded` | SIM has been provisioned in the platform but not yet activated |
+| `Available` | SIM is ready to be activated; no service is running |
+| `Pre-Activated` | Activation has been submitted and is pending completion |
+| `TestMode` | IoT SIM is live but restricted to a test connectivity environment |
+| `Active` | Subscriber is fully operational |
+| `Suspended` | Connectivity has been suspended; can be reactivated |
+| `Tariff_Holiday` | Subscriber is in a scheduled tariff holiday period (IoT) |
+| `Operator_Barred` | Barred by the operator; requires operator action to unbar |
+| `Terminated` | Permanently deactivated; cannot be recovered |
+
+## Common Error Codes
+
+All error responses include an `errorCode` string and a human-readable `message`. The table below lists the codes you are most likely to encounter:
+
+| HTTP status | Error code | When you see it |
+|-------------|------------|-----------------|
+| `400` | `BAD_REQUEST` | The request body or path parameter is malformed or missing a required field |
+| `403` | `INSUFFICIENT_PERMISSION` | Your token does not carry the required scope |
+| `404` | `SUBSCRIBER_NOT_FOUND` | No subscriber exists for the SIM serial or MSISDN you specified |
+| `409` | `CONFLICT` | Another request is already pending for this SIM; wait for it to complete |
+| `500` | `INTERNAL_ERROR` | Unexpected server-side error; contact Transatel support if it persists |
+| `501` | `NOT_IMPLEMENTED` | The requested feature is not enabled for your account |
+
+## Explore the API
+
+<CardGroup cols={2}>
+  <Card title="Subscribers" icon="sim-card" href="/connectivity/subscribers">
+    Activate, modify, suspend, swap, and terminate subscribers. Retrieve SIM card details and track provisioning transactions.
+  </Card>
+  <Card title="Portability" icon="arrow-right-arrow-left" href="/connectivity/portability">
+    Request, track, and cancel mobile number portability for French, Belgian, and UK subscribers.
+  </Card>
+  <Card title="IoT Lifecycle" icon="microchip" href="/connectivity/iot-lifecycle">
+    Manage test mode exit and tariff holiday scheduling for IoT subscribers.
+  </Card>
+  <Card title="Connectivity Events" icon="webhook" href="/events/connectivity-events">
+    Receive real-time webhook notifications for subscriber state changes and portability outcomes.
+  </Card>
+</CardGroup>

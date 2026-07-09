@@ -1,0 +1,157 @@
+---
+title: "POST /detach — Remote Network Detach"
+sidebarTitle: "Detach"
+description: "POST to /api/sim-serial/{sim-serial}/detach to send a remote detach command and force a SIM card off the network."
+---
+
+The Detach API lets you remotely disconnect a SIM card from the network by sending a network-level detach signal to the serving node. This is useful for fraud mitigation, account suspension workflows, or any scenario where you need to immediately cut a subscriber's network access without waiting for a natural session expiry.
+
+A successful request returns HTTP `204 No Content` — there is no response body. The SIM will attempt to re-attach based on its normal registration behaviour; combine this with a subscription-level suspension if you need to prevent re-attachment.
+
+**Base URL:** `https://api.transatel.com/network/attach`
+
+---
+
+## POST /api/sim-serial/{sim-serial}/detach
+
+Sends a detach command for the specified SIM card. The operation is best-effort at the network level: if the SIM is not currently attached, the command is accepted but has no visible effect.
+
+<Warning>
+  This operation immediately interrupts any active data, voice, or SMS sessions for the target SIM. Make sure you intend to disconnect the subscriber before calling this endpoint.
+</Warning>
+
+### Required Scope
+
+`NETWORK-ATTACH_DETACH_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match the pattern `[0-9]{13,20}`.
+</ParamField>
+
+### Response
+
+| HTTP Status | Meaning                                        |
+|-------------|------------------------------------------------|
+| 204         | Detach command accepted. No response body.     |
+| 400         | `BAD_REQUEST` — invalid path parameter format. |
+| 403         | `INSUFFICIENT_PERMISSION` — missing scope.     |
+| 500         | `INTERNAL_ERROR` — unexpected server error.    |
+
+<CodeGroup>
+```bash Remote detach
+curl --request POST \
+  --url "https://api.transatel.com/network/attach/api/sim-serial/8933012345678901234/detach" \
+  --header "Authorization: Bearer <token>"
+```
+
+```text Response (204 No Content)
+(empty body)
+```
+</CodeGroup>
+
+---
+
+## GET /api/sim-serial/{sim-serial}/last
+
+Before issuing a detach you may want to confirm the SIM is currently attached and to record which network it is on. Use this endpoint to retrieve the most recent location update event for the SIM — it returns the same event shape as the Attach History list.
+
+### Required Scope
+
+`NETWORK-ATTACH_HISTORY_READ`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match `[0-9]{13,20}`.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="header.eventId" type="string">
+  Unique identifier for the event.
+</ResponseField>
+
+<ResponseField name="header.eventType" type="string">
+  `NETWORK/LOCATION-UPDATE/ACCEPTED` or `NETWORK/LOCATION-UPDATE/DENIED`.
+</ResponseField>
+
+<ResponseField name="header.eventDate" type="string">
+  ISO 8601 timestamp of the last attach attempt.
+</ResponseField>
+
+<ResponseField name="body.msisdn" type="string">
+  Subscriber MSISDN.
+</ResponseField>
+
+<ResponseField name="body.imsi" type="string">
+  Subscriber IMSI.
+</ResponseField>
+
+<ResponseField name="body.type" type="string">
+  Attach type: `CS`, `PS`, or `EPS`.
+</ResponseField>
+
+<ResponseField name="body.mcc" type="string">
+  Mobile Country Code of the last serving operator.
+</ResponseField>
+
+<ResponseField name="body.mnc" type="string">
+  Mobile Network Code of the last serving operator.
+</ResponseField>
+
+<ResponseField name="body.operatorName" type="string">
+  Human-readable name of the last serving operator.
+</ResponseField>
+
+<ResponseField name="body.iso2" type="string">
+  Two-letter country code of the last serving network.
+</ResponseField>
+
+<ResponseField name="body.errorCode" type="string">
+  Rejection reason code — present only when the last event was `DENIED`.
+</ResponseField>
+
+<Note>
+  If the most recent event is `DENIED`, the SIM is not currently attached to the network and a detach command will have no effect.
+</Note>
+
+<CodeGroup>
+```bash Check last attach before detaching
+curl --request GET \
+  --url "https://api.transatel.com/network/attach/api/sim-serial/8933012345678901234/last" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "header": {
+    "eventId": "evt_01HX4KZMB3QW2Y5N8R7DJVCTPE",
+    "eventType": "NETWORK/LOCATION-UPDATE/ACCEPTED",
+    "eventDate": "2024-06-01T10:23:45Z"
+  },
+  "body": {
+    "mvnoRef": "my-mvno",
+    "msisdn": "33612345678",
+    "imsi": "208930000012345",
+    "simSerial": "8933012345678901234",
+    "subscriberNumber": "SUB-00123",
+    "externalReference": "CRM-ABC-001",
+    "type": "EPS",
+    "mcc": "208",
+    "mnc": "01",
+    "iso2": "FR",
+    "iso3": "FRA",
+    "operatorName": "Orange France",
+    "imei": "353123456789012"
+  }
+}
+```
+
+```bash Detach after confirming attachment
+curl --request POST \
+  --url "https://api.transatel.com/network/attach/api/sim-serial/8933012345678901234/detach" \
+  --header "Authorization: Bearer <token>"
+```
+</CodeGroup>

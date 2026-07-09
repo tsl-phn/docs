@@ -1,0 +1,135 @@
+---
+title: "Connectivity Management API Reference"
+sidebarTitle: "Overview"
+description: "Full reference for subscriber management, SIM card operations, IoT lifecycle, and mobile number portability endpoints."
+---
+
+The Connectivity Management API gives you complete programmatic control over the subscriber lifecycle — from activating a SIM card to managing rate plans, handling SIM and MSISDN swaps, and orchestrating mobile number portability (MNP) across France, Belgium, and the United Kingdom. All endpoints are secured with OAuth 2.0 bearer tokens and scoped to either read or write permissions.
+
+## Base URL
+
+```
+https://api.transatel.com/connectivity-management/subscribers
+```
+
+## Authentication
+
+Every request must include a valid bearer token in the `Authorization` header:
+
+```http
+Authorization: Bearer <token>
+```
+
+Tokens carry one or both of the following scopes:
+
+| Scope | Access |
+|---|---|
+| `CONNECTIVITY_MANAGEMENT_READ` | Read-only access to subscriber and SIM data |
+| `CONNECTIVITY_MANAGEMENT_WRITE` | Write access for lifecycle and provisioning operations |
+
+## Asynchronous Operations
+
+<Note>
+  Write operations (`POST`, `PUT`) return **HTTP 201** immediately with a `transactionId` and `transactionStatus: PENDING`. The actual provisioning happens asynchronously. Poll `GET /api/transactions/{transactionId}` until `asyncStatus` is `DONE` or `ERROR` before treating the operation as complete.
+</Note>
+
+See the [Transactions reference](/api-reference/connectivity/transactions) for full polling details.
+
+## Endpoint Index
+
+### Subscriber Management
+
+| Method | Path | Scope | Description |
+|---|---|---|---|
+| `GET` | `/api/subscribers/sim-serial/{sim-serial}` | READ | Retrieve subscriber details by SIM serial number |
+| `GET` | `/api/subscribers/msisdn/{msisdn}` | READ | Retrieve subscriber details by MSISDN |
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/activate` | WRITE | [Activate a SIM card and create a subscriber](/api-reference/connectivity/activate) |
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/modify` | WRITE | [Update rate plan, options, group, or metadata](/api-reference/connectivity/modify) |
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/suspend` | WRITE | [Suspend a subscriber's network access](/api-reference/connectivity/suspend-reactivate) |
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/reactivate` | WRITE | [Restore a suspended subscriber](/api-reference/connectivity/suspend-reactivate) |
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/terminate` | WRITE | [Permanently deactivate a SIM](/api-reference/connectivity/terminate) |
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/sim-swap` | WRITE | [Replace the physical SIM card](/api-reference/connectivity/sim-swap) |
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/msisdn-swap` | WRITE | [Change the subscriber's MSISDN](/api-reference/connectivity/sim-swap) |
+| `PUT` | `/api/subscribers/sim-serial/{sim-serial}/contact-info` | WRITE | Update subscriber contact information |
+
+### SIM Card
+
+| Method | Path | Scope | Description |
+|---|---|---|---|
+| `GET` | `/api/simcards/sim-serial/{sim-serial}` | READ | Retrieve SIM card metadata and current state |
+
+### Transactions
+
+| Method | Path | Scope | Description |
+|---|---|---|---|
+| `GET` | `/api/transactions/{transactionId}` | READ | [Poll the status of an async provisioning operation](/api-reference/connectivity/transactions) |
+
+### Lifecycle Utilities
+
+| Method | Path | Scope | Description |
+|---|---|---|---|
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/test-mode/exit` | WRITE | Exit test mode and move to a live state |
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/tariff-holiday/schedule` | WRITE | Schedule a future tariff holiday |
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/tariff-holiday/schedule/cancel` | WRITE | Cancel a scheduled tariff holiday |
+| `POST` | `/api/subscribers/sim-serial/{sim-serial}/tariff-holiday/exit` | WRITE | Exit an active tariff holiday |
+
+### Portability — France
+
+| Method | Path | Scope | Description |
+|---|---|---|---|
+| `POST` | `/api/portability/fr/sim-serial/{sim-serial}/activate-request` | WRITE | [Activate a new subscriber with a French port-in](/api-reference/connectivity/portability-fr) |
+| `POST` | `/api/portability/fr/sim-serial/{sim-serial}/request` | WRITE | [Request portability for an existing subscriber](/api-reference/connectivity/portability-fr) |
+| `GET` | `/api/portability/fr/sim-serial/{sim-serial}/rio` | READ | [Retrieve the RIO code for a subscriber](/api-reference/connectivity/portability-fr) |
+| `GET` | `/api/portability/fr` | READ | [List all French portability requests](/api-reference/connectivity/portability-fr) |
+| `POST` | `/api/portability/fr/sim-serial/{sim-serial}/cancel` | WRITE | [Cancel a pending French portability request](/api-reference/connectivity/portability-fr) |
+
+### Portability — Belgium
+
+| Method | Path | Scope | Description |
+|---|---|---|---|
+| `POST` | `/api/portability/be/sim-serial/{sim-serial}/activate-request` | WRITE | [Activate a new subscriber with a Belgian port-in](/api-reference/connectivity/portability-be) |
+| `GET` | `/api/portability/be` | READ | [List all Belgian portability requests](/api-reference/connectivity/portability-be) |
+
+### Portability — United Kingdom
+
+| Method | Path | Scope | Description |
+|---|---|---|---|
+| `POST` | `/api/portability/uk/sim-serial/{sim-serial}/request` | WRITE | [Submit a UK port-in request using a PAC or STAC code](/api-reference/connectivity/portability-uk) |
+| `POST` | `/api/portability/uk/sim-serial/{sim-serial}/{codeType}/request` | WRITE | [Submit a port-in request by code type](/api-reference/connectivity/portability-uk) |
+| `POST` | `/api/portability/uk/sim-serial/{sim-serial}/{codeType}/{code}/cancel` | WRITE | [Cancel a port-in request by code](/api-reference/connectivity/portability-uk) |
+| `GET` | `/api/portability/uk` | READ | [List all UK portability requests](/api-reference/connectivity/portability-uk) |
+| `POST` | `/api/portability/uk/sim-serial/{sim-serial}/cancel` | WRITE | [Cancel a pending UK portability request](/api-reference/connectivity/portability-uk) |
+| `POST` | `/api/portability/uk/sim-serial/{sim-serial}/portability-date/update` | WRITE | [Update the wished portability date](/api-reference/connectivity/portability-uk) |
+| `GET` | `/api/portability/uk/early-termination-fees/{sim-serial}` | READ | [Retrieve early termination fee configuration](/api-reference/connectivity/portability-uk) |
+| `PUT` | `/api/portability/uk/early-termination-fees/{sim-serial}` | WRITE | [Set early termination fees for a subscriber](/api-reference/connectivity/portability-uk) |
+
+## Common Error Codes
+
+All endpoints share the following error response structure:
+
+| HTTP Status | Code | Description |
+|---|---|---|
+| `400` | `BAD_REQUEST` | The request body or parameters are invalid or malformed |
+| `403` | `INSUFFICIENT_PERMISSION` | Your token does not carry the required scope |
+| `404` | `SUBSCRIBER_NOT_FOUND` | No subscriber exists for the given SIM serial or MSISDN |
+| `404` | `TRANSACTION_ID_NOT_FOUND` | The provided transaction ID does not exist |
+| `404` | `PORTABILITY_NOT_FOUND` | No portability request found for this subscriber |
+| `409` | `CONFLICT` | Another provisioning request is already pending on this SIM |
+| `500` | `INTERNAL_ERROR` | An unexpected server-side error occurred |
+| `501` | `NOT_IMPLEMENTED` | The requested operation is not available for your account configuration |
+
+## Subscriber Status Values
+
+A subscriber moves through the following lifecycle states:
+
+| Status | Description |
+|---|---|
+| `Available` | SIM is provisioned but not yet activated |
+| `Loaded` | SIM is loaded and ready for activation |
+| `TestMode` | SIM is in a sandbox test state |
+| `Pre-Activated` | Activation has been initiated but is pending |
+| `Active` | Subscriber is live and connected |
+| `Suspended` | Network access is blocked; billing may still apply |
+| `Tariff_Holiday` | Subscriber is in a billing pause period |
+| `Operator_Barred` | SIM has been barred by the operator |
+| `Terminated` | Subscriber has been permanently deactivated |

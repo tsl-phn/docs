@@ -1,0 +1,92 @@
+---
+title: "POST /terminate — Permanently Terminate a Subscriber"
+sidebarTitle: "Terminate"
+description: "POST to /api/subscribers/sim-serial/{sim-serial}/terminate to permanently deactivate a SIM. This action cannot be undone."
+---
+
+Terminating a subscriber permanently deactivates the SIM card and closes the subscription. Once terminated, the SIM cannot be reactivated, and the MSISDN associated with the subscriber may be reclaimed by the network. Use this endpoint when a customer ends their service or when a device is decommissioned. The operation is asynchronous and returns a `transactionId` for polling.
+
+<Warning>
+  **This action is irreversible.** Terminating a subscriber permanently deactivates the SIM card. The subscription cannot be restored, and any associated MSISDN may be recycled. Only call this endpoint when you are certain the subscriber should be permanently removed.
+</Warning>
+
+## Endpoint
+
+```
+POST /api/subscribers/sim-serial/{sim-serial}/terminate
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+## Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID) of the subscriber to terminate. Must match the pattern `[0-9]{13,20}`.
+</ParamField>
+
+## Request Body
+
+<ParamField body="ratePlan" type="string" required>
+  The current rate plan of the subscriber. Maximum 50 characters. This is required to confirm the operation is being applied to the correct configuration.
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  A key-value map of custom attributes to record against the termination event. Supports up to 10 string entries. Useful for recording churn reasons or support ticket references.
+</ParamField>
+
+## Response Fields
+
+Returns `HTTP 201 Created` with a `ProvisioningResponse` body.
+
+<ResponseField name="transactionId" type="string">
+  UUID identifying this termination operation. Poll `GET /api/transactions/{transactionId}` to confirm the termination completes successfully.
+</ResponseField>
+
+<ResponseField name="simSerial" type="string">
+  The SIM serial number, echoed from the path parameter.
+</ResponseField>
+
+<ResponseField name="transactionStatus" type="string">
+  Always `PENDING` on a successful 201 response. The termination is not final until `asyncStatus` is `DONE`.
+</ResponseField>
+
+## Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8933150000000012345/terminate" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "DATA_100MB_MONTHLY",
+    "metadata": {
+      "reason": "end_of_contract",
+      "ticketRef": "CRM-2024-4421"
+    }
+  }'
+```
+
+## Example Response
+
+```json
+{
+  "transactionId": "f1a2b3c4-9abc-4321-d000-001122334455",
+  "simSerial": "8933150000000012345",
+  "transactionStatus": "PENDING"
+}
+```
+
+<Note>
+  Poll `GET /api/transactions/f1a2b3c4-9abc-4321-d000-001122334455` until `asyncStatus` is `DONE` before considering the subscriber terminated. An `ERROR` result means the SIM remains active. See the [Transactions reference](/api-reference/connectivity/transactions) for details.
+</Note>
+
+## Error Responses
+
+| HTTP Status | Code | Description |
+|---|---|---|
+| `400` | `BAD_REQUEST` | Missing required fields or invalid parameter format |
+| `403` | `INSUFFICIENT_PERMISSION` | Token does not have the `CONNECTIVITY_MANAGEMENT_WRITE` scope |
+| `404` | `SUBSCRIBER_NOT_FOUND` | No subscriber found for the provided SIM serial number |
+| `409` | `CONFLICT` | Another provisioning request is already pending on this SIM |
+| `500` | `INTERNAL_ERROR` | An unexpected server-side error occurred |
+| `501` | `NOT_IMPLEMENTED` | Termination is not supported for this account configuration |

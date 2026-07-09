@@ -1,0 +1,209 @@
+---
+title: "POST /sms — Send an SMS Message"
+sidebarTitle: "Send SMS"
+description: "POST to /api/sms to send on-net or off-net text and binary SMS messages to subscribers with optional delivery reports."
+---
+
+The SMS Send API lets you push mobile-terminated (MT) messages to any subscriber — both on-net SIMs managed through your Transatel account and off-net numbers on external networks. You can send plain text messages up to 1,600 characters, binary payloads (for WAP push, OTA provisioning, or custom data), and request delivery reports to track message outcomes.
+
+On-net delivery requires the `NETWORK-SMS_SMS_WRITE` scope. To also reach off-net destinations you additionally need the `NETWORK-SMS_SMS_WRITE_OFF-NET` scope on your token.
+
+**Base URL:** `https://api.transatel.com/network/sms`
+
+---
+
+## POST /api/sms
+
+Submits an SMS message for delivery. The response includes a `messageId` you can use to poll for delivery status via the [Retrieve SMS](/api-reference/network/sms-retrieve) endpoints.
+
+### Request Body
+
+<ParamField body="mvnoRef" type="string" required>
+  Your account name (MVNO reference). Maximum 50 characters.
+</ParamField>
+
+<ParamField body="from" type="string" required>
+  The sender address displayed on the recipient's handset. Must be pre-whitelisted on your account. Can be a numeric short code or an alphanumeric string depending on your configuration.
+</ParamField>
+
+<ParamField body="to" type="string" required>
+  Destination MSISDN in international format without the leading `+`. Must match `[0-9]{6,15}`.
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  Message encoding type. Use `text` for plain-text messages or `binary` for hex-encoded payloads.
+</ParamField>
+
+<ParamField body="text" type="string">
+  The message text. Required when `type` is `text`. Maximum 1,600 characters. Long messages are automatically split into multiple segments.
+</ParamField>
+
+<ParamField body="binary" type="string">
+  Hexadecimal-encoded binary payload. Required when `type` is `binary`. Maximum 1,400 hex characters (700 bytes).
+</ParamField>
+
+<ParamField body="dlr" type="boolean">
+  Request a delivery report. When `true`, the `dlrStatus` field on the message record is updated once the network confirms delivery or failure. Default: `false`.
+</ParamField>
+
+<ParamField body="validityPeriod" type="integer">
+  How long (in minutes) the message centre should attempt delivery before expiring the message. Range: `5–2880`. Default: `2880` (48 hours).
+</ParamField>
+
+<ParamField body="externalReference" type="string">
+  Your own reference string attached to the message for correlation. Maximum 255 characters. Returned as-is in the response and in subsequent retrieval calls.
+</ParamField>
+
+### Response Fields
+
+A successful request returns HTTP `201 Created` with the following body:
+
+<ResponseField name="messageId" type="string (UUID)">
+  Unique identifier for the submitted message. Use this to retrieve status later.
+</ResponseField>
+
+<ResponseField name="mvnoRef" type="string">
+  Your account reference, echoed back.
+</ResponseField>
+
+<ResponseField name="creationDate" type="string">
+  ISO 8601 timestamp when the message was accepted by the platform.
+</ResponseField>
+
+<ResponseField name="createdBy" type="string">
+  Identity of the API caller that submitted the message.
+</ResponseField>
+
+<ResponseField name="direction" type="string">
+  Always `MT` (mobile-terminated) for messages you send.
+</ResponseField>
+
+<ResponseField name="from" type="string">
+  The sender address used.
+</ResponseField>
+
+<ResponseField name="to" type="string">
+  The destination MSISDN.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  `text` or `binary`.
+</ResponseField>
+
+<ResponseField name="encoding" type="string">
+  Detected encoding: `GSM-7`, `UCS-2`, or `BINARY`.
+</ResponseField>
+
+<ResponseField name="segments" type="integer">
+  Number of SMS segments the message was split into.
+</ResponseField>
+
+<ResponseField name="network" type="string">
+  `on-net` if the destination is a SIM on your account; `off-net` otherwise.
+</ResponseField>
+
+<ResponseField name="validityPeriod" type="integer">
+  Effective validity period in minutes.
+</ResponseField>
+
+<ResponseField name="dlr" type="boolean">
+  Whether delivery reporting was requested.
+</ResponseField>
+
+<ResponseField name="externalReference" type="string">
+  Your reference string, if supplied.
+</ResponseField>
+
+<ResponseField name="text" type="string">
+  The message text (present for `type: text`).
+</ResponseField>
+
+<ResponseField name="binary" type="string">
+  The hex-encoded payload (present for `type: binary`).
+</ResponseField>
+
+### Error Responses
+
+| HTTP Status | Error Code           | Meaning                                                               |
+|-------------|----------------------|-----------------------------------------------------------------------|
+| 400         | `BAD_REQUEST`        | Request body is malformed or a required field is missing.             |
+| 400         | `INVALID_ORIGINATOR` | The `from` value is not whitelisted for your account.                 |
+| 500         | `INTERNAL_ERROR`     | An unexpected server-side error occurred. Retry with exponential back-off. |
+
+<Note>
+  Sending to off-net destinations requires the additional `NETWORK-SMS_SMS_WRITE_OFF-NET` scope. Without it, messages to numbers not managed by Transatel will be rejected with `403 INSUFFICIENT_PERMISSION`.
+</Note>
+
+<CodeGroup>
+```bash Send a text message
+curl --request POST \
+  --url "https://api.transatel.com/network/sms/api/sms" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "mvnoRef": "my-mvno",
+    "from": "123456",
+    "to": "33612345678",
+    "type": "text",
+    "text": "Hello! Your account has been activated.",
+    "dlr": true,
+    "validityPeriod": 2880,
+    "externalReference": "RX12345ZVGT"
+  }'
+```
+
+```bash Send a binary message
+curl --request POST \
+  --url "https://api.transatel.com/network/sms/api/sms" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "mvnoRef": "my-mvno",
+    "from": "123456",
+    "to": "33612345678",
+    "type": "binary",
+    "binary": "41207069637475726520697320776F727468203130303020776F72647321",
+    "dlr": true,
+    "validityPeriod": 10
+  }'
+```
+
+```json Response (201 Created) — text
+{
+  "messageId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "mvnoRef": "my-mvno",
+  "creationDate": "2024-06-01T10:30:00Z",
+  "createdBy": "api-user@my-mvno",
+  "direction": "MT",
+  "from": "123456",
+  "to": "33612345678",
+  "type": "text",
+  "encoding": "GSM-7",
+  "segments": 1,
+  "network": "on-net",
+  "validityPeriod": 2880,
+  "dlr": true,
+  "externalReference": "RX12345ZVGT",
+  "text": "Hello! Your account has been activated."
+}
+```
+
+```json Response (201 Created) — binary
+{
+  "messageId": "7cb2e104-3d21-4a89-b201-1f8a2d3e4f56",
+  "mvnoRef": "my-mvno",
+  "creationDate": "2024-06-01T10:31:00Z",
+  "createdBy": "api-user@my-mvno",
+  "direction": "MT",
+  "from": "123456",
+  "to": "33612345678",
+  "type": "binary",
+  "encoding": "BINARY",
+  "segments": 1,
+  "network": "on-net",
+  "validityPeriod": 10,
+  "dlr": true,
+  "binary": "41207069637475726520697320776F727468203130303020776F72647321"
+}
+```
+</CodeGroup>

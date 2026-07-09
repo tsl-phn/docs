@@ -1,0 +1,126 @@
+---
+title: "Active Data Session Diagnostics"
+sidebarTitle: "Data Session"
+description: "Retrieve current active data sessions for a subscriber by IMSI or MSISDN to diagnose connectivity issues."
+---
+
+When a subscriber reports that their device has no data connectivity, the first question is whether an active session exists at all. The Network Data Session API answers that question instantly by returning the current active data sessions for a SIM, including the assigned IP address, APN, device IMEI, and radio access technology in use. All requests require a Bearer token with the `NETWORK-DATA-SESSION_SESSION_READ` scope.
+
+## Query by IMSI
+
+Use `GET /api/data-session/imsi/{imsi}` when you have the subscriber's IMSI available — for example, from a provisioning system or from Attach API history.
+
+**Required scope:** `NETWORK-DATA-SESSION_SESSION_READ`
+
+```bash
+curl -X GET \
+  "https://api.transatel.com/network/data-session/api/data-session/imsi/234858800000000" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+## Query by MSISDN
+
+Use `GET /api/data-session/msisdn/{msisdn}` when you're working from a subscriber's phone number. The MSISDN must be in E.164 format without a `+` prefix.
+
+**Required scope:** `NETWORK-DATA-SESSION_SESSION_READ`
+
+```bash
+curl -X GET \
+  "https://api.transatel.com/network/data-session/api/data-session/msisdn/33612345678" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+## Response structure
+
+Both endpoints return the same response shape: subscriber identifiers and an array of active sessions.
+
+```json
+{
+  "imsi": "234858800000000",
+  "msisdn": "33612345678",
+  "sessions": [
+    {
+      "Session-Id": "an3k-901-gx-nyc;1682904600;1",
+      "startTime": "2023-04-19T13:30:00Z",
+      "lastUpdateTime": "2023-04-19T13:45:00Z",
+      "PS-Information": {
+        "Called-Station-Id": "mobiledata",
+        "PDP-Address": "1.1.1.1",
+        "3GPP-GGSN-MCC-MNC": "20833",
+        "User-Equipment-Info": [
+          {
+            "User-Equipment-Info-Type": "IMEI",
+            "User-Equipment-Info-Value": "353991008863904"
+          }
+        ],
+        "3GPP-RAT-Type": 6
+      }
+    }
+  ]
+}
+```
+
+### Session fields explained
+
+<Accordion title="Top-level session fields">
+
+| Field | Description |
+|-------|-------------|
+| `Session-Id` | Unique session identifier assigned by the GGSN/PGW |
+| `startTime` | ISO 8601 timestamp when the session was established |
+| `lastUpdateTime` | ISO 8601 timestamp of the most recent session heartbeat or update |
+
+</Accordion>
+
+<Accordion title="PS-Information fields">
+
+| Field | Description |
+|-------|-------------|
+| `Called-Station-Id` | The APN the device connected to (e.g. `mobiledata`) |
+| `PDP-Address` | IP address assigned to the device for this session |
+| `3GPP-GGSN-MCC-MNC` | MCC+MNC of the serving gateway (identifies the operator's core network) |
+| `User-Equipment-Info` | Array of device identity objects; type is typically `IMEI` |
+| `3GPP-RAT-Type` | Radio access technology as a decimal integer — see table below |
+
+</Accordion>
+
+## RAT type reference
+
+The `3GPP-RAT-Type` field is returned as a decimal integer. Use this table to interpret it:
+
+| Value | RAT | Description |
+|-------|-----|-------------|
+| `1` | UTRAN | 3G WCDMA/UMTS |
+| `2` | GERAN | 2G GSM/GPRS/EDGE |
+| `3` | WLAN | Wi-Fi offload |
+| `5` | HSPA | 3G HSPA/HSPA+ |
+| `6` | EUTRAN | 4G LTE |
+| `8` | NB-IoT | Narrowband IoT |
+| `9` | LTE-M | LTE Cat-M1 |
+| `10` | NR | 5G New Radio |
+
+<Tip>
+  For IoT deployments, RAT types `8` (NB-IoT) and `9` (LTE-M) are the most common. If a device that should be on NB-IoT is showing RAT type `6` (LTE), it may have fallen back to a standard LTE bearer — worth investigating if battery life is a concern.
+</Tip>
+
+## Understanding SESSION_NOT_FOUND
+
+If the API returns `404 SESSION_NOT_FOUND`, it means the subscriber **has no active data session at this moment**. This is not necessarily an indicator that something is wrong with the subscription itself — it simply means the device is not currently connected to a data bearer. Common reasons include:
+
+- The device is powered off or in airplane mode.
+- The device has not yet completed the attach procedure.
+- The data session was torn down and has not yet been re-established.
+
+<Note>
+  A `404 SESSION_NOT_FOUND` does not indicate a provisioning problem. To confirm the subscription is correctly set up, check the [Attach API](/network/attach) for recent accepted location update events, and verify the subscription status in the Subscriber API.
+</Note>
+
+## Error reference
+
+| HTTP status | Error code | Description |
+|-------------|-----------|-------------|
+| `400` | — | Malformed IMSI or MSISDN format |
+| `403` | — | Token lacks `NETWORK-DATA-SESSION_SESSION_READ` scope |
+| `404` | `SESSION_NOT_FOUND` | Subscriber has no currently active data session |
+| `404` | `NOT_FOUND` | No subscriber found for the provided IMSI or MSISDN |
+| `500` | — | Unexpected server-side error |

@@ -1,0 +1,168 @@
+{
+  "projectType": "api-service",
+  "projectName": "Transatel Developer Platform",
+  "projectDescription": "Transatel's MVNO/IoT platform APIs for connectivity management, network services, SMS, usage analytics, and product catalog management.",
+  "theme": "sequoia",
+  "primaryColor": "#ef7025",
+  "lightColor": "#eec9bc",
+  "darkColor": "#4fa1ab",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "authentication",
+              "eligibility"
+            ]
+          },
+          {
+            "group": "Connectivity Management",
+            "pages": [
+              "connectivity/overview",
+              "connectivity/subscribers",
+              "connectivity/portability",
+              "connectivity/iot-lifecycle"
+            ]
+          },
+          {
+            "group": "Network",
+            "pages": [
+              "network/overview",
+              "network/attach",
+              "network/sms",
+              "network/ota",
+              "network/data-session",
+              "network/usage"
+            ]
+          },
+          {
+            "group": "OCS Catalog",
+            "pages": [
+              "ocs/overview",
+              "ocs/products",
+              "ocs/options",
+              "ocs/product-factory"
+            ]
+          },
+          {
+            "group": "Events & Webhooks",
+            "pages": [
+              "events/overview",
+              "events/connectivity-events",
+              "events/network-events"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Authentication",
+            "pages": [
+              "api-reference/authentication/overview",
+              "api-reference/authentication/token"
+            ]
+          },
+          {
+            "group": "Connectivity Management",
+            "pages": [
+              "api-reference/connectivity/subscribers-overview",
+              "api-reference/connectivity/activate",
+              "api-reference/connectivity/modify",
+              "api-reference/connectivity/suspend-reactivate",
+              "api-reference/connectivity/terminate",
+              "api-reference/connectivity/sim-swap",
+              "api-reference/connectivity/portability-fr",
+              "api-reference/connectivity/portability-be",
+              "api-reference/connectivity/portability-uk",
+              "api-reference/connectivity/transactions"
+            ]
+          },
+          {
+            "group": "Network",
+            "pages": [
+              "api-reference/network/attach-history",
+              "api-reference/network/detach",
+              "api-reference/network/sms-send",
+              "api-reference/network/sms-retrieve",
+              "api-reference/network/ota-switch",
+              "api-reference/network/data-session",
+              "api-reference/network/cdr",
+              "api-reference/network/cdr-aggregates"
+            ]
+          },
+          {
+            "group": "OCS Catalog",
+            "pages": [
+              "api-reference/ocs/products",
+              "api-reference/ocs/options",
+              "api-reference/ocs/product-models",
+              "api-reference/ocs/publications"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "OAuth 2.0 client credentials authentication with scoped access tokens",
+    "SIM card and subscriber lifecycle management (activate, modify, suspend, terminate)",
+    "Mobile number portability for Belgium, France, UK, and Switzerland",
+    "IoT subscriber lifecycle with test mode and tariff holiday support",
+    "Network attach history and remote SIM detach",
+    "Inbound and outbound SMS messaging with delivery reports",
+    "Over-the-air (OTA) private network switching",
+    "Active data session monitoring by MSISDN or IMSI",
+    "Detailed CDR retrieval and usage aggregation for data, voice, SMS, and MMS",
+    "OCS product catalog management with one-off, recurring, and add-on products",
+    "Real-time webhook events for subscriber state changes and portability updates",
+    "SIM card details retrieval (PIN, PUK, electrical profile)"
+  ],
+  "publicApiSurface": [
+    "POST /authentication/api/token",
+    "GET /connectivity-management/subscribers/api/subscribers/sim-serial/{sim-serial}",
+    "GET /connectivity-management/subscribers/api/subscribers/msisdn/{msisdn}",
+    "POST /connectivity-management/subscribers/api/subscribers/sim-serial/{sim-serial}/activate",
+    "POST /connectivity-management/subscribers/api/subscribers/sim-serial/{sim-serial}/modify",
+    "POST /connectivity-management/subscribers/api/subscribers/sim-serial/{sim-serial}/suspend",
+    "POST /connectivity-management/subscribers/api/subscribers/sim-serial/{sim-serial}/reactivate",
+    "POST /connectivity-management/subscribers/api/subscribers/sim-serial/{sim-serial}/terminate",
+    "POST /connectivity-management/subscribers/api/subscribers/sim-serial/{sim-serial}/sim-swap",
+    "POST /connectivity-management/subscribers/api/subscribers/sim-serial/{sim-serial}/msisdn-swap",
+    "POST /connectivity-management/subscribers/api/portability/fr/sim-serial/{sim-serial}/activate-request",
+    "POST /connectivity-management/subscribers/api/portability/fr/sim-serial/{sim-serial}/request",
+    "GET /connectivity-management/subscribers/api/portability/fr",
+    "POST /connectivity-management/subscribers/api/portability/be/sim-serial/{sim-serial}/activate-request",
+    "GET /connectivity-management/subscribers/api/portability/be",
+    "POST /connectivity-management/subscribers/api/portability/uk/sim-serial/{sim-serial}/request",
+    "GET /connectivity-management/subscribers/api/portability/uk",
+    "POST /connectivity-management/subscribers/api/portability/uk/sim-serial/{sim-serial}/cancel",
+    "GET /connectivity-management/subscribers/api/transactions/{transactionId}",
+    "GET /network/attach/api/history",
+    "GET /network/attach/api/sim-serial/{sim-serial}/last",
+    "POST /network/attach/api/sim-serial/{sim-serial}/detach",
+    "POST /network/sms/api/sms",
+    "GET /network/sms/api/sms",
+    "GET /network/sms/api/sms/{messageId}",
+    "POST /network/ota/api/switch2private/iccid/{iccid}",
+    "POST /network/ota/api/switch2private/msisdn/{msisdn}",
+    "GET /network/data-session/api/data-session/imsi/{imsi}",
+    "GET /network/data-session/api/data-session/msisdn/{msisdn}",
+    "GET /network/usage/api/cdr",
+    "GET /network/usage/api/cdr/count",
+    "GET /network/usage/api/data/aggregates/sim-serial/{sim-serial}",
+    "GET /network/usage/api/voice/aggregates/sim-serial/{sim-serial}",
+    "GET /network/usage/api/sms/aggregates/sim-serial/{sim-serial}",
+    "GET /ocs/catalog/api/cos/{cosRef}/products",
+    "GET /ocs/catalog/api/cos/{cosRef}/products/{productId}",
+    "GET /ocs/catalog/api/cos/{cosRef}/options",
+    "POST /ocs/catalog/api/productModels/oneOff",
+    "POST /ocs/catalog/api/publications",
+    "PATCH /ocs/catalog/api/publications/{catalogRef}/{productId}"
+  ]
+}

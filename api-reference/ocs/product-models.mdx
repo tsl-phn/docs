@@ -1,0 +1,278 @@
+---
+title: "Product Models API Reference [beta]"
+sidebarTitle: "Product Models"
+description: "Create, list, retrieve, and delete product models in the Product Factory using POST, GET, and DELETE on /api/productModels."
+---
+
+The Product Models API lets you programmatically create and manage the product model templates used by the Product Factory. A product model defines the commercial structure of an offer — its allowances, validity period, country scope, and tags — before it is published to a catalog. Once created, a product model can be published to one or more catalogs via the [Publications API](/api-reference/ocs/publications).
+
+<Note>
+  This API is currently in **beta**. Endpoints and response shapes may change before general availability. Contact your Transatel account team before building production integrations against these endpoints.
+</Note>
+
+All endpoints require appropriate scopes as detailed per operation below.
+
+**Base URL:** `https://api.transatel.com/ocs/catalog`
+
+---
+
+## POST /api/productModels/oneOff
+
+Creates a new one-off product model in the Product Factory. A one-off product model represents a single-use, non-recurring commercial offer such as a data top-up or a one-time activation fee.
+
+### Required Scope
+
+`CATALOG_PRODUCT_MODEL_WRITE`
+
+### Request Body
+
+<ParamField body="productFactoryName" type="string" required>
+  The name of the Product Factory to create the model in. This groups related product models together.
+</ParamField>
+
+<ParamField body="productModel" type="object">
+  The product model definition object.
+</ParamField>
+
+<ParamField body="productModel.productId" type="string">
+  Your identifier for this product. If omitted, one is generated automatically.
+</ParamField>
+
+<ParamField body="productModel.description" type="string">
+  Human-readable description of the product.
+</ParamField>
+
+<ParamField body="productModel.allowances" type="object[]">
+  Array of resource allowances included in this product.
+</ParamField>
+
+<ParamField body="productModel.allowances[].resourceName" type="string">
+  Name of the resource (e.g. `DATA`, `VOICE`, `SMS`).
+</ParamField>
+
+<ParamField body="productModel.allowances[].resourceValue" type="number">
+  Quantity of the resource.
+</ParamField>
+
+<ParamField body="productModel.allowances[].resourceUnit" type="string">
+  Unit for the resource value. Accepted values: `KB`, `SECOND`, `SMS`.
+</ParamField>
+
+<ParamField body="productModel.validityPeriod" type="object">
+  How long the product remains valid after activation.
+</ParamField>
+
+<ParamField body="productModel.validityPeriod.validityDuration" type="integer">
+  Numeric duration value.
+</ParamField>
+
+<ParamField body="productModel.validityPeriod.validityDurationUnit" type="string">
+  Unit for the duration. Accepted values: `days`, `months`.
+</ParamField>
+
+<ParamField body="productModel.countryList" type="string">
+  ISO 3166-1 alpha-3 country codes where this product is applicable, as a comma-separated string.
+</ParamField>
+
+<ParamField body="productModel.tags" type="string[]">
+  Array of tags to attach to the product model for filtering.
+</ParamField>
+
+### Response
+
+Returns HTTP `201 Created` with a `Location` header pointing to the newly created resource. No response body is returned.
+
+<CodeGroup>
+```bash Create a one-off data top-up product model
+curl --request POST \
+  --url "https://api.transatel.com/ocs/catalog/api/productModels/oneOff" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "productFactoryName": "my-product-factory",
+    "productModel": {
+      "productId": "TOPUP-DATA-500MB",
+      "description": "500 MB one-off data top-up, valid for 7 days",
+      "allowances": [
+        {
+          "resourceName": "DATA",
+          "resourceValue": 512000,
+          "resourceUnit": "KB"
+        }
+      ],
+      "validityPeriod": {
+        "validityDuration": 7,
+        "validityDurationUnit": "days"
+      },
+      "countryList": "FRA,DEU,ESP",
+      "tags": ["data", "top-up", "europe"]
+    }
+  }'
+```
+
+```text Response (201 Created)
+Location: /api/productModels/my-product-factory/TOPUP-DATA-500MB
+```
+</CodeGroup>
+
+---
+
+## GET /api/productModels/{productFactoryName}
+
+Returns all product models belonging to the specified Product Factory.
+
+### Required Scope
+
+`CATALOG_PRODUCT_MODEL_READ`
+
+### Path Parameters
+
+<ParamField path="productFactoryName" type="string" required>
+  The Product Factory name to list models for.
+</ParamField>
+
+### Response Fields
+
+Returns an array of `ProductModel` objects.
+
+<ResponseField name="productId" type="string">
+  The product model identifier.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Human-readable description.
+</ResponseField>
+
+<ResponseField name="allowances" type="object[]">
+  Array of resource allowances. Each entry contains `resourceName`, `resourceValue`, and `resourceUnit`.
+</ResponseField>
+
+<ResponseField name="validityPeriod" type="object">
+  Contains `validityDuration` (integer) and `validityDurationUnit` (`days` or `months`).
+</ResponseField>
+
+<ResponseField name="countryList" type="string">
+  ISO 3166-1 alpha-3 country codes.
+</ResponseField>
+
+<ResponseField name="tags" type="string[]">
+  Tags attached to the model.
+</ResponseField>
+
+<CodeGroup>
+```bash List all product models in a factory
+curl --request GET \
+  --url "https://api.transatel.com/ocs/catalog/api/productModels/my-product-factory" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+[
+  {
+    "productId": "TOPUP-DATA-500MB",
+    "description": "500 MB one-off data top-up, valid for 7 days",
+    "allowances": [
+      {
+        "resourceName": "DATA",
+        "resourceValue": 512000,
+        "resourceUnit": "KB"
+      }
+    ],
+    "validityPeriod": {
+      "validityDuration": 7,
+      "validityDurationUnit": "days"
+    },
+    "countryList": "FRA,DEU,ESP",
+    "tags": ["data", "top-up", "europe"]
+  }
+]
+```
+</CodeGroup>
+
+---
+
+## GET /api/productModels/{productFactoryName}/{productId}
+
+Returns a single product model by its identifier within a Product Factory.
+
+### Required Scope
+
+`CATALOG_PRODUCT_MODEL_READ`
+
+### Path Parameters
+
+<ParamField path="productFactoryName" type="string" required>
+  The Product Factory name.
+</ParamField>
+
+<ParamField path="productId" type="string" required>
+  The product model identifier.
+</ParamField>
+
+<CodeGroup>
+```bash Retrieve a specific product model
+curl --request GET \
+  --url "https://api.transatel.com/ocs/catalog/api/productModels/my-product-factory/TOPUP-DATA-500MB" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "productId": "TOPUP-DATA-500MB",
+  "description": "500 MB one-off data top-up, valid for 7 days",
+  "allowances": [
+    {
+      "resourceName": "DATA",
+      "resourceValue": 512000,
+      "resourceUnit": "KB"
+    }
+  ],
+  "validityPeriod": {
+    "validityDuration": 7,
+    "validityDurationUnit": "days"
+  },
+  "countryList": "FRA,DEU,ESP",
+  "tags": ["data", "top-up", "europe"]
+}
+```
+</CodeGroup>
+
+---
+
+## DELETE /api/productModels/{productFactoryName}/{productId}
+
+Permanently deletes a product model from the Product Factory. This action cannot be undone.
+
+### Required Scope
+
+`CATALOG_PRODUCT_MODEL_WRITE`
+
+### Path Parameters
+
+<ParamField path="productFactoryName" type="string" required>
+  The Product Factory name.
+</ParamField>
+
+<ParamField path="productId" type="string" required>
+  The product model identifier to delete.
+</ParamField>
+
+<Warning>
+  Deleting a product model does not automatically remove any active publications referencing it. Remove associated publications via the [Publications API](/api-reference/ocs/publications) before deleting the model if you want to keep your catalog consistent.
+</Warning>
+
+### Response
+
+Returns HTTP `204 No Content` on success. No response body.
+
+<CodeGroup>
+```bash Delete a product model
+curl --request DELETE \
+  --url "https://api.transatel.com/ocs/catalog/api/productModels/my-product-factory/TOPUP-DATA-500MB" \
+  --header "Authorization: Bearer <token>"
+```
+
+```text Response (204 No Content)
+(empty body)
+```
+</CodeGroup>

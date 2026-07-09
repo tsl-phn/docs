@@ -1,0 +1,183 @@
+---
+title: "Publications API Reference [beta]"
+sidebarTitle: "Publications"
+description: "Publish product models to your catalog and manage availability dates using POST and PATCH on /api/publications."
+---
+
+The Publications API connects product models to subscriber-facing catalogs. Publishing a product model makes it visible and purchasable in the target catalog, optionally constrained by a start and end availability date. You can update an existing publication at any time to adjust its availability window — for example, to schedule a product launch in advance or to wind down an offer with an end date.
+
+<Note>
+  This API is currently in **beta**. Endpoints and response shapes may change before general availability. Contact your Transatel account team before building production integrations against these endpoints.
+</Note>
+
+All requests require a bearer token with the relevant scope as specified per endpoint below.
+
+**Base URL:** `https://api.transatel.com/ocs/catalog`
+
+---
+
+## POST /api/publications
+
+Publishes a product model to a catalog by creating a new publication record. Once published, the product appears in the catalog returned by the [Products API](/api-reference/ocs/products) within its availability window.
+
+### Required Scope
+
+`CATALOG_PRODUCT_MODEL_PUBLISH`
+
+### Request Body
+
+<ParamField body="catalog" type="string" required>
+  The target catalog reference. Maximum 45 characters. This corresponds to the `cosRef` used in the Products and Options APIs.
+</ParamField>
+
+<ParamField body="productFactoryName" type="string" required>
+  The Product Factory that owns the product model you want to publish.
+</ParamField>
+
+<ParamField body="productId" type="string" required>
+  The identifier of the product model to publish.
+</ParamField>
+
+<ParamField body="availability" type="object" required>
+  The availability window for this publication.
+</ParamField>
+
+<ParamField body="availability.startDate" type="string" required>
+  ISO 8601 date-time from which the product becomes available in the catalog. Cannot be in the past.
+</ParamField>
+
+<ParamField body="availability.endDate" type="string">
+  ISO 8601 date-time after which the product is no longer available. If omitted, the product remains available indefinitely.
+</ParamField>
+
+### Response
+
+Returns HTTP `201 Created`. No response body is returned.
+
+<CodeGroup>
+```bash Publish a product immediately with no end date
+curl --request POST \
+  --url "https://api.transatel.com/ocs/catalog/api/publications" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "catalog": "COS-IOT-EU",
+    "productFactoryName": "my-product-factory",
+    "productId": "TOPUP-DATA-500MB",
+    "availability": {
+      "startDate": "2024-07-01T00:00:00Z"
+    }
+  }'
+```
+
+```bash Publish a product with a scheduled end date
+curl --request POST \
+  --url "https://api.transatel.com/ocs/catalog/api/publications" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "catalog": "COS-IOT-EU",
+    "productFactoryName": "my-product-factory",
+    "productId": "TOPUP-DATA-500MB",
+    "availability": {
+      "startDate": "2024-07-01T00:00:00Z",
+      "endDate": "2024-09-30T23:59:59Z"
+    }
+  }'
+```
+
+```text Response (201 Created)
+(empty body)
+```
+</CodeGroup>
+
+---
+
+## PATCH /api/publications/{catalogRef}/{productId}
+
+Updates the availability window of an existing publication. Use this endpoint to reschedule a product launch, extend an ongoing offer, or set an end date on a product that was originally published without one.
+
+### Required Scope
+
+`CATALOG_PRODUCT_MODEL_PUBLISH`
+
+### Path Parameters
+
+<ParamField path="catalogRef" type="string" required>
+  The catalog reference where the product is published. Corresponds to the `catalog` field used when creating the publication.
+</ParamField>
+
+<ParamField path="productId" type="string" required>
+  The product model identifier of the publication to update.
+</ParamField>
+
+### Request Body
+
+<ParamField body="productFactoryName" type="string" required>
+  The Product Factory that owns the product model. Required to uniquely identify the publication when the same `productId` exists in multiple factories.
+</ParamField>
+
+<ParamField body="availability" type="object">
+  Updated availability window. Only the fields you provide are changed.
+</ParamField>
+
+<ParamField body="availability.startDate" type="string">
+  New ISO 8601 start date-time. If omitted, the existing start date is kept.
+</ParamField>
+
+<ParamField body="availability.endDate" type="string">
+  New ISO 8601 end date-time. Pass an explicit `null` to remove a previously set end date and make the product available indefinitely.
+</ParamField>
+
+### Response
+
+Returns HTTP `200 OK` on success. No response body is returned.
+
+<Note>
+  The PATCH operation is not idempotent with respect to the `endDate` field — setting it to `null` removes the expiry, while omitting the field leaves the existing value unchanged.
+</Note>
+
+<CodeGroup>
+```bash Extend an offer's end date
+curl --request PATCH \
+  --url "https://api.transatel.com/ocs/catalog/api/publications/COS-IOT-EU/TOPUP-DATA-500MB" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "productFactoryName": "my-product-factory",
+    "availability": {
+      "endDate": "2024-12-31T23:59:59Z"
+    }
+  }'
+```
+
+```bash Remove an end date (make indefinitely available)
+curl --request PATCH \
+  --url "https://api.transatel.com/ocs/catalog/api/publications/COS-IOT-EU/TOPUP-DATA-500MB" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "productFactoryName": "my-product-factory",
+    "availability": {
+      "endDate": null
+    }
+  }'
+```
+
+```bash Reschedule a future launch
+curl --request PATCH \
+  --url "https://api.transatel.com/ocs/catalog/api/publications/COS-IOT-EU/TOPUP-DATA-500MB" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "productFactoryName": "my-product-factory",
+    "availability": {
+      "startDate": "2024-08-01T00:00:00Z"
+    }
+  }'
+```
+
+```text Response (200 OK)
+(empty body)
+```
+</CodeGroup>

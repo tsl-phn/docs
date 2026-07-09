@@ -1,0 +1,116 @@
+---
+title: "Check API Endpoint Eligibility"
+sidebarTitle: "Eligibility"
+description: "Send an HTTP OPTIONS request to any Transatel API endpoint to discover which methods your credentials are authorized to use."
+---
+
+Not every set of credentials has access to every HTTP method on every Transatel endpoint. Your account's OAuth scopes determine which operations you're permitted to perform, and those permissions can vary by resource and by the specific client credentials you've been issued. Before building an integration against an endpoint you haven't used before, you can query it with an HTTP `OPTIONS` request to see exactly which methods are available to you — without triggering any side effects.
+
+## What eligibility means
+
+When Transatel says an endpoint is *eligible* for a given method, it means your current credentials (and the scopes they carry) are authorized to call that method on that resource. An endpoint you can `GET` from might not accept `POST` or `DELETE` from the same credentials. The `OPTIONS` response makes this visible upfront, so you can detect permission gaps before they cause runtime errors in your integration.
+
+<Note>
+  Eligibility reflects your account's configured scopes, not a global platform constraint. If you need additional methods enabled, contact your **Transatel account manager**.
+</Note>
+
+## How to check eligibility
+
+Send an `OPTIONS` request to any Transatel API URL using your Bearer token. The response includes an `Allow` header that lists every HTTP method your credentials can invoke on that resource.
+
+<Steps>
+  <Step title="Send an OPTIONS request">
+    Use the same `Authorization: Bearer` header you use for regular API calls. The URL is the same endpoint you want to check.
+
+    <CodeGroup>
+      ```bash cURL
+      curl --request OPTIONS \
+        --url https://api.transatel.com/connectivity-management/subscribers \
+        --header "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+        --include
+      ```
+
+      ```python Python
+      import requests
+
+      access_token = "YOUR_ACCESS_TOKEN"
+
+      response = requests.options(
+          "https://api.transatel.com/connectivity-management/subscribers",
+          headers={"Authorization": f"Bearer {access_token}"},
+      )
+
+      allowed_methods = response.headers.get("Allow", "")
+      print("Allowed methods:", allowed_methods)
+      ```
+
+      ```javascript JavaScript
+      const accessToken = "YOUR_ACCESS_TOKEN";
+
+      const response = await fetch(
+        "https://api.transatel.com/connectivity-management/subscribers",
+        {
+          method: "OPTIONS",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const allowedMethods = response.headers.get("Allow");
+      console.log("Allowed methods:", allowedMethods);
+      ```
+    </CodeGroup>
+  </Step>
+
+  <Step title="Read the Allow header">
+    A successful `OPTIONS` response returns `200 OK` with an `Allow` header listing the permitted methods as a comma-separated string:
+
+    ```http
+    HTTP/1.1 200 OK
+    Allow: GET, POST, OPTIONS
+    Content-Length: 0
+    ```
+
+    In this example, your credentials can call `GET` and `POST` on the `/connectivity-management/subscribers` endpoint. `OPTIONS` itself is always listed because you just used it.
+  </Step>
+
+  <Step title="Interpret the result">
+    Compare the methods in `Allow` against the method you intend to call:
+
+    - **Method is listed** → your credentials are authorized; proceed with your integration.
+    - **Method is absent** → your credentials lack the required scope for that operation. See the section below on what to do next.
+  </Step>
+</Steps>
+
+## Practical example: checking before you call
+
+Suppose you want to send an on-net SMS but aren't sure whether your credentials have write access. Check the SMS endpoint first:
+
+```bash
+curl --request OPTIONS \
+  --url https://api.transatel.com/network/sms \
+  --header "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  --include
+```
+
+If the response includes `POST` in the `Allow` header, you're clear to proceed. If it only shows `GET, OPTIONS`, you need the `NETWORK-SMS_SMS_WRITE` scope before your `POST` will succeed.
+
+<Tip>
+  Build eligibility checks into your integration's startup routine. At initialization, call `OPTIONS` on each endpoint your application depends on, and fail fast with a descriptive error if a required method is missing — rather than discovering the problem at runtime.
+</Tip>
+
+## Handling 403 errors
+
+If an actual API call (not `OPTIONS`) returns `403 Forbidden`, it means your token does not carry the scope required for that operation. This is different from `401 Unauthorized`, which indicates an invalid or expired token.
+
+<Warning>
+  A `403 Forbidden` response means your credentials are valid but lack the necessary scope. Retrying the request will not help. Contact your **Transatel account manager** to have the required scope added to your client credentials.
+</Warning>
+
+The table below summarizes the two authorization-related errors you may encounter:
+
+| HTTP status | Meaning | Action |
+|---|---|---|
+| `401 Unauthorized` | Token is missing, invalid, or expired | Re-authenticate using the [Authentication](/authentication) flow |
+| `403 Forbidden` | Token is valid but lacks the required scope | Contact your Transatel account manager |

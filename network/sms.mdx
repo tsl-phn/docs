@@ -1,0 +1,215 @@
+---
+title: "Send and Retrieve SMS Messages"
+sidebarTitle: "SMS"
+description: "Send text and binary SMS messages to subscribers, request delivery reports, and search your SMS message history."
+---
+
+The Network SMS API lets you send Mobile-Terminated (MT) messages to your subscribers and retrieve both inbound (MO) and outbound (MT) message records with rich filtering. You can request delivery reports (DLRs) per message, set a validity period, and use a pre-approved short code or MSISDN as the displayed sender. All requests require a Bearer token; the specific scope required varies by operation.
+
+## On-net vs. off-net SMS
+
+Transatel distinguishes between two SMS delivery paths:
+
+| Path | Meaning | Required scope |
+|------|---------|----------------|
+| **On-net** | The destination MSISDN belongs to your Transatel subscriber base | `NETWORK-SMS_SMS_WRITE` |
+| **Off-net** | The destination MSISDN is on an external network | `NETWORK-SMS_SMS_WRITE_OFF-NET` |
+
+The API determines on-net or off-net routing automatically based on the `to` number. The response includes a `network` field (`on-net` or `off-net`) confirming which path was used. To send to any external destination, your token must carry the `NETWORK-SMS_SMS_WRITE_OFF-NET` scope.
+
+<Note>
+  The `from` field must be a **whitelisted originator** — a short code or MSISDN pre-approved on your account. Submitting an unrecognized originator returns a `400 INVALID_ORIGINATOR` error. Contact Transatel support to add new originators to your whitelist.
+</Note>
+
+## Send an SMS
+
+`POST /api/sms` creates a new outbound message. The body must be JSON.
+
+**Required scope:** `NETWORK-SMS_SMS_WRITE` (add `NETWORK-SMS_SMS_WRITE_OFF-NET` for external destinations)
+
+### Request fields
+
+<ParamField body="mvnoRef" type="string" required>
+  Your MVNO account name.
+</ParamField>
+
+<ParamField body="from" type="string" required>
+  Whitelisted short code or MSISDN to display as the sender.
+</ParamField>
+
+<ParamField body="to" type="string" required>
+  Destination MSISDN in E.164 format (no `+` prefix), e.g. `33612345678`.
+</ParamField>
+
+<ParamField body="type" type="string">
+  Message encoding: `text` (default) or `binary`.
+</ParamField>
+
+<ParamField body="text" type="string">
+  Message content when `type` is `text`.
+</ParamField>
+
+<ParamField body="binary" type="string">
+  Hex-encoded message content when `type` is `binary`.
+</ParamField>
+
+<ParamField body="dlr" type="boolean">
+  Set to `true` to request a delivery report. DLR events are delivered via webhook — see the Events section.
+</ParamField>
+
+<ParamField body="validityPeriod" type="integer">
+  How long (in minutes) the message center should attempt delivery. Range: `5`–`2880` (48 hours). Defaults to `2880`.
+</ParamField>
+
+<ParamField body="externalReference" type="string">
+  Your own reference string, returned in search results and DLR events for correlation.
+</ParamField>
+
+<CodeGroup>
+```bash Text SMS with DLR
+curl -X POST \
+  "https://api.transatel.com/network/sms/api/sms" \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mvnoRef": "my-mvno",
+    "from": "123456",
+    "to": "33612345678",
+    "type": "text",
+    "text": "Hello from Transatel!",
+    "dlr": true,
+    "externalReference": "RX12345ZVGT",
+    "validityPeriod": 2880
+  }'
+```
+
+```bash Binary SMS
+curl -X POST \
+  "https://api.transatel.com/network/sms/api/sms" \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mvnoRef": "my-mvno",
+    "from": "123456",
+    "to": "33612345678",
+    "type": "binary",
+    "binary": "48656c6c6f20576f726c64",
+    "dlr": false,
+    "validityPeriod": 60
+  }'
+```
+</CodeGroup>
+
+### Response (201 Created)
+
+```json
+{
+  "messageId": "550e8400-e29b-41d4-a716-446655440000",
+  "creationDate": "2024-06-15T10:23:45Z",
+  "direction": "MT",
+  "encoding": "GSM7",
+  "segments": 1,
+  "network": "on-net"
+}
+```
+
+The `messageId` UUID is your handle for fetching the message status later. `segments` reflects how many SMS segments were required for the content.
+
+## Retrieve a message by ID
+
+To look up a specific message, pass its UUID to `GET /api/sms/{messageId}`.
+
+**Required scope:** `NETWORK-SMS_SMS_READ`
+
+```bash
+curl -X GET \
+  "https://api.transatel.com/network/sms/api/sms/550e8400-e29b-41d4-a716-446655440000" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+If the message does not exist, the API returns `404 MESSAGE_NOT_FOUND`.
+
+## Search messages
+
+`GET /api/sms` returns a paginated list of messages matching your filters. You can combine multiple criteria — for example, all undelivered MT messages sent to a specific MSISDN in the last 24 hours.
+
+**Required scope:** `NETWORK-SMS_SMS_READ`
+
+### Filter operators
+
+Most string and date fields support filter operators appended with a colon:
+
+| Operator | Meaning | Example |
+|----------|---------|---------|
+| `eq` | Equal (default) | `direction=MT` |
+| `neq` | Not equal | `dlrStatus=neq:error` |
+| `gt` / `gte` | Greater than / or equal | `creationDate=gte:2024-06-01T00:00:00Z` |
+| `lt` / `lte` | Less than / or equal | `creationDate=lte:2024-06-30T23:59:59Z` |
+| `in` | Matches any value in a comma-separated list | `network=in:on-net,off-net` |
+| `notin` | Excludes values in a list | `dlrStatus=notin:delivered,expired` |
+
+<CodeGroup>
+```bash Undelivered MT messages today
+curl -X GET \
+  "https://api.transatel.com/network/sms/api/sms?direction=MT&dlrStatus=neq:delivered&creationDate=gte:2024-06-15T00:00:00Z&page=1&size=50&sort=-creationDate" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+```bash Inbound (MO) messages from a number
+curl -X GET \
+  "https://api.transatel.com/network/sms/api/sms?direction=MO&from=33612345678&page=1&size=20" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+```bash Search by external reference
+curl -X GET \
+  "https://api.transatel.com/network/sms/api/sms?externalReference=RX12345ZVGT" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+</CodeGroup>
+
+### Available query parameters
+
+<Accordion title="Full list of search parameters">
+
+| Parameter | Description |
+|-----------|-------------|
+| `mvnoRef` | Filter by MVNO account |
+| `creationDate` | Supports `gt`, `gte`, `lt`, `lte` operators |
+| `from` | Sender number |
+| `to` | Recipient number |
+| `network` | `on-net` or `off-net` |
+| `direction` | `MO` (inbound) or `MT` (outbound) |
+| `dlrStatus` | `delivered`, `expired`, `deleted`, `error` |
+| `externalReference` | Your custom reference |
+| `page` | Page number |
+| `size` | Results per page |
+| `sort` | Sort field, prefix with `-` for descending |
+
+</Accordion>
+
+## Delivery report statuses
+
+When you send a message with `dlr: true`, the final delivery status is one of:
+
+| Status | Meaning |
+|--------|---------|
+| `delivered` | Message was successfully delivered to the handset |
+| `expired` | Validity period elapsed before delivery |
+| `deleted` | Message was deleted from the message center |
+| `error` | Delivery failed for a network or handset reason |
+
+DLR events are pushed to your configured webhook endpoint. Refer to the **Events** section of this documentation for webhook setup and payload format.
+
+## Inbound SMS (MO)
+
+When a subscriber sends an SMS to one of your short codes, Transatel generates an inbound (MO direction) message record. You can query these through `GET /api/sms` with `direction=MO`, and you receive them in real time via webhook. See the Events documentation for the MO webhook payload.
+
+## Error reference
+
+| HTTP status | Error code | Description |
+|-------------|-----------|-------------|
+| `400` | `BAD_REQUEST` | Missing or malformed request body |
+| `400` | `INVALID_ORIGINATOR` | The `from` value is not on your whitelist |
+| `404` | `MESSAGE_NOT_FOUND` | No message found for the given `messageId` |
+| `500` | `INTERNAL_ERROR` | Unexpected server-side error |

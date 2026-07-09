@@ -1,0 +1,221 @@
+---
+title: "IoT Subscriber Lifecycle: Test Mode and Tariff Holiday"
+sidebarTitle: "IoT Lifecycle"
+description: "Manage IoT-specific subscriber states including test mode exit and tariff holiday scheduling, cancellation, and early exit."
+---
+
+IoT deployments have lifecycle requirements that differ from consumer mobile subscriptions. A SIM destined for an IoT device often needs to be validated before it enters live service, and once deployed, the device may sit idle for extended periods where paying for active connectivity makes no sense. Transatel's Connectivity Management API provides two IoT-specific lifecycle states — **test mode** and **tariff holiday** — to handle both of these scenarios. This page explains what each state means, when to use it, and how to move a subscriber into and out of each state via the API.
+
+<Note>
+Test mode exit and tariff holiday transitions are asynchronous. Each operation returns a `transactionId`; poll `GET /api/transactions/{transactionId}` or use [webhook events](/events/connectivity-events) to confirm completion.
+</Note>
+
+---
+
+## Test Mode
+
+### What is test mode?
+
+When an IoT SIM is first provisioned on the Transatel platform, it enters **test mode** (`TestMode` status) automatically. In test mode the SIM has limited, controlled connectivity — enough to verify that the hardware is working and that the SIM can register on the network, but the subscriber is not yet billed on a production rate plan and is not considered a live subscriber.
+
+Test mode is intentional: it gives you a safe environment to validate device firmware, confirm network registration, and run integration checks before committing the SIM to a paid rate plan and full service.
+
+### Exit test mode
+
+When you are satisfied that the device is working correctly, call the exit test mode endpoint to move the subscriber out of `TestMode` and into production. You choose the target status — either `Active` for immediate live service, or `Tariff_Holiday` if you want to place the subscriber into a cost-saving rest period first.
+
+```bash Exit test mode → Active
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/test-mode/exit" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "status": "Active",
+    "group": "IoT-Fleet-A",
+    "serviceProfile": "default_data"
+  }'
+```
+
+```bash Exit test mode → Tariff_Holiday
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/test-mode/exit" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "status": "Tariff_Holiday",
+    "group": "IoT-Fleet-A",
+    "serviceProfile": "default_data"
+  }'
+```
+
+<ParamField body="ratePlan" type="string" required>
+  The production rate plan to assign when the SIM exits test mode.
+</ParamField>
+<ParamField body="status" type="string" required>
+  Target status: `Active` for immediate live service, or `Tariff_Holiday` to enter a rest period.
+</ParamField>
+<ParamField body="group" type="string">
+  The subscriber group to assign this SIM to for fleet management purposes.
+</ParamField>
+<ParamField body="serviceProfile" type="string">
+  The service profile to apply (e.g. `default_data`). Required when moving to `Active`.
+</ParamField>
+
+<Tip>
+If you are bulk-deploying a fleet and devices won't go live immediately, exiting test mode directly into `Tariff_Holiday` avoids billing charges during the storage or distribution period.
+</Tip>
+
+---
+
+## Tariff Holiday
+
+### What is a tariff holiday?
+
+A **tariff holiday** is a scheduled suspension of connectivity service for an IoT subscriber during a billing period in which the device will not be used. Unlike a standard [suspend](/connectivity/subscribers#suspend-a-subscriber), a tariff holiday is a first-class IoT lifecycle state designed for predictable, periodic idle periods — for example, seasonal devices, devices awaiting deployment, or equipment undergoing maintenance.
+
+During a tariff holiday:
+- The subscriber's status is `Tariff_Holiday`.
+- The SIM does not consume data or voice allowances.
+- Billing charges associated with active service are reduced or eliminated for that billing period (subject to your rate plan terms).
+- The holiday reduces the `holidayRemainingDays` counter on the subscriber record; you can check how many holiday days remain with a `GET` subscriber call.
+
+A tariff holiday is **scheduled** for the next billing cycle — it does not take effect immediately. Once entered, you can exit early at any time to resume normal service.
+
+### Schedule a tariff holiday
+
+Scheduling a tariff holiday queues the subscriber to enter `Tariff_Holiday` status at the start of the next billing period.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/tariff-holiday/schedule" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1"
+  }'
+```
+
+<ParamField body="ratePlan" type="string" required>
+  The subscriber's current rate plan.
+</ParamField>
+
+After a successful call, the `GET` subscriber response will show `holidayScheduled: true`. The subscriber's status remains `Active` until the billing period rolls over, at which point the platform automatically transitions it to `Tariff_Holiday`.
+
+### Cancel a scheduled tariff holiday
+
+If you change your mind before the billing period ends, cancel the scheduled holiday to prevent the transition.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/tariff-holiday/schedule/cancel" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{}'
+```
+
+<Note>
+You can only cancel a tariff holiday **before** the billing period transition occurs. Once the subscriber has entered `Tariff_Holiday` status, use the exit endpoint instead.
+</Note>
+
+After a successful cancellation, `holidayScheduled` returns to `false` and the subscriber continues in its current state.
+
+### Exit a tariff holiday early
+
+If a device needs to come back into service before the tariff holiday period is due to end naturally, call the exit endpoint. You can return the subscriber to `Active` using either a service profile or an explicit options list.
+
+<CodeGroup>
+```bash Exit holiday → Active with serviceProfile
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/tariff-holiday/exit" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "serviceProfile": "default_data"
+  }'
+```
+
+```bash Exit holiday → Active with options
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8944133012341234567/tariff-holiday/exit" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "options": [
+      { "name": "M2M_TSL_BAR_DATA", "value": "off" }
+    ]
+  }'
+```
+</CodeGroup>
+
+<ParamField body="ratePlan" type="string" required>
+  The rate plan to apply when the subscriber returns to `Active`.
+</ParamField>
+<ParamField body="serviceProfile" type="string">
+  Service profile to apply. Use this **or** `options`, not both.
+</ParamField>
+<ParamField body="options" type="array">
+  List of option objects (`name`, `value`) to apply. Use this **or** `serviceProfile`, not both.
+</ParamField>
+
+<Warning>
+Exiting a tariff holiday early may affect billing for the current period. Check your rate plan documentation or contact your Transatel account manager if you are unsure how early exit is charged.
+</Warning>
+
+---
+
+## IoT Lifecycle State Diagram
+
+The diagram below shows how test mode and tariff holiday fit into the full subscriber lifecycle.
+
+| From status | Operation | To status |
+|-------------|-----------|-----------|
+| `TestMode` | Exit test mode (`status: Active`) | `Active` |
+| `TestMode` | Exit test mode (`status: Tariff_Holiday`) | `Tariff_Holiday` |
+| `Active` | Schedule tariff holiday (next billing cycle) | `Tariff_Holiday` (deferred) |
+| `Active` | Suspend | `Suspended` |
+| `Tariff_Holiday` | Exit tariff holiday early | `Active` |
+| `Suspended` | Reactivate | `Active` |
+| `Active` | Terminate | `Terminated` |
+
+---
+
+## Webhook Events for IoT Transitions
+
+The platform pushes webhook events whenever a subscriber transitions into or out of an IoT-specific state. Configure your webhook endpoint in the [Events & Webhooks](/events/overview) section to receive these notifications without polling.
+
+| Event | Triggered when |
+|-------|---------------|
+| `SUBSCRIBER_TEST_MODE_EXITED` | A subscriber successfully exits test mode |
+| `SUBSCRIBER_TARIFF_HOLIDAY_ENTERED` | A subscriber enters tariff holiday status at the start of a billing period |
+| `SUBSCRIBER_TARIFF_HOLIDAY_EXITED` | A subscriber exits tariff holiday (early exit or natural end) |
+
+<Tip>
+Using webhook events instead of polling is strongly recommended for fleet deployments where many SIM cards may transition simultaneously. See [Connectivity Events](/events/connectivity-events) for the full event schema.
+</Tip>
+
+---
+
+## Summary: IoT Lifecycle Operations
+
+<CardGroup cols={2}>
+  <Card title="Exit Test Mode" icon="flask-round-potion">
+    Move a validated IoT SIM from `TestMode` to `Active` or `Tariff_Holiday`.
+    `POST /api/subscribers/sim-serial/{sim-serial}/test-mode/exit`
+  </Card>
+  <Card title="Schedule Tariff Holiday" icon="calendar">
+    Queue a subscriber to enter `Tariff_Holiday` at the next billing period.
+    `POST /api/subscribers/sim-serial/{sim-serial}/tariff-holiday/schedule`
+  </Card>
+  <Card title="Cancel Scheduled Holiday" icon="calendar-xmark">
+    Prevent a pending tariff holiday from taking effect.
+    `POST /api/subscribers/sim-serial/{sim-serial}/tariff-holiday/schedule/cancel`
+  </Card>
+  <Card title="Exit Tariff Holiday" icon="circle-play">
+    Return a subscriber from `Tariff_Holiday` to `Active` before the period ends.
+    `POST /api/subscribers/sim-serial/{sim-serial}/tariff-holiday/exit`
+  </Card>
+</CardGroup>

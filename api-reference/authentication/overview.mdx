@@ -1,0 +1,52 @@
+---
+title: "Authentication API Reference"
+sidebarTitle: "Overview"
+description: "Reference for the Transatel Authentication API. Exchange client credentials for OAuth 2.0 Bearer tokens to access all platform APIs."
+---
+
+The Transatel Authentication API issues short-lived OAuth 2.0 Bearer tokens that authorize every call you make to the platform. Before calling any Transatel API, you exchange your `client_id` and `client_secret` for an `access_token` using the standard `client_credentials` grant flow. All subsequent requests must carry that token in an `Authorization: Bearer <token>` header.
+
+## Base URL
+
+```
+https://api.transatel.com/authentication
+```
+
+## Available endpoint
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | [`/api/token`](/api-reference/authentication/token) | Exchange client credentials for a Bearer token |
+
+<Note>
+  All requests to the Authentication API must be made over HTTPS. Plain HTTP connections are rejected.
+</Note>
+
+## Error codes
+
+Every error response from the Authentication API shares the same JSON shape:
+
+```json
+{
+  "error": "invalid_client",
+  "error_description": "Bad credentials",
+  "error_uri": "https://api.transatel.com/authentication/docs/index.html#errors/invalid_client"
+}
+```
+
+The table below lists every error code you may receive, together with the HTTP status and the most likely cause.
+
+| HTTP status | `error` | Cause |
+|-------------|---------|-------|
+| `400` | `unsupported_grant_type` | The `grant_type` value in the request body is not `client_credentials`. |
+| `400` | `invalid_request` | The `Content-Type` header is wrong, the `grant_type` field is missing from the body, or the `Authorization` header is absent or malformed. |
+| `401` | `invalid_client` | The `client_id` or `client_secret` encoded in the `Authorization` header is incorrect. |
+| `500` | `server_error` | An unexpected platform-side issue occurred. Retry with exponential back-off and contact support if it persists. |
+
+<Warning>
+  A `401 invalid_client` response does **not** lock your account, but repeated failures may be flagged by platform security monitoring. Double-check your credentials before retrying.
+</Warning>
+
+## Next steps
+
+Head to the [POST /api/token](/api-reference/authentication/token) page for the full endpoint reference, copy-pasteable code examples, and guidance on token lifetime and refresh strategy.

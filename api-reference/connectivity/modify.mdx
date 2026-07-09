@@ -1,0 +1,155 @@
+---
+title: "POST /modify — Modify a Subscriber"
+sidebarTitle: "Modify"
+description: "POST to /api/subscribers/sim-serial/{sim-serial}/modify to update a subscriber's rate plan, service options, group, or metadata."
+---
+
+The modify endpoint lets you update an active subscriber's configuration without interrupting their service. You can change the rate plan, toggle individual service options, reassign the subscriber to a different group, or update custom metadata. Like activation, the request body supports two mutually exclusive variants: a **service-profile** approach where a named profile replaces the current configuration, and a **rate-plan with options** approach for granular control. The operation is asynchronous and returns a `transactionId` to poll for the outcome.
+
+## Endpoint
+
+```
+POST /api/subscribers/sim-serial/{sim-serial}/modify
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+## Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match the pattern `[0-9]{13,20}`.
+</ParamField>
+
+## Request Body
+
+<Note>
+  `serviceProfile` and `options` are mutually exclusive. Providing both in the same request returns a `400 BAD_REQUEST` error.
+</Note>
+
+### Shared Fields (both variants)
+
+<ParamField body="ratePlan" type="string">
+  The new rate plan to assign. Maximum 50 characters. Required when using the options variant; optional when using the service-profile variant.
+</ParamField>
+
+<ParamField body="externalReference" type="string">
+  Your reference identifier for this modification event. Stored on the transaction record for audit and correlation.
+</ParamField>
+
+<ParamField body="group" type="string">
+  Reassign the subscriber to a different logical group.
+</ParamField>
+
+<ParamField body="subscriberCountryOfResidence" type="string">
+  Update the subscriber's country of residence. ISO 3166-1 alpha-2 (e.g. `DE`, `ES`, `NL`).
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Replace the subscriber's metadata map with the provided key-value pairs. Supports up to 10 string entries. Omitting this field leaves existing metadata unchanged.
+</ParamField>
+
+### Variant A — Service Profile
+
+<ParamField body="serviceProfile" type="string" required>
+  The name of a pre-configured service profile to apply. Replaces the current rate plan and all option overrides. Mutually exclusive with `options`.
+</ParamField>
+
+### Variant B — Rate Plan with Options
+
+<ParamField body="ratePlan" type="string" required>
+  The rate plan identifier to switch to. Required in this variant.
+</ParamField>
+
+<ParamField body="options" type="array">
+  Service option overrides to apply on top of the new rate plan. Only the options you list are changed; unlisted options retain their current values.
+
+  <Expandable title="Option object">
+    <ParamField body="options[].name" type="string" required>
+      The service option name.
+    </ParamField>
+    <ParamField body="options[].value" type="string" required>
+      `on` to enable or `off` to disable the option.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response Fields
+
+Returns `HTTP 201 Created` with a `ProvisioningResponse` body.
+
+<ResponseField name="transactionId" type="string">
+  UUID identifying this modification operation. Poll `GET /api/transactions/{transactionId}` for the final result.
+</ResponseField>
+
+<ResponseField name="simSerial" type="string">
+  The SIM serial number, echoed from the path parameter.
+</ResponseField>
+
+<ResponseField name="transactionStatus" type="string">
+  Always `PENDING` on a successful 201 response.
+</ResponseField>
+
+## Request Examples
+
+<CodeGroup>
+
+```bash Service Profile Variant
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8933150000000012345/modify" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "serviceProfile": "IoT_Premium_Global",
+    "externalReference": "modify-event-00456",
+    "group": "fleet-global",
+    "metadata": {
+      "deviceId": "tracker-009",
+      "upgradeRef": "UPG-2024-012"
+    }
+  }'
+```
+
+```bash Rate Plan + Options Variant
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8933150000000012345/modify" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "DATA_500MB_MONTHLY",
+    "externalReference": "modify-event-00456",
+    "options": [
+      { "name": "DATA_ROAMING", "value": "on" },
+      { "name": "VOICE_MO", "value": "on" }
+    ],
+    "metadata": {
+      "deviceId": "tracker-009"
+    }
+  }'
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "transactionId": "d7e9a104-cc21-4b38-a012-ff340e887c53",
+  "simSerial": "8933150000000012345",
+  "transactionStatus": "PENDING"
+}
+```
+
+<Note>
+  Poll `GET /api/transactions/d7e9a104-cc21-4b38-a012-ff340e887c53` until `asyncStatus` is `DONE` or `ERROR`. See the [Transactions reference](/api-reference/connectivity/transactions) for full details.
+</Note>
+
+## Error Responses
+
+| HTTP Status | Code | Description |
+|---|---|---|
+| `400` | `BAD_REQUEST` | Missing required fields, invalid parameter values, or both `serviceProfile` and `options` provided |
+| `403` | `INSUFFICIENT_PERMISSION` | Token does not have the `CONNECTIVITY_MANAGEMENT_WRITE` scope |
+| `404` | `SUBSCRIBER_NOT_FOUND` | No subscriber found for the provided SIM serial number |
+| `409` | `CONFLICT` | Another provisioning request is already pending on this SIM |
+| `500` | `INTERNAL_ERROR` | An unexpected server-side error occurred |
+| `501` | `NOT_IMPLEMENTED` | The modification is not supported for this account configuration |

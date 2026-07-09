@@ -1,0 +1,308 @@
+---
+title: "Mobile Number Portability: FR, BE, and UK"
+sidebarTitle: "Portability"
+description: "Request, track, and cancel mobile number portability for French, Belgian, and UK subscribers. Covers PAC and STAC codes for UK."
+---
+
+Mobile Number Portability (MNP) lets your subscribers keep their existing phone number when switching networks. Transatel's Connectivity Management API automates the end-to-end portability process for three markets — France, Belgium, and the United Kingdom — each with its own regulatory requirements and request types. You can port a number in when activating a brand-new SIM, or initiate a port on an already-active subscriber. You can also retrieve portability status records and cancel in-progress requests if plans change.
+
+<Note>
+All portability write operations are asynchronous. The platform returns a `transactionId` immediately; poll `GET /api/transactions/{transactionId}` or use [webhook events](/events/connectivity-events) to track completion.
+</Note>
+
+---
+
+## France
+
+French MNP uses the **RIO** (Relevé d'Identité Opérateur) code as the subscriber's authorisation credential. You request the RIO from the donor operator, supply it when initiating the port, and the platform handles the rest.
+
+### Activate a new SIM with MNP (FR)
+
+Use this endpoint to activate a brand-new SIM and simultaneously initiate an inbound port from another French operator.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/fr/sim-serial/8944133012341234567/activate-request" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "serviceProfile": "default_data",
+    "portabilityMsisdn": "33612345678",
+    "rio": "ABC1234567",
+    "portabilityDate": "2025-09-15",
+    "group": "Group A1",
+    "subscriberCountryOfResidence": "FR"
+  }'
+```
+
+<ParamField body="ratePlan" type="string" required>
+  Rate plan to assign at activation.
+</ParamField>
+<ParamField body="serviceProfile" type="string" required>
+  Service profile to apply (e.g. `default_data`).
+</ParamField>
+<ParamField body="portabilityMsisdn" type="string" required>
+  The phone number being ported in (international format, no leading `+`).
+</ParamField>
+<ParamField body="rio" type="string" required>
+  The RIO code provided by the subscriber's current operator.
+</ParamField>
+<ParamField body="portabilityDate" type="string" required>
+  Requested portability date in `YYYY-MM-DD` format. Subject to operator cut-off windows.
+</ParamField>
+
+### Port an already-active subscriber (FR)
+
+If the subscriber is already active on your network and wants to port their number in from another operator, use the request endpoint instead.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/fr/sim-serial/8944133012341234567/request" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "portabilityMsisdn": "33612345678",
+    "rio": "ABC1234567",
+    "portabilityDate": "2025-09-15"
+  }'
+```
+
+### Retrieve the subscriber's RIO code (FR)
+
+If a subscriber wants to port **out** to another operator, they need their RIO code. Fetch it with:
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/fr/sim-serial/8944133012341234567/rio" \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+### Retrieve portability records (FR)
+
+Query portability records for your account. Filter by SIM serial, direction (`IN` or `OUT`), or MSISDN.
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/fr?simSerial=8944133012341234567&portabilityType=IN" \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+| Query parameter | Values | Description |
+|-----------------|--------|-------------|
+| `simSerial` | ICCID string | Filter to a specific SIM |
+| `portabilityType` | `IN` \| `OUT` | Direction of the port |
+| `portabilityMsisdn` | MSISDN string | Filter by the ported number |
+
+### Cancel a portability request (FR)
+
+You can cancel a portability request that is still in progress (i.e. the portability date has not yet passed).
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/fr/sim-serial/8944133012341234567/cancel" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1"
+  }'
+```
+
+---
+
+## Belgium
+
+Belgian MNP supports three request types that correspond to the subscriber's current contract type with the donor operator.
+
+| Request type | When to use |
+|--------------|-------------|
+| `PREPAID` | The subscriber has a prepaid SIM with the donor operator |
+| `POSTPAID_SIMPLE` | Postpaid contract — straightforward number ownership |
+| `POSTPAID_COMPLEX` | Postpaid contract — multiple numbers or shared plan; additional donor account details required |
+
+### Activate a new SIM with MNP (BE)
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/be/sim-serial/8944133012341234568/activate-request" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "serviceProfile": "default_data",
+    "portabilityMsisdn": "32477123456",
+    "requestType": "POSTPAID_SIMPLE",
+    "portabilityDate": "2025-09-20"
+  }'
+```
+
+<ParamField body="portabilityMsisdn" type="string" required>
+  The Belgian number being ported in.
+</ParamField>
+<ParamField body="requestType" type="string" required>
+  One of `PREPAID`, `POSTPAID_SIMPLE`, or `POSTPAID_COMPLEX`.
+</ParamField>
+<ParamField body="portabilityDate" type="string" required>
+  Requested portability date (`YYYY-MM-DD`).
+</ParamField>
+
+<Note>
+For `POSTPAID_COMPLEX` requests, additional donor account identifiers (such as `donorSimSerial` or `donorAccountNumber`) are required. Include these in the request body as directed by your Transatel account manager, as the exact fields depend on the donor operator.
+</Note>
+
+### Retrieve portability records (BE)
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/be?simSerial=8944133012341234568&portabilityType=IN" \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+---
+
+## United Kingdom
+
+UK MNP operates differently from France and Belgium. Ofcom regulations require the use of authorisation codes — either a **PAC** (Porting Authorisation Code) for standard in-bound ports, or a **STAC** (Service Termination Authorisation Code) for terminating a number without porting it out. The subscriber obtains a PAC or STAC from their current operator, then supplies it to you to complete the port.
+
+### PAC vs STAC
+
+| Code type | Purpose | Valid for |
+|-----------|---------|-----------|
+| `PAC` | Authorises porting the number to a new operator | 30 days from issue |
+| `STAC` | Authorises terminating the number (no port-out) | 30 days from issue |
+
+### Request a PAC or STAC code
+
+Ask the platform to generate a PAC or STAC code on behalf of a subscriber (for outbound ports or terminations).
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/sim-serial/8944133012341234569/PAC/request" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1"
+  }'
+```
+
+Replace `PAC` in the URL path with `STAC` to request a STAC code instead.
+
+### Port an active subscriber into your network (UK)
+
+Use this endpoint to initiate an inbound port for a subscriber who is already active and has supplied their PAC code from their current operator.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/sim-serial/8944133012341234569/request" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1",
+    "portabilityMsisdn": "447911123456",
+    "authorizationCode": {
+      "type": "PAC",
+      "code": "XYZ123456"
+    },
+    "portabilityDate": "2025-09-18"
+  }'
+```
+
+<ParamField body="portabilityMsisdn" type="string" required>
+  The UK number being ported in.
+</ParamField>
+<ParamField body="authorizationCode" type="object" required>
+  Object containing the code type and value.
+</ParamField>
+<ParamField body="authorizationCode.type" type="string" required>
+  `PAC` for inbound ports.
+</ParamField>
+<ParamField body="authorizationCode.code" type="string" required>
+  The PAC code obtained from the subscriber's current operator.
+</ParamField>
+<ParamField body="portabilityDate" type="string">
+  Requested portability date (`YYYY-MM-DD`). If omitted, the earliest available date is used.
+</ParamField>
+
+### Update the portability date (UK)
+
+If the originally requested date is no longer suitable, you can change it while the portability is still pending.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/sim-serial/8944133012341234569/portability-date/update" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "portabilityDate": "2025-09-25"
+  }'
+```
+
+### Cancel a portability request (UK)
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/sim-serial/8944133012341234569/cancel" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "M2MA_WW_TSL_PPU_1"
+  }'
+```
+
+### Cancel a PAC or STAC code (UK)
+
+If a PAC or STAC code was issued but is no longer needed, cancel it before it expires to prevent unwanted number ports.
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/sim-serial/8944133012341234569/PAC/XYZ123456/cancel" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{}'
+```
+
+### Early termination fees (UK)
+
+UK regulations allow operators to charge an early termination fee (ETF) when a subscriber ports out before the end of their contract. Use these endpoints to retrieve and update a subscriber's ETF.
+
+<CodeGroup>
+```bash Retrieve ETF
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/early-termination-fees/8944133012341234569" \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+```bash Set ETF
+curl --request PUT \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/early-termination-fees/8944133012341234569" \
+  --header "Authorization: Bearer $ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "amount": 25.00,
+    "currency": "GBP",
+    "reason": "Remaining contract term: 6 months"
+  }'
+```
+</CodeGroup>
+
+### Retrieve portability records (UK)
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk?simSerial=8944133012341234569&portabilityType=IN" \
+  --header "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+---
+
+## Common Portability Errors
+
+In addition to the [platform-wide error codes](/connectivity/overview#common-error-codes), portability operations may return the following:
+
+| Scenario | What to do |
+|----------|------------|
+| RIO / PAC / STAC code is invalid or expired | Ask the subscriber to request a new code from their current operator |
+| Portability date is in the past or too far in the future | Adjust the `portabilityDate` to a valid window |
+| A portability request is already in progress for this SIM | Cancel the existing request before submitting a new one (HTTP `409`) |
+| `NOT_IMPLEMENTED` on a BE or UK endpoint | Portability for that market is not enabled on your account — contact your Transatel account manager |

@@ -1,0 +1,363 @@
+---
+title: "Connectivity Management Webhook Events"
+sidebarTitle: "Connectivity Events"
+description: "Webhook events for subscriber lifecycle changes, IoT test mode and tariff holiday, and mobile number portability for FR, BE, and UK."
+---
+
+Connectivity Management events notify you whenever a subscriber's state changes on the Transatel platform. These cover the full lifecycle of a SIM — from pre-activation through termination — as well as IoT-specific states like test mode and tariff holidays, and mobile number portability workflows for France, Belgium, and the United Kingdom. All events follow the [standard event envelope](/events/overview#the-event-envelope) with a `header` and a `body`.
+
+## Subscriber lifecycle events
+
+The following events are fired when a subscriber's status or core attributes change. The `eventType` value in the header identifies which transition occurred.
+
+| `eventType` | Description |
+|-------------|-------------|
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/PREACTIVATED` | SIM has been pre-activated and is ready for final activation. |
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/ACTIVATED` | SIM activated and subscriber record created. |
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/MODIFIED` | Subscriber attributes (rate plan, options, etc.) have been modified. |
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/SIMCARD/SWAPPED` | The physical SIM card has been swapped to a new SIM serial. |
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/MSISDN/SWAPPED` | The subscriber's MSISDN has been swapped to a new number. |
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/SUSPENDED` | Subscriber has been suspended and service is paused. |
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/REACTIVATED` | Suspended subscriber has been reactivated and service restored. |
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/ROAMING/ALERT` | Subscriber has entered a roaming zone. UK accounts only. |
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/TERMINATED` | Subscriber has been terminated and the SIM decommissioned. |
+
+## IoT lifecycle events
+
+These events apply to IoT subscribers and reflect test mode and tariff holiday transitions.
+
+| `eventType` | Description |
+|-------------|-------------|
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/TEST_MODE/EXITED` | IoT subscriber has exited test mode and entered the live tariff. |
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/HOLIDAY/ENTERED` | IoT subscriber has entered a tariff holiday period. |
+| `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/HOLIDAY/EXITED` | IoT subscriber has exited a tariff holiday and resumed normal billing. |
+
+## Example: ACTIVATED event
+
+Below is a complete example of an `ACTIVATED` event, which is representative of the shape you will receive for most subscriber lifecycle events.
+
+```json
+{
+  "header": {
+    "eventId": "627e77fc-7694-4188-8f19-13ca3dbf8f51",
+    "eventType": "CONNECTIVITY-MANAGEMENT/SUBSCRIBER/ACTIVATED",
+    "eventDate": "2023-05-19T13:30:00Z"
+  },
+  "body": {
+    "transactionId": "139311f7-63c0-4f51-adeb-3c5e36a5e746",
+    "mvnoRef": "<Customer account name>",
+    "msisdn": "33601234567",
+    "simSerial": "8933220000123456789",
+    "subscriberNumber": "12345678.00000001",
+    "primaryImsi": "208220123456789",
+    "group": "Group A1",
+    "groupReference": "7ef2ed3d-7469-4581-aa35-336f506e6aed",
+    "source": "api",
+    "externalReference": "RX12345ZVGT",
+    "ratePlan": "<Rate plan reference>",
+    "status": "Active",
+    "statusDate": "2023-05-19T13:30:00Z",
+    "activationDate": "2023-05-19T13:30:00Z",
+    "options": [
+      {
+        "name": "TSL_DATA",
+        "value": "on",
+        "activationDate": "2023-05-19"
+      }
+    ]
+  }
+}
+```
+
+## Body fields
+
+The following fields appear in the `body` of subscriber lifecycle and IoT events. Not every field is present in every event — availability depends on the event type as noted.
+
+<ResponseField name="mvnoRef" type="string" required>
+  Your customer account name on the Transatel platform.
+</ResponseField>
+
+<ResponseField name="msisdn" type="string" required>
+  The subscriber's mobile phone number in E.164 format, without the leading `+`.
+</ResponseField>
+
+<ResponseField name="simSerial" type="string" required>
+  The ICCID (Integrated Circuit Card Identifier) of the SIM card.
+</ResponseField>
+
+<ResponseField name="subscriberNumber" type="string" required>
+  Transatel's internal unique identifier for the subscriber, in `accountId.subscriberId` format.
+</ResponseField>
+
+<ResponseField name="primaryImsi" type="string" required>
+  The primary IMSI (International Mobile Subscriber Identity) assigned to the SIM.
+</ResponseField>
+
+<ResponseField name="group" type="string">
+  Human-readable name of the subscriber group this SIM belongs to.
+</ResponseField>
+
+<ResponseField name="groupReference" type="UUID">
+  Unique identifier of the subscriber group.
+</ResponseField>
+
+<ResponseField name="source" type="string" required>
+  What triggered the event. One of:
+
+  | Value | Meaning |
+  |-------|---------|
+  | `api` | Triggered by an API call. |
+  | `webtool` | Triggered via the Transatel web portal. |
+  | `ftp` | Triggered by a bulk file upload over FTP. |
+  | `system` | Triggered automatically by the Transatel platform. |
+</ResponseField>
+
+<ResponseField name="externalReference" type="string">
+  Your own reference identifier for this subscriber, if one was set.
+</ResponseField>
+
+<ResponseField name="ratePlan" type="string" required>
+  The reference identifier of the rate plan currently assigned to the subscriber.
+</ResponseField>
+
+<ResponseField name="status" type="string" required>
+  The subscriber's current status after the event (e.g. `Active`, `Suspended`, `Terminated`).
+</ResponseField>
+
+<ResponseField name="statusDate" type="ISO 8601" required>
+  UTC timestamp of when the status was last changed.
+</ResponseField>
+
+<ResponseField name="activationDate" type="ISO 8601">
+  UTC timestamp of when the subscriber was first activated. Present on `ACTIVATED`, `MODIFIED`, `SIMCARD/SWAPPED`, `MSISDN/SWAPPED`, `REACTIVATED`, and IoT events.
+</ResponseField>
+
+<ResponseField name="terminationDate" type="ISO 8601">
+  UTC timestamp of when the subscriber was terminated. Present on `TERMINATED` events only.
+</ResponseField>
+
+<ResponseField name="options" type="array">
+  List of service options currently assigned to the subscriber.
+
+  <Expandable title="Option object fields">
+    <ResponseField name="name" type="string">
+      The option identifier (e.g. `TSL_DATA`).
+    </ResponseField>
+    <ResponseField name="value" type="string">
+      Current state of the option: `on` or `off`.
+    </ResponseField>
+    <ResponseField name="activationDate" type="date">
+      Date the option was activated (`YYYY-MM-DD`).
+    </ResponseField>
+    <ResponseField name="inactivationDate" type="date">
+      Date the option was or will be deactivated (`YYYY-MM-DD`). Omitted if still active.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="endCommitmentDate" type="date">
+  The date the subscriber's minimum commitment period ends. Present on IoT subscriber events.
+</ResponseField>
+
+<ResponseField name="holidayRemainingDays" type="integer">
+  Number of remaining tariff holiday days. Present on `HOLIDAY/ENTERED` and `HOLIDAY/EXITED` events.
+</ResponseField>
+
+<ResponseField name="transactionId" type="UUID">
+  The API transaction ID that triggered this event. Only present when `source` is `api`.
+</ResponseField>
+
+## Roaming alert body (UK only)
+
+The `CONNECTIVITY-MANAGEMENT/SUBSCRIBER/ROAMING/ALERT` event is sent when a UK subscriber's device attaches to a foreign network. Its body differs from the standard lifecycle body.
+
+```json
+{
+  "header": {
+    "eventId": "a1b2c3d4-0000-0000-0000-111122223333",
+    "eventType": "CONNECTIVITY-MANAGEMENT/SUBSCRIBER/ROAMING/ALERT",
+    "eventDate": "2023-06-01T09:15:00Z"
+  },
+  "body": {
+    "mvnoRef": "<Customer account name>",
+    "msisdn": "447700900123",
+    "simSerial": "8944200000987654321",
+    "subscriberNumber": "12345678.00000002",
+    "primaryImsi": "234300123456789",
+    "source": "system",
+    "mcc": "262",
+    "mnc": "01",
+    "country": "DEU",
+    "attachDate": "2023-06-01T09:14:55Z"
+  }
+}
+```
+
+<ResponseField name="mcc" type="string">
+  Mobile Country Code of the visited network.
+</ResponseField>
+
+<ResponseField name="mnc" type="string">
+  Mobile Network Code of the visited network.
+</ResponseField>
+
+<ResponseField name="country" type="string">
+  ISO 3166-1 alpha-3 country code of the roaming country (e.g. `DEU` for Germany).
+</ResponseField>
+
+<ResponseField name="attachDate" type="ISO 8601">
+  UTC timestamp of when the device attached to the foreign network.
+</ResponseField>
+
+<Note>
+  For roaming alerts, `source` is always `system`. The standard lifecycle body fields such as `ratePlan`, `options`, and `transactionId` are not included.
+</Note>
+
+## Portability events
+
+Mobile number portability (MNP) events notify you of progress through the port-in and port-out workflows. The available events differ by country. Expand a country below to see its full event list.
+
+<Accordion title="France portability events">
+
+France portability events use the `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/` prefix.
+
+### Port-in
+
+| `eventType` | Description |
+|-------------|-------------|
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/PORT_IN/ELIGIBILITY_OK` | Port-in request accepted by the EGP (porting gateway). |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/PORT_IN/GOP` | GO portability signal received — porting is confirmed to proceed. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/PORT_IN/DONE` | Port-in completed successfully; the number is now on the Transatel network. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/PORT_IN/CANCELED` | Port-in request was canceled before completion. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/PORT_IN/ELIGIBILITY_KO` | Port-in request rejected (eligibility check failed). |
+
+### Port-out
+
+| `eventType` | Description |
+|-------------|-------------|
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/PORT_OUT/ELIGIBILITY_OK` | Port-out request accepted. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/PORT_OUT/GOP` | Port-out GO signal received — the number will leave the Transatel network. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/PORT_OUT/DONE` | Port-out completed; the number has moved to the new operator. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/PORT_OUT/CANCELED` | Port-out request was canceled. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/FR/PORT_OUT/ELIGIBILITY_KO` | Port-out request rejected. |
+
+### Body fields specific to FR portability
+
+The body includes the standard subscriber identifiers (`mvnoRef`, `msisdn`, `simSerial`, `subscriberNumber`, `primaryImsi`) plus:
+
+<ResponseField name="portabilityStatus" type="string">
+  The current status of the portability request (mirrors the event type stage).
+</ResponseField>
+
+<ResponseField name="portabilityDate" type="ISO 8601">
+  The scheduled or actual date/time of the port.
+</ResponseField>
+
+<ResponseField name="rio" type="string">
+  The RIO (Relevé d'Identité Opérateur) code associated with the portability request.
+</ResponseField>
+
+<ResponseField name="dno" type="string">
+  Donor network operator code (the operator losing the number).
+</ResponseField>
+
+<ResponseField name="rno" type="string">
+  Recipient network operator code (the operator gaining the number).
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Belgium portability events">
+
+Belgium portability events use the `CONNECTIVITY-MANAGEMENT/PORTABILITY/BE/` prefix.
+
+| `eventType` | Description |
+|-------------|-------------|
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/BE/PORT_IN/DONE` | BE port-in completed; the number is now on the Transatel network. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/BE/PORT_IN/REJECTED` | BE port-in request was rejected. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/BE/PORT_OUT/DONE` | BE port-out completed; the number has moved to the new operator. |
+
+### Body fields specific to BE portability
+
+The body includes the standard subscriber identifiers plus:
+
+<ResponseField name="portabilityStatus" type="string">
+  The current status of the portability request.
+</ResponseField>
+
+<ResponseField name="portabilityDate" type="ISO 8601">
+  The scheduled or actual date/time of the port.
+</ResponseField>
+
+<ResponseField name="dno" type="string">
+  Donor network operator code.
+</ResponseField>
+
+<ResponseField name="rno" type="string">
+  Recipient network operator code.
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="UK portability events">
+
+UK portability events use the `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/` prefix and cover both PAC-based port transfers and STAC-based switch transfers.
+
+### Port-in (PAC)
+
+| `eventType` | Description |
+|-------------|-------------|
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/PORT_IN/ATTACH/REQUESTED` | PAC submitted; waiting for the subscriber's device to attach. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/PORT_IN/ATTACH/RECEIVED` | Subscriber's device has attached — PAC process advancing. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/PORT_IN/VALIDATED` | Port-in request validated by the UK porting system. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/PORT_IN/DONE` | Port-in completed; number is now on the Transatel network. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/PORT_IN/CANCELED` | Port-in request was canceled. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/PORT_IN/ATTACH/FAILED` | Port-in attach step failed. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/PORT_IN/INVALIDATED` | Port-in request was invalidated after initial validation. |
+
+### Switch-in (STAC)
+
+Switch-in events follow the same pattern as port-in, under the `SWITCH_IN` path prefix. For example:
+
+- `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/SWITCH_IN/ATTACH/REQUESTED`
+- `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/SWITCH_IN/ATTACH/RECEIVED`
+- `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/SWITCH_IN/VALIDATED`
+- `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/SWITCH_IN/DONE`
+- `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/SWITCH_IN/CANCELED`
+- `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/SWITCH_IN/ATTACH/FAILED`
+- `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/SWITCH_IN/INVALIDATED`
+
+### Port-out and Switch-out
+
+| `eventType` | Description |
+|-------------|-------------|
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/PORT_OUT/VALIDATED` | Port-out validated. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/PORT_OUT/DONE` | Port-out completed; number has moved to the gaining operator. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/SWITCH_OUT/VALIDATED` | STAC switch-out validated. |
+| `CONNECTIVITY-MANAGEMENT/PORTABILITY/UK/SWITCH_OUT/DONE` | STAC switch-out completed. |
+
+### Body fields specific to UK portability
+
+The body includes standard subscriber identifiers plus:
+
+<ResponseField name="portabilityStatus" type="string">
+  The current status of the portability or switch request.
+</ResponseField>
+
+<ResponseField name="portabilityDate" type="ISO 8601">
+  The scheduled or actual date/time of the port or switch.
+</ResponseField>
+
+<ResponseField name="authorizationCode" type="string">
+  The PAC or STAC authorization code used to initiate the transfer.
+</ResponseField>
+
+<ResponseField name="dno" type="string">
+  Donor network operator code.
+</ResponseField>
+
+<ResponseField name="rno" type="string">
+  Recipient network operator code.
+</ResponseField>
+
+</Accordion>

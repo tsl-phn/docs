@@ -1,0 +1,184 @@
+---
+title: "SIM Swap and MSISDN Swap Reference"
+sidebarTitle: "SIM & MSISDN Swap"
+description: "Replace a subscriber's physical SIM card or change their MSISDN using the sim-swap and msisdn-swap API endpoints."
+---
+
+Transatel provides two distinct swap operations for subscriber management. A **SIM swap** replaces the physical SIM card associated with a subscriber — for example, when a card is lost, damaged, or upgraded to a different form factor — while keeping the MSISDN and subscription intact. An **MSISDN swap** changes the phone number assigned to the subscriber while retaining the existing SIM card. Both operations are asynchronous and return a `transactionId` for status polling.
+
+---
+
+## POST /sim-swap
+
+Replace the physical SIM card for an existing subscriber. The subscription, MSISDN, and rate plan carry over to the new SIM. The original SIM card is permanently deactivated.
+
+<Warning>
+  **The old SIM is permanently deactivated.** Once a SIM swap completes, the original SIM card is decommissioned and cannot be reactivated. Ensure the new SIM is physically available before submitting this request.
+</Warning>
+
+### Endpoint
+
+```
+POST /api/subscribers/sim-serial/{sim-serial}/sim-swap
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM serial number (ICCID) of the **existing** SIM card being replaced. Must match the pattern `[0-9]{13,20}`.
+</ParamField>
+
+### Request Body
+
+<ParamField body="ratePlan" type="string" required>
+  The rate plan to apply on the new SIM card. Maximum 50 characters.
+</ParamField>
+
+<ParamField body="newSimSerial" type="string" required>
+  The SIM serial number (ICCID) of the replacement SIM card. Must match the pattern `[0-9]{13,20}`.
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  A key-value map of custom attributes to record against the swap event. Supports up to 10 string entries.
+</ParamField>
+
+### Response Fields
+
+Returns `HTTP 201 Created` with a `ProvisioningResponse` body.
+
+<ResponseField name="transactionId" type="string">
+  UUID identifying this SIM swap operation. Poll `GET /api/transactions/{transactionId}` for the final result.
+</ResponseField>
+
+<ResponseField name="simSerial" type="string">
+  The **new** SIM serial number that the subscription has been transferred to.
+</ResponseField>
+
+<ResponseField name="transactionStatus" type="string">
+  Always `PENDING` on a successful 201 response.
+</ResponseField>
+
+### Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8933150000000012345/sim-swap" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "DATA_100MB_MONTHLY",
+    "newSimSerial": "8933150000000067890",
+    "metadata": {
+      "reason": "damaged_sim",
+      "ticketRef": "SUP-2024-1102"
+    }
+  }'
+```
+
+### Example Response
+
+```json
+{
+  "transactionId": "e5f6a7b8-ccdd-4eea-9001-aabbccddeeff",
+  "simSerial": "8933150000000067890",
+  "transactionStatus": "PENDING"
+}
+```
+
+---
+
+## POST /msisdn-swap
+
+Assign a new MSISDN (phone number) to an existing subscriber. The SIM card and subscription remain unchanged; only the phone number is updated.
+
+### Endpoint
+
+```
+POST /api/subscribers/sim-serial/{sim-serial}/msisdn-swap
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID) of the subscriber whose MSISDN you want to change. Must match the pattern `[0-9]{13,20}`.
+</ParamField>
+
+### Request Body
+
+<ParamField body="ratePlan" type="string" required>
+  The rate plan to apply after the MSISDN change. Maximum 50 characters.
+</ParamField>
+
+<ParamField body="msisdn" type="string">
+  The new MSISDN to assign, in E.164 format without the `+` prefix (e.g. `33612345678`). Must match the pattern `[0-9]{6,15}`. If omitted, the platform automatically assigns an available number from your pool.
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  A key-value map of custom attributes to record against the swap event. Supports up to 10 string entries.
+</ParamField>
+
+### Response Fields
+
+Returns `HTTP 201 Created` with a `ProvisioningResponse` body.
+
+<ResponseField name="transactionId" type="string">
+  UUID identifying this MSISDN swap operation. Poll `GET /api/transactions/{transactionId}` for the final result.
+</ResponseField>
+
+<ResponseField name="simSerial" type="string">
+  The SIM serial number, echoed from the path parameter.
+</ResponseField>
+
+<ResponseField name="transactionStatus" type="string">
+  Always `PENDING` on a successful 201 response.
+</ResponseField>
+
+### Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8933150000000067890/msisdn-swap" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "DATA_100MB_MONTHLY",
+    "msisdn": "33698765432",
+    "metadata": {
+      "reason": "number_change_request",
+      "ticketRef": "CRM-2024-0055"
+    }
+  }'
+```
+
+### Example Response
+
+```json
+{
+  "transactionId": "f9e8d7c6-bbaa-4f3e-8002-112233445566",
+  "simSerial": "8933150000000067890",
+  "transactionStatus": "PENDING"
+}
+```
+
+<Note>
+  Poll `GET /api/transactions/{transactionId}` until `asyncStatus` is `DONE` or `ERROR`. See the [Transactions reference](/api-reference/connectivity/transactions) for full details.
+</Note>
+
+---
+
+## Error Responses
+
+Both endpoints share the same error codes:
+
+| HTTP Status | Code | Description |
+|---|---|---|
+| `400` | `BAD_REQUEST` | Missing required fields, invalid SIM serial format, or invalid MSISDN format |
+| `403` | `INSUFFICIENT_PERMISSION` | Token does not have the `CONNECTIVITY_MANAGEMENT_WRITE` scope |
+| `404` | `SUBSCRIBER_NOT_FOUND` | No subscriber found for the provided SIM serial number |
+| `409` | `CONFLICT` | Another provisioning request is already pending on this SIM |
+| `500` | `INTERNAL_ERROR` | An unexpected server-side error occurred |
+| `501` | `NOT_IMPLEMENTED` | The operation is not supported for this account configuration |

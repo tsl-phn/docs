@@ -1,0 +1,466 @@
+---
+title: "GET /cdr — Retrieve Call Detail Records"
+sidebarTitle: "CDRs"
+description: "Query CDRs for data, voice, SMS, and MMS events. Supports rich filtering by SIM, date, country, service type, and outcome."
+---
+
+The CDR API gives you programmatic access to the full usage event log for your subscriber base. Every data session, voice call, SMS, and MMS generates a Call Detail Record (CDR) that you can query, filter, and page through. Use CDRs for billing reconciliation, fraud detection, regulatory reporting, or customer-facing usage dashboards.
+
+All requests require a bearer token with the `NETWORK-USAGE_CDR_READ` scope.
+
+**Base URL:** `https://api.transatel.com/network/usage`
+
+---
+
+## GET /api/cdr
+
+Returns a paginated list of CDR entries. Apply any combination of the filter parameters below to narrow results.
+
+### Filter Operators
+
+Append an operator prefix to a filter value to control the comparison type. For range fields (dates, byte counts, units) supply the parameter **twice** — once with `gte:` and once with `lte:`.
+
+| Operator          | Prefix   | Example                              |
+|-------------------|----------|--------------------------------------|
+| Equal             | `eq:`    | `eq:CDR/DATA`                        |
+| Not equal         | `neq:`   | `neq:CDR/VOICE`                      |
+| Greater than      | `gt:`    | `gt:1000000`                         |
+| Greater than or equal | `gte:` | `gte:2024-06-01T00:00:00Z`        |
+| Less than         | `lt:`    | `lt:2024-07-01T00:00:00Z`            |
+| Less than or equal | `lte:` | `lte:2024-06-30T23:59:59Z`           |
+| In set            | `in:`    | `in:CDR/DATA+CDR/VOICE`              |
+| Not in set        | `notin:` | `notin:error`                        |
+
+### Pagination Parameters
+
+<ParamField query="size" type="integer">
+  Results per page. Range: `1–10000`. Default: `50`.
+</ParamField>
+
+<ParamField query="page" type="integer">
+  Page number. Range: `1–200`. Default: `1`.
+</ParamField>
+
+<ParamField query="sort" type="string">
+  Sort expression. Prefix with `-` (descending) or `+` (ascending). Default: `-eventDate`.
+</ParamField>
+
+### Event Filters
+
+<ParamField query="eventId" type="string">
+  Filter by specific event ID. Supports `eq:` operator only.
+</ParamField>
+
+<ParamField query="eventDate" type="string">
+  ISO 8601 date-time. Provide twice with `gte:` and `lte:` to set a date range.
+</ParamField>
+
+<ParamField query="eventType" type="string">
+  Type of usage event. Accepted values: `CDR/DATA`, `CDR/VOICE`, `CDR/SMS`, `CDR/MMS`. Supports `in:` and `notin:`.
+</ParamField>
+
+### Subscriber Filters
+
+<ParamField query="msisdn" type="string">
+  Filter by subscriber MSISDN.
+</ParamField>
+
+<ParamField query="imsi" type="string">
+  Filter by subscriber IMSI.
+</ParamField>
+
+<ParamField query="simSerial" type="string">
+  Filter by SIM card serial number (ICCID).
+</ParamField>
+
+<ParamField query="subscriberNumber" type="string">
+  Filter by internal subscriber number.
+</ParamField>
+
+<ParamField query="externalReference" type="string">
+  Filter by your custom subscriber reference.
+</ParamField>
+
+<ParamField query="mvnoRef" type="string">
+  Filter by account reference.
+</ParamField>
+
+<ParamField query="group" type="string">
+  Filter by subscriber group name.
+</ParamField>
+
+<ParamField query="imei" type="string">
+  Filter by device IMEI.
+</ParamField>
+
+### Session Filters
+
+<ParamField query="serviceType" type="string">
+  Filter by service type code.
+</ParamField>
+
+<ParamField query="rat" type="integer">
+  Radio Access Technology type (integer). See the [Data Session RAT type table](/api-reference/network/data-session#rat-type-reference) for values.
+</ParamField>
+
+<ParamField query="apn" type="string">
+  Filter by Access Point Name (data CDRs only).
+</ParamField>
+
+<ParamField query="deviceIPv4" type="string">
+  Filter by device IPv4 address (data CDRs only).
+</ParamField>
+
+<ParamField query="deviceIPv6" type="string">
+  Filter by device IPv6 address (data CDRs only).
+</ParamField>
+
+<ParamField query="originCountry" type="string">
+  Filter by the ISO country code where the session originated.
+</ParamField>
+
+<ParamField query="mcc" type="string">
+  Filter by Mobile Country Code of the serving operator.
+</ParamField>
+
+<ParamField query="mnc" type="string">
+  Filter by Mobile Network Code of the serving operator.
+</ParamField>
+
+<ParamField query="serviceOutcome" type="string">
+  Filter by the final service outcome (e.g. `success`, `failure`).
+</ParamField>
+
+<ParamField query="switchingDomain" type="string">
+  `PS` (Packet Switched) or `CS` (Circuit Switched). Applies to voice, SMS, and MMS CDRs.
+</ParamField>
+
+<ParamField query="aNumber" type="string">
+  Calling party number (voice CDRs only).
+</ParamField>
+
+<ParamField query="bNumber" type="string">
+  Called party number (voice CDRs only).
+</ParamField>
+
+<ParamField query="sessionId" type="string">
+  Data session identifier.
+</ParamField>
+
+### Usage Volume Filters (data CDRs)
+
+<ParamField query="downlink" type="integer">
+  Downlink bytes. Supports `gte:`/`lte:` range.
+</ParamField>
+
+<ParamField query="uplink" type="integer">
+  Uplink bytes. Supports `gte:`/`lte:` range.
+</ParamField>
+
+<ParamField query="total" type="integer">
+  Total bytes (uplink + downlink). Supports `gte:`/`lte:` range.
+</ParamField>
+
+<ParamField query="usedServiceUnits" type="number">
+  Used service units — seconds for voice, always `1` for SMS. Supports `gte:`/`lte:` range.
+</ParamField>
+
+<ParamField query="mmsSize" type="integer">
+  MMS message size in bytes. Supports `gte:`/`lte:` range.
+</ParamField>
+
+---
+
+## Response Fields
+
+<ResponseField name="content" type="CdrEntry[]">
+  Array of CDR entries matching your filters.
+</ResponseField>
+
+<ResponseField name="totalElements" type="integer">
+  Total number of CDRs matching the filter criteria across all pages.
+</ResponseField>
+
+<ResponseField name="totalPages" type="integer">
+  Total number of pages available.
+</ResponseField>
+
+<ResponseField name="pageNumber" type="integer">
+  The current page number returned.
+</ResponseField>
+
+### CdrEntry — header
+
+<ResponseField name="header.eventId" type="string">
+  Unique event identifier.
+</ResponseField>
+
+<ResponseField name="header.eventType" type="string">
+  `CDR/DATA`, `CDR/VOICE`, `CDR/SMS`, or `CDR/MMS`.
+</ResponseField>
+
+<ResponseField name="header.eventDate" type="string">
+  ISO 8601 timestamp of the usage event.
+</ResponseField>
+
+### CdrEntry — body (common fields)
+
+<ResponseField name="body.mvnoRef" type="string">
+  Your account reference.
+</ResponseField>
+
+<ResponseField name="body.operator" type="string">
+  Serving operator name.
+</ResponseField>
+
+<ResponseField name="body.group" type="string">
+  Subscriber group name.
+</ResponseField>
+
+<ResponseField name="body.groupReference" type="string">
+  Subscriber group reference identifier.
+</ResponseField>
+
+<ResponseField name="body.msisdn" type="string">
+  Subscriber MSISDN.
+</ResponseField>
+
+<ResponseField name="body.imsi" type="string">
+  Subscriber IMSI.
+</ResponseField>
+
+<ResponseField name="body.subscriber.subscriberNumber" type="string">
+  Internal subscriber number.
+</ResponseField>
+
+<ResponseField name="body.subscriber.externalReference" type="string">
+  Your custom subscriber reference.
+</ResponseField>
+
+<ResponseField name="body.simSerial" type="string">
+  SIM card serial number.
+</ResponseField>
+
+### Data Session Fields (`body.dataSession`)
+
+<ResponseField name="sessionId" type="string">
+  Data session identifier.
+</ResponseField>
+
+<ResponseField name="serviceType" type="string">
+  Service type code.
+</ResponseField>
+
+<ResponseField name="apn" type="string">
+  Access Point Name.
+</ResponseField>
+
+<ResponseField name="deviceIPv4" type="string">
+  Device IPv4 address during the session.
+</ResponseField>
+
+<ResponseField name="deviceIPv6" type="string">
+  Device IPv6 address during the session.
+</ResponseField>
+
+<ResponseField name="originCountry" type="string">
+  ISO country code where the session originated.
+</ResponseField>
+
+<ResponseField name="mcc" type="string">
+  Mobile Country Code of the serving operator.
+</ResponseField>
+
+<ResponseField name="mnc" type="string">
+  Mobile Network Code of the serving operator.
+</ResponseField>
+
+<ResponseField name="imei" type="string">
+  Device IMEI.
+</ResponseField>
+
+<ResponseField name="rat" type="integer">
+  RAT type integer. See the RAT type table in the [Data Session reference](/api-reference/network/data-session#rat-type-reference).
+</ResponseField>
+
+<ResponseField name="serviceOutcome" type="string">
+  Session outcome (e.g. `success`).
+</ResponseField>
+
+<ResponseField name="usage.uplink" type="integer">
+  Bytes transmitted from the device to the network.
+</ResponseField>
+
+<ResponseField name="usage.downlink" type="integer">
+  Bytes received by the device from the network.
+</ResponseField>
+
+<ResponseField name="usage.total" type="integer">
+  Total bytes (uplink + downlink).
+</ResponseField>
+
+### Voice Session Fields (`body.voiceSession`)
+
+<ResponseField name="aNumber" type="string">
+  Calling party (A-number).
+</ResponseField>
+
+<ResponseField name="bNumber" type="string">
+  Called party (B-number).
+</ResponseField>
+
+<ResponseField name="rNumber" type="string">
+  Redirected-to number, if applicable.
+</ResponseField>
+
+<ResponseField name="setupTime" type="string">
+  ISO 8601 timestamp when call setup began.
+</ResponseField>
+
+<ResponseField name="answerTime" type="string">
+  ISO 8601 timestamp when the call was answered.
+</ResponseField>
+
+<ResponseField name="disconnectTime" type="string">
+  ISO 8601 timestamp when the call ended.
+</ResponseField>
+
+<ResponseField name="serviceType" type="string">
+  Voice service type code.
+</ResponseField>
+
+<ResponseField name="mcc" type="string">
+  Mobile Country Code of the serving operator.
+</ResponseField>
+
+<ResponseField name="mnc" type="string">
+  Mobile Network Code.
+</ResponseField>
+
+<ResponseField name="originCountry" type="string">
+  Country where the call originated.
+</ResponseField>
+
+<ResponseField name="destinationCountry" type="string">
+  Country of the called number.
+</ResponseField>
+
+<ResponseField name="switchingDomain" type="string">
+  `CS` (Circuit Switched) or `PS` (Packet Switched, e.g. VoLTE).
+</ResponseField>
+
+<ResponseField name="usedServiceUnits" type="integer">
+  Call duration in seconds.
+</ResponseField>
+
+<ResponseField name="serviceOutcome" type="string">
+  Call outcome.
+</ResponseField>
+
+### SMS Session Fields (`body.smsSession`)
+
+<ResponseField name="eventTime" type="string">
+  ISO 8601 timestamp of the SMS event.
+</ResponseField>
+
+<ResponseField name="serviceType" type="string">
+  SMS service type.
+</ResponseField>
+
+<ResponseField name="from" type="string">
+  Sender address.
+</ResponseField>
+
+<ResponseField name="to" type="string">
+  Destination address.
+</ResponseField>
+
+<ResponseField name="mcc" type="string">
+  Mobile Country Code of the serving operator.
+</ResponseField>
+
+<ResponseField name="mnc" type="string">
+  Mobile Network Code.
+</ResponseField>
+
+<ResponseField name="originCountry" type="string">
+  Country where the SMS originated.
+</ResponseField>
+
+<ResponseField name="destinationCountry" type="string">
+  Country of the destination.
+</ResponseField>
+
+<ResponseField name="switchingDomain" type="string">
+  `CS` or `PS`.
+</ResponseField>
+
+<ResponseField name="usedServiceUnits" type="integer">
+  Always `1` for SMS.
+</ResponseField>
+
+<ResponseField name="serviceOutcome" type="string">
+  SMS delivery outcome.
+</ResponseField>
+
+<CodeGroup>
+```bash Data CDRs for a SIM, last 7 days
+curl --request GET \
+  --url "https://api.transatel.com/network/usage/api/cdr?simSerial=8933012345678901234&eventType=CDR%2FDATA&eventDate=gte%3A2024-06-24T00%3A00%3A00Z&eventDate=lte%3A2024-06-30T23%3A59%3A59Z&size=100&sort=-eventDate" \
+  --header "Authorization: Bearer <token>"
+```
+
+```bash Voice and SMS CDRs for a subscriber
+curl --request GET \
+  --url "https://api.transatel.com/network/usage/api/cdr?msisdn=33612345678&eventType=in%3ACDR%2FVOICE%2BCDR%2FSMS&sort=-eventDate" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "content": [
+    {
+      "header": {
+        "eventId": "cdr_01HX5MNPQ3RT8V2W7YB4DKCZFE",
+        "eventType": "CDR/DATA",
+        "eventDate": "2024-06-30T14:22:10Z"
+      },
+      "body": {
+        "mvnoRef": "my-mvno",
+        "operator": "Orange France",
+        "group": "iot-fleet-1",
+        "groupReference": "GRP-001",
+        "msisdn": "33612345678",
+        "imsi": "208930000012345",
+        "subscriber": {
+          "subscriberNumber": "SUB-00123",
+          "externalReference": "CRM-ABC-001"
+        },
+        "simSerial": "8933012345678901234",
+        "dataSession": {
+          "sessionId": "ggsn01;1719757330;88",
+          "serviceType": "GPRS",
+          "apn": "iot.private.apn",
+          "deviceIPv4": "10.14.22.187",
+          "deviceIPv6": null,
+          "originCountry": "FR",
+          "mcc": "208",
+          "mnc": "01",
+          "imei": "353123456789012",
+          "rat": 6,
+          "serviceOutcome": "success",
+          "usage": {
+            "uplink": 102400,
+            "downlink": 512000,
+            "total": 614400
+          }
+        }
+      }
+    }
+  ],
+  "totalElements": 1240,
+  "totalPages": 13,
+  "pageNumber": 1
+}
+```
+</CodeGroup>

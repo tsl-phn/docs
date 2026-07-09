@@ -1,0 +1,178 @@
+---
+title: "GET /options — Retrieve Catalog Options"
+sidebarTitle: "Options"
+description: "Retrieve dataSafeguard, overspendSafeguard, and paymentSafeguard options available in your Class of Service catalog."
+---
+
+The Options API lets you inspect the safeguard options configured for a Class of Service. Options are special controls that sit outside the standard product catalog — they govern how the platform handles edge cases like data overruns, spending limits, and payment failures. You can retrieve all options in a single call or fetch each safeguard type individually.
+
+All requests require a bearer token with the `CATALOG_OPTIONS_READ` scope.
+
+**Base URL:** `https://api.transatel.com/ocs/catalog`
+
+---
+
+## GET /api/cos/{cosRef}/options
+
+Returns all three safeguard options configured for the Class of Service in a single response.
+
+### Path Parameters
+
+<ParamField path="cosRef" type="string" required>
+  The Class of Service reference identifier. 1–100 characters.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="cos" type="string">
+  The Class of Service reference echoed back.
+</ResponseField>
+
+<ResponseField name="options" type="object">
+  Container for all three safeguard option objects.
+</ResponseField>
+
+<ResponseField name="options.dataSafeguard" type="object">
+  Controls what happens when a subscriber exhausts their data allowance. See [dataSafeguard](#get-apicoscosrefoptions-datasafeguard) for the full field reference.
+</ResponseField>
+
+<ResponseField name="options.overspendSafeguard" type="object">
+  Controls spending-cap behaviour when out-of-bundle charges are about to be incurred. See [overspendSafeguard](#get-apicoscosrefoptions-overspendsafeguard).
+</ResponseField>
+
+<ResponseField name="options.paymentSafeguard" type="object">
+  Controls service behaviour in the event of a payment failure. See [paymentSafeguard](#get-apicoscosrefoptions-paymentsafeguard).
+</ResponseField>
+
+<CodeGroup>
+```bash Retrieve all options for a CoS
+curl --request GET \
+  --url "https://api.transatel.com/ocs/catalog/api/cos/COS-IOT-EU/options" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "cos": "COS-IOT-EU",
+  "options": {
+    "dataSafeguard": {
+      "enabled": true,
+      "action": "BLOCK"
+    },
+    "overspendSafeguard": {
+      "enabled": true,
+      "threshold": 1000,
+      "currency": "EUR",
+      "action": "NOTIFY"
+    },
+    "paymentSafeguard": {
+      "enabled": false
+    }
+  }
+}
+```
+</CodeGroup>
+
+---
+
+## GET /api/cos/{cosRef}/options/dataSafeguard
+
+Returns only the `dataSafeguard` option for the Class of Service. This safeguard defines the platform's response when a subscriber has consumed their full data allowance — for example, blocking further data access or switching to a reduced-speed profile.
+
+### Path Parameters
+
+<ParamField path="cosRef" type="string" required>
+  The Class of Service reference. 1–100 characters.
+</ParamField>
+
+### Error Responses
+
+| HTTP Status | Error Code         | Meaning                                                  |
+|-------------|--------------------|----------------------------------------------------------|
+| 404         | `OPTION_NOT_FOUND` | The `dataSafeguard` option is not configured for this CoS. |
+
+<CodeGroup>
+```bash Retrieve dataSafeguard option
+curl --request GET \
+  --url "https://api.transatel.com/ocs/catalog/api/cos/COS-IOT-EU/options/dataSafeguard" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "enabled": true,
+  "action": "BLOCK"
+}
+```
+</CodeGroup>
+
+---
+
+## GET /api/cos/{cosRef}/options/overspendSafeguard
+
+Returns only the `overspendSafeguard` option. This controls the spending-cap mechanism — when enabled, the platform monitors out-of-bundle charges and takes a configured action (such as notifying the subscriber or blocking service) when a monetary threshold is reached.
+
+### Path Parameters
+
+<ParamField path="cosRef" type="string" required>
+  The Class of Service reference. 1–100 characters.
+</ParamField>
+
+### Error Responses
+
+| HTTP Status | Error Code         | Meaning                                                       |
+|-------------|--------------------|---------------------------------------------------------------|
+| 404         | `OPTION_NOT_FOUND` | The `overspendSafeguard` option is not configured for this CoS. |
+
+<CodeGroup>
+```bash Retrieve overspendSafeguard option
+curl --request GET \
+  --url "https://api.transatel.com/ocs/catalog/api/cos/COS-IOT-EU/options/overspendSafeguard" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "enabled": true,
+  "threshold": 1000,
+  "currency": "EUR",
+  "action": "NOTIFY"
+}
+```
+</CodeGroup>
+
+---
+
+## GET /api/cos/{cosRef}/options/paymentSafeguard
+
+Returns only the `paymentSafeguard` option. When enabled, this option determines how the platform responds to a failed recurring payment — for example, by suspending service or granting a grace period.
+
+### Path Parameters
+
+<ParamField path="cosRef" type="string" required>
+  The Class of Service reference. 1–100 characters.
+</ParamField>
+
+### Error Responses
+
+| HTTP Status | Error Code         | Meaning                                                      |
+|-------------|--------------------|--------------------------------------------------------------|
+| 404         | `OPTION_NOT_FOUND` | The `paymentSafeguard` option is not configured for this CoS. |
+
+<Note>
+  A `404 OPTION_NOT_FOUND` response from any individual options endpoint means the safeguard has not been configured for the CoS — it does not indicate an error with the CoS itself. Call `GET /options` to confirm which safeguards are active.
+</Note>
+
+<CodeGroup>
+```bash Retrieve paymentSafeguard option
+curl --request GET \
+  --url "https://api.transatel.com/ocs/catalog/api/cos/COS-IOT-EU/options/paymentSafeguard" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "enabled": false
+}
+```
+</CodeGroup>

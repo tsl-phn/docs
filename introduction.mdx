@@ -1,0 +1,167 @@
+---
+title: "Transatel Developer Platform: API Overview"
+sidebarTitle: "Introduction"
+description: "Transatel provides REST APIs for MVNO and IoT connectivity management, network services, SMS, usage analytics, and product catalog."
+---
+
+Transatel's Developer Platform gives MVNOs, IoT operators, and connectivity resellers programmatic control over the full subscriber lifecycle — from SIM provisioning and portability to real-time network services, usage analytics, and product catalog management. Every capability is exposed as a REST API secured by OAuth 2.0, so you can integrate Transatel directly into your own systems, dashboards, and automation pipelines.
+
+## API domains
+
+The platform is organized into four domains. Each domain has its own base URL, and all requests share the same authentication mechanism described in the [Authentication](/authentication) guide.
+
+| Domain | Base URL |
+|---|---|
+| **Authentication** | `https://api.transatel.com/authentication` |
+| **Connectivity Management** | `https://api.transatel.com/connectivity-management/subscribers` |
+| **Network Services** | `https://api.transatel.com/network/{service}` |
+| **OCS Catalog** | `https://api.transatel.com/ocs/catalog` |
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Obtain OAuth 2.0 Bearer tokens using your client credentials. Required before calling any other endpoint.
+  </Card>
+  <Card title="Connectivity Management" icon="sim-card" href="/connectivity/overview">
+    Provision subscribers, manage SIMs, handle portability, and control the full subscriber lifecycle.
+  </Card>
+  <Card title="Network Services" icon="tower-cell" href="/network/overview">
+    Manage network attach/detach, send SMS on-net and off-net, trigger OTA operations, and query active data sessions.
+  </Card>
+  <Card title="OCS Catalog" icon="book-open" href="/ocs/overview">
+    Browse products and options, manage product models, and publish offerings to your subscriber base.
+  </Card>
+</CardGroup>
+
+## Quick start
+
+The example below shows the two steps needed to make your first API call: acquire a Bearer token, then use it to fetch a subscriber record by SIM serial number (ICCID). Replace the placeholder values with the credentials provided by your Transatel account manager.
+
+<Note>
+  Every request to the Transatel API — except the token endpoint itself — must include an `Authorization: Bearer <access_token>` header. Requests without a valid token receive a `401 Unauthorized` response.
+</Note>
+
+<Steps>
+  <Step title="Acquire a Bearer token">
+    Exchange your `client_id` and `client_secret` for a short-lived access token. The token is valid for **3 600 seconds** (one hour).
+
+    <CodeGroup>
+      ```bash cURL
+      curl --request POST \
+        --url https://api.transatel.com/authentication/api/token \
+        --header "Authorization: Basic $(echo -n 'YOUR_CLIENT_ID:YOUR_CLIENT_SECRET' | base64)" \
+        --header "Content-Type: application/x-www-form-urlencoded" \
+        --data "grant_type=client_credentials"
+      ```
+
+      ```python Python
+      import requests
+      import base64
+
+      client_id = "YOUR_CLIENT_ID"
+      client_secret = "YOUR_CLIENT_SECRET"
+
+      credentials = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
+
+      response = requests.post(
+          "https://api.transatel.com/authentication/api/token",
+          headers={
+              "Authorization": f"Basic {credentials}",
+              "Content-Type": "application/x-www-form-urlencoded",
+          },
+          data={"grant_type": "client_credentials"},
+      )
+
+      token = response.json()["access_token"]
+      print(token)
+      ```
+
+      ```javascript JavaScript
+      const clientId = "YOUR_CLIENT_ID";
+      const clientSecret = "YOUR_CLIENT_SECRET";
+
+      const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+
+      const response = await fetch(
+        "https://api.transatel.com/authentication/api/token",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Basic ${credentials}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: "grant_type=client_credentials",
+        }
+      );
+
+      const { access_token } = await response.json();
+      console.log(access_token);
+      ```
+    </CodeGroup>
+
+    A successful response looks like:
+
+    ```json
+    {
+      "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6ImQwNjk4OWY2OWUxNzU2NzQ0NTIwMDFiNDdmZjk4MzNmIn0...",
+      "expires_in": 3600,
+      "scope": "CONNECTIVITY_MANAGEMENT_READ CONNECTIVITY_MANAGEMENT_WRITE",
+      "token_type": "Bearer"
+    }
+    ```
+  </Step>
+
+  <Step title="Call your first endpoint">
+    Use the `access_token` from the previous step to retrieve a subscriber by ICCID (SIM serial number). Replace `89330126000012345678` with a real ICCID in your account.
+
+    <CodeGroup>
+      ```bash cURL
+      curl --request GET \
+        --url "https://api.transatel.com/connectivity-management/subscribers?iccid=89330126000012345678" \
+        --header "Authorization: Bearer YOUR_ACCESS_TOKEN"
+      ```
+
+      ```python Python
+      import requests
+
+      access_token = "YOUR_ACCESS_TOKEN"
+      iccid = "89330126000012345678"
+
+      response = requests.get(
+          f"https://api.transatel.com/connectivity-management/subscribers",
+          headers={"Authorization": f"Bearer {access_token}"},
+          params={"iccid": iccid},
+      )
+
+      print(response.json())
+      ```
+
+      ```javascript JavaScript
+      const accessToken = "YOUR_ACCESS_TOKEN";
+      const iccid = "89330126000012345678";
+
+      const response = await fetch(
+        `https://api.transatel.com/connectivity-management/subscribers?iccid=${iccid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const subscriber = await response.json();
+      console.log(subscriber);
+      ```
+    </CodeGroup>
+  </Step>
+</Steps>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication guide" icon="lock" href="/authentication">
+    Learn about token lifetime, all available OAuth scopes, and how to handle authentication errors.
+  </Card>
+  <Card title="Eligibility check" icon="circle-check" href="/eligibility">
+    Discover which methods your credentials can call on any endpoint before you build your integration.
+  </Card>
+</CardGroup>

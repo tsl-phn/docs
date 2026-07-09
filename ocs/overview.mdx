@@ -1,0 +1,74 @@
+---
+title: "OCS Catalog: Products, Options, and Product Factory"
+sidebarTitle: "Overview"
+description: "Browse your service catalog, retrieve product allowances and options, and create custom products using the Product Factory API."
+---
+
+The OCS Catalog API gives you programmatic access to your service portfolio — the full set of products and account-level options that are available within your **Class of Service (COS)**. A Class of Service reference (`cosRef`) is a unique identifier assigned to your account by your Transatel account manager; it acts as the namespace for everything in your catalog, from data bundles to spending safeguards. You use the same `cosRef` throughout the OCS Catalog API to scope every request to your specific service configuration.
+
+The OCS Catalog API is organized into three areas:
+
+- **Products** — browse and filter the data, voice, and SMS bundles that your subscribers can activate. You can check eligibility for a specific subscriber, inspect allowances, prices, and validity periods, and discover which subscription mode applies.
+- **Options** — read the account-level spending and data controls configured for your COS, including data safeguards, overspend safeguards, and payment safeguards.
+- **Product Factory** *(beta)* — programmatically create custom product models and publish them directly to your catalog, giving you full control over your product portfolio without manual back-office intervention.
+
+## Base URL and Authentication
+
+All requests target the following base URL:
+
+```
+https://api.transatel.com/ocs/catalog
+```
+
+Authentication uses a **Bearer token** passed in the `Authorization` header. Each area of the API requires a specific OAuth scope — refer to the individual pages for the exact scope you need.
+
+```bash
+Authorization: Bearer <your_access_token>
+```
+
+<Note>
+  Your `cosRef` is provided by your Transatel account manager. If you don't have one yet, reach out to your account contact before making any catalog requests.
+</Note>
+
+## Explore the Catalog API
+
+<CardGroup cols={3}>
+  <Card title="Products" icon="box" href="/ocs/products">
+    Browse available bundles, filter by category or tags, and check subscription eligibility for a specific subscriber.
+  </Card>
+  <Card title="Options" icon="shield-halved" href="/ocs/options">
+    Retrieve data safeguard, overspend safeguard, and payment safeguard options configured for your COS.
+  </Card>
+  <Card title="Product Factory" icon="flask" href="/ocs/product-factory">
+    Create One-off, Recurring, and Add-on product models and publish them directly to your service catalog.
+  </Card>
+</CardGroup>
+
+## How the Pieces Fit Together
+
+Understanding how products, options, and the product factory relate to each other helps you use the API more effectively.
+
+<Steps>
+  <Step title="Your COS defines your catalog boundary">
+    Every product and option in the OCS Catalog API is scoped to a `cosRef`. You cannot access products or options from another Class of Service using your credentials.
+  </Step>
+  <Step title="Browse products to understand your portfolio">
+    Use the Products API to list available bundles, check their allowances and prices, and determine which ones a given subscriber can activate right now.
+  </Step>
+  <Step title="Inspect options to understand spending controls">
+    Use the Options API to retrieve the safeguard configurations available in your COS. These define the spending and data limits you can apply at the subscriber level via the Connectivity Management API.
+  </Step>
+  <Step title="Create new products with the Product Factory (beta)">
+    If the existing catalog doesn't cover your needs, use the Product Factory to define custom product models and publish them to your COS catalog, complete with availability windows.
+  </Step>
+</Steps>
+
+## Localization
+
+The Products API supports the `Accept-Language` header using BCP 47 locale codes (for example, `en-US`, `fr-FR`). When you include this header, product names and descriptions are returned in the requested language where translations are available.
+
+```bash
+Accept-Language: fr-FR
+```
+
+The response includes a `currentLocale` field confirming the locale that was applied.

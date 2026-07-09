@@ -1,0 +1,243 @@
+---
+title: "Create and Publish Products with the Product Factory"
+sidebarTitle: "Product Factory"
+description: "Use the Product Factory beta API to create One-off, Recurring, and Add-on product models and publish them to your service catalog."
+---
+
+The Product Factory gives you programmatic control over your product portfolio. Instead of requesting new products through manual back-office processes, you can define product models directly via API and publish them to your Class of Service catalog with precise availability windows. This is especially useful for launching promotional bundles, testing new pricing configurations, or automating product lifecycle management at scale.
+
+<Warning>
+  The Product Factory is currently in **beta**. Endpoints, request bodies, and response structures may change between versions. Avoid using this API in production workflows without first discussing the stability roadmap with your Transatel account manager.
+</Warning>
+
+## Required Scopes
+
+The Product Factory uses three separate OAuth scopes corresponding to the three phases of the workflow:
+
+| Scope | Required for |
+|---|---|
+| `CATALOG_PRODUCT_MODEL_READ` | Listing and retrieving product models |
+| `CATALOG_PRODUCT_MODEL_WRITE` | Creating and deleting product models |
+| `CATALOG_PRODUCT_MODEL_PUBLISH` | Publishing models to a catalog and managing availability |
+
+## Workflow Overview
+
+<Steps>
+  <Step title="Create a product model">
+    Define the product's allowances, validity, countries, and tags using the `POST /api/productModels/oneOff` endpoint (or the generic `POST /api/productModels` for other types). The model is stored in your **product factory** — a named workspace that holds your draft and published product definitions.
+  </Step>
+  <Step title="Publish the model to your catalog">
+    Once your model is ready, publish it to a specific COS catalog reference using `POST /api/publications`. You set the availability window (`startDate` and `endDate`) at publish time — the product becomes visible in the catalog from `startDate`.
+  </Step>
+  <Step title="Manage availability">
+    Use `PATCH /api/publications/{catalogRef}/{productId}` to extend the availability window, schedule an end date, or immediately remove a product from the catalog by setting `endDate` to the current time.
+  </Step>
+</Steps>
+
+## Create a One-off Product Model
+
+Creating a One-off product model is the most common Product Factory operation. You provide the product's unique ID, human-readable description, data allowances, validity period, the countries where it applies, and any tags for filtering.
+
+```bash
+curl -X POST "https://api.transatel.com/ocs/catalog/api/productModels/oneOff" \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "productFactoryName": "my-product-factory",
+    "productModel": {
+      "productId": "DATA_3GB_30D",
+      "description": "3 GB data bundle valid for 30 days",
+      "allowances": [
+        {
+          "resourceName": "DATA_BUNDLE",
+          "resourceValue": 3145728,
+          "resourceUnit": "KB"
+        }
+      ],
+      "validityPeriod": {
+        "validityDurationUnit": "days",
+        "validityDuration": 30
+      },
+      "countryList": ["FRA"],
+      "tags": ["promo", "summer"]
+    }
+  }'
+```
+
+A successful request returns **HTTP 201 Created** with a `Location` header pointing to the newly created model:
+
+```
+Location: /api/productModels/my-product-factory/DATA_3GB_30D
+```
+
+<Note>
+  `productFactoryName` is the name of your factory workspace — you choose this name and use it consistently across all Product Factory requests. Your Transatel account manager can confirm the factory name associated with your account.
+</Note>
+
+### Allowance Units
+
+When defining allowances, use the correct `resourceUnit` for the resource type:
+
+| Resource type | `resourceUnit` |
+|---|---|
+| Data | `KB` (kilobytes) |
+| Voice | `SECOND` (seconds) |
+| SMS | `SMS` (message count) |
+
+For example, 3 GB of data is `3145728 KB` (3 × 1024 × 1024).
+
+## Create Recurring and Add-on Models
+
+For Recurring and Add-on product models, use the generic create endpoint and pass the `type` field in the request body.
+
+<Tabs>
+  <Tab title="Recurring">
+    ```bash
+    curl -X POST "https://api.transatel.com/ocs/catalog/api/productModels" \
+      -H "Authorization: Bearer <your_access_token>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "productFactoryName": "my-product-factory",
+        "productModel": {
+          "type": "RECURRING",
+          "productId": "DATA_2GB_MONTHLY",
+          "description": "2 GB auto-renewing monthly plan",
+          "allowances": [
+            {
+              "resourceName": "DATA_BUNDLE",
+              "resourceValue": 2097152,
+              "resourceUnit": "KB"
+            }
+          ],
+          "validityPeriod": {
+            "validityDurationUnit": "days",
+            "validityDuration": 30
+          },
+          "countryList": ["FRA", "GBR"]
+        }
+      }'
+    ```
+  </Tab>
+  <Tab title="Add-on">
+    ```bash
+    curl -X POST "https://api.transatel.com/ocs/catalog/api/productModels" \
+      -H "Authorization: Bearer <your_access_token>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "productFactoryName": "my-product-factory",
+        "productModel": {
+          "type": "ADDON",
+          "productId": "DATA_TOPUP_500MB",
+          "description": "500 MB top-up add-on for monthly subscribers",
+          "allowances": [
+            {
+              "resourceName": "DATA_BUNDLE",
+              "resourceValue": 512000,
+              "resourceUnit": "KB"
+            }
+          ],
+          "validityPeriod": {
+            "validityDurationUnit": "days",
+            "validityDuration": 30
+          },
+          "countryList": ["FRA"]
+        }
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## List and Retrieve Product Models
+
+Once you've created product models, you can list all models in a factory or fetch a specific one by its `productId`.
+
+<CodeGroup>
+  ```bash List all models
+  curl -X GET "https://api.transatel.com/ocs/catalog/api/productModels/my-product-factory" \
+    -H "Authorization: Bearer <your_access_token>"
+  ```
+
+  ```bash Get a specific model
+  curl -X GET "https://api.transatel.com/ocs/catalog/api/productModels/my-product-factory/DATA_3GB_30D" \
+    -H "Authorization: Bearer <your_access_token>"
+  ```
+</CodeGroup>
+
+## Delete a Product Model
+
+To remove a product model from your factory, send a `DELETE` request with the factory name and product ID. Deleting a model does not automatically unpublish it from any catalogs it has already been published to — you should manage catalog availability separately before deleting.
+
+```bash
+curl -X DELETE "https://api.transatel.com/ocs/catalog/api/productModels/my-product-factory/DATA_3GB_30D" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+<Warning>
+  Deleting a product model is irreversible. Make sure the product is no longer needed in any catalog before removing it from your factory.
+</Warning>
+
+## Publish a Product Model to a Catalog
+
+Publishing makes a product model visible in your OCS catalog. You specify the target catalog reference (`catalog`), the factory and product to publish, and the availability window.
+
+```bash
+curl -X POST "https://api.transatel.com/ocs/catalog/api/publications" \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "catalog": "MY_COS_REF",
+    "productFactoryName": "my-product-factory",
+    "productId": "DATA_3GB_30D",
+    "availability": {
+      "startDate": "2023-04-19T13:30:00Z",
+      "endDate": "2024-04-19T13:30:00Z"
+    }
+  }'
+```
+
+The product appears in the catalog from `startDate` and is automatically removed after `endDate`. Both dates use ISO 8601 UTC format.
+
+<Tip>
+  You can set `startDate` in the future to pre-schedule a product launch without any manual intervention at go-live time.
+</Tip>
+
+## Modify Publication Availability
+
+After publishing a product, you can update its availability window using a `PATCH` request. This lets you extend a promotion, schedule an end-of-life date, or immediately remove the product from the catalog.
+
+<Tabs>
+  <Tab title="Extend or schedule end date">
+    Set a future `endDate` to extend the product's availability window or to schedule when it will stop being offered:
+
+    ```bash
+    curl -X PATCH "https://api.transatel.com/ocs/catalog/api/publications/MY_COS_REF/DATA_3GB_30D" \
+      -H "Authorization: Bearer <your_access_token>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "productFactoryName": "my-product-factory",
+        "availability": {
+          "endDate": "2024-12-31T23:59:59Z"
+        }
+      }'
+    ```
+  </Tab>
+  <Tab title="Unpublish immediately">
+    Set `endDate` to the current timestamp to remove the product from the catalog right away. Subscribers who already hold the product are not affected — only new subscriptions are blocked.
+
+    ```bash
+    curl -X PATCH "https://api.transatel.com/ocs/catalog/api/publications/MY_COS_REF/DATA_3GB_30D" \
+      -H "Authorization: Bearer <your_access_token>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "productFactoryName": "my-product-factory",
+        "availability": {
+          "endDate": "2023-10-01T12:00:00Z"
+        }
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  Setting `endDate` to a past or present timestamp effectively unpublishes the product immediately. New subscribers will no longer see the product in catalog queries, but existing subscriber inventories are not modified.
+</Note>

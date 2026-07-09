@@ -1,0 +1,335 @@
+---
+title: "Network Webhook Events: SMS and Location Updates"
+sidebarTitle: "Network Events"
+description: "Receive webhooks for inbound SMS messages, SMS delivery reports, and network location update accepts and denials."
+---
+
+Network events notify you of activity at the radio and messaging layer of the Transatel platform. These events complement the [Connectivity Management events](/events/connectivity-events) by covering what happens after a SIM is active — specifically, when your subscribers send SMS messages, when messages you send to them are delivered (or not), and when devices attach to or are rejected from a mobile network. All events follow the [standard event envelope](/events/overview#the-event-envelope) with a `header` and a `body`.
+
+## SMS events
+
+### Inbound SMS — `NETWORK/SMS/RECEIVED`
+
+This event fires whenever a subscriber sends an SMS (a Mobile Originated, or MO, message). You receive the full message content, including encoding metadata, so you can build two-way messaging workflows.
+
+<CodeGroup>
+```json Text message
+{
+  "header": {
+    "eventId": "a3f1d2e0-1234-5678-abcd-000011112222",
+    "eventType": "NETWORK/SMS/RECEIVED",
+    "eventDate": "2023-07-10T14:22:05Z"
+  },
+  "body": {
+    "messageId": "b7c4e6a1-9999-4321-dcba-333344445555",
+    "mvnoRef": "<Customer account name>",
+    "creationDate": "2023-07-10T14:22:05Z",
+    "createdBy": "system",
+    "direction": "MO",
+    "from": "33601234567",
+    "to": "36500",
+    "type": "text",
+    "encoding": "GSM-7",
+    "segments": 1,
+    "network": "on-net",
+    "text": "Hello, this is a test message."
+  }
+}
+```
+
+```json Binary message
+{
+  "header": {
+    "eventId": "c9d8e7f6-aaaa-bbbb-cccc-dddd0000ffff",
+    "eventType": "NETWORK/SMS/RECEIVED",
+    "eventDate": "2023-07-10T14:25:30Z"
+  },
+  "body": {
+    "messageId": "e1f2a3b4-5555-6666-7777-888899990000",
+    "mvnoRef": "<Customer account name>",
+    "creationDate": "2023-07-10T14:25:30Z",
+    "createdBy": "system",
+    "direction": "MO",
+    "from": "33601234567",
+    "to": "36500",
+    "type": "binary",
+    "encoding": "BINARY",
+    "segments": 1,
+    "network": "on-net",
+    "binary": "48656c6c6f"
+  }
+}
+```
+</CodeGroup>
+
+#### Body fields
+
+<ResponseField name="messageId" type="UUID" required>
+  Unique identifier for this SMS message.
+</ResponseField>
+
+<ResponseField name="mvnoRef" type="string" required>
+  Your customer account name on the Transatel platform.
+</ResponseField>
+
+<ResponseField name="creationDate" type="ISO 8601" required>
+  UTC timestamp of when the message was received by the platform.
+</ResponseField>
+
+<ResponseField name="createdBy" type="string" required>
+  Always `system` for inbound SMS events.
+</ResponseField>
+
+<ResponseField name="direction" type="string" required>
+  Always `MO` (Mobile Originated) for inbound SMS events.
+</ResponseField>
+
+<ResponseField name="from" type="string" required>
+  The sender's MSISDN in E.164 format without the leading `+`.
+</ResponseField>
+
+<ResponseField name="to" type="string" required>
+  The destination address — typically a short code or MSISDN.
+</ResponseField>
+
+<ResponseField name="type" type="string" required>
+  Message content type: `text` or `binary`.
+</ResponseField>
+
+<ResponseField name="encoding" type="string" required>
+  Character encoding used. One of:
+
+  | Value | Description |
+  |-------|-------------|
+  | `GSM-7` | Standard 7-bit GSM encoding. Supports up to 160 characters per segment. |
+  | `UCS-2` | 16-bit Unicode encoding. Supports up to 70 characters per segment. |
+  | `BINARY` | Raw binary content. Used when `type` is `binary`. |
+</ResponseField>
+
+<ResponseField name="segments" type="integer" required>
+  Number of SMS segments the message was split into.
+</ResponseField>
+
+<ResponseField name="network" type="string" required>
+  Always `on-net` — indicates the message originated from a subscriber on the Transatel network.
+</ResponseField>
+
+<ResponseField name="text" type="string">
+  The UTF-8 decoded message content. Present when `type` is `text`.
+</ResponseField>
+
+<ResponseField name="binary" type="string">
+  The message content as a hexadecimal string. Present when `type` is `binary`.
+</ResponseField>
+
+---
+
+### SMS delivery report — `NETWORK/SMS/DLR/RECEIVED`
+
+This event fires when the network returns a delivery report for an outbound (Mobile Terminated, or MT) SMS that you sent to a subscriber. It includes everything from the `NETWORK/SMS/RECEIVED` body, plus delivery-specific fields.
+
+```json
+{
+  "header": {
+    "eventId": "f0e1d2c3-b4a5-9687-7869-aabbccddeeff",
+    "eventType": "NETWORK/SMS/DLR/RECEIVED",
+    "eventDate": "2023-07-10T14:23:12Z"
+  },
+  "body": {
+    "messageId": "11223344-5566-7788-99aa-bbccddeeff00",
+    "mvnoRef": "<Customer account name>",
+    "creationDate": "2023-07-10T14:22:00Z",
+    "createdBy": "system",
+    "direction": "MO",
+    "from": "36500",
+    "to": "33601234567",
+    "type": "text",
+    "encoding": "GSM-7",
+    "segments": 1,
+    "network": "on-net",
+    "text": "Your verification code is 482910.",
+    "validityPeriod": 1440,
+    "dlr": true,
+    "dlrDate": "2023-07-10T14:23:12Z",
+    "dlrStatus": "delivered",
+    "externalReference": "MSG-REF-00042"
+  }
+}
+```
+
+#### Additional DLR body fields
+
+<ResponseField name="validityPeriod" type="integer">
+  The validity period of the original MT SMS, in minutes. The message will no longer be retried after this period expires.
+</ResponseField>
+
+<ResponseField name="dlr" type="boolean" required>
+  Always `true` on DLR events, confirming this is a delivery report.
+</ResponseField>
+
+<ResponseField name="dlrDate" type="ISO 8601" required>
+  UTC timestamp of when the delivery report was received from the network.
+</ResponseField>
+
+<ResponseField name="dlrStatus" type="string" required>
+  The final delivery outcome. Possible values:
+
+  | Value | Description |
+  |-------|-------------|
+  | `delivered` | The message was successfully delivered to the handset. |
+  | `expired` | The message could not be delivered before the `validityPeriod` elapsed. |
+  | `deleted` | The message was deleted before delivery could be confirmed. |
+  | `error` | A network or system error prevented delivery. |
+</ResponseField>
+
+<ResponseField name="externalReference" type="string">
+  Your own reference identifier for the original MT SMS, if one was provided when you sent the message.
+</ResponseField>
+
+<Warning>
+  A `dlrStatus` of `error` does not identify the specific failure cause. Check your message logs via the API or web portal for additional diagnostics.
+</Warning>
+
+---
+
+## Location update events
+
+Location update events are generated whenever a subscriber's device attempts to register with a mobile network — for example, when a device powers on, moves into a new cell, or transitions between network generations (2G/3G/4G). Transatel fires one of two events depending on whether the attach was accepted or denied.
+
+### Connection types
+
+All location update events include a `type` field identifying the network technology the device used:
+
+| Value | Description |
+|-------|-------------|
+| `CS` | Circuit-Switched (2G/3G voice and SMS). |
+| `PS` | Packet-Switched (2G/3G data). |
+| `EPS` | Evolved Packet System (4G/LTE). |
+
+### Location update accepted — `NETWORK/LOCATION-UPDATE/ACCEPTED`
+
+This event fires when a device successfully attaches to a mobile network.
+
+```json
+{
+  "header": {
+    "eventId": "12345678-abcd-ef01-2345-6789abcdef01",
+    "eventType": "NETWORK/LOCATION-UPDATE/ACCEPTED",
+    "eventDate": "2023-08-02T08:45:00Z"
+  },
+  "body": {
+    "mvnoRef": "<Customer account name>",
+    "msisdn": "33601234567",
+    "imsi": "208220123456789",
+    "simSerial": "8933220000123456789",
+    "subscriberNumber": "12345678.00000001",
+    "externalReference": "RX12345ZVGT",
+    "type": "EPS",
+    "mcc": "208",
+    "mnc": "20",
+    "iso2": "FR",
+    "iso3": "FRA",
+    "operatorName": "Bouygues Telecom",
+    "imei": "356938035643809"
+  }
+}
+```
+
+### Location update denied — `NETWORK/LOCATION-UPDATE/DENIED`
+
+This event fires when a device attach is rejected by the network. The body includes an `errorCode` field with the rejection reason.
+
+```json
+{
+  "header": {
+    "eventId": "aabbccdd-1122-3344-5566-778899aabbcc",
+    "eventType": "NETWORK/LOCATION-UPDATE/DENIED",
+    "eventDate": "2023-08-02T08:46:10Z"
+  },
+  "body": {
+    "mvnoRef": "<Customer account name>",
+    "msisdn": "33601234567",
+    "imsi": "208220123456789",
+    "simSerial": "8933220000123456789",
+    "subscriberNumber": "12345678.00000001",
+    "externalReference": "RX12345ZVGT",
+    "type": "CS",
+    "mcc": "208",
+    "mnc": "20",
+    "iso2": "FR",
+    "iso3": "FRA",
+    "operatorName": "Bouygues Telecom",
+    "errorCode": "11"
+  }
+}
+```
+
+#### Body fields
+
+<ResponseField name="mvnoRef" type="string" required>
+  Your customer account name on the Transatel platform.
+</ResponseField>
+
+<ResponseField name="msisdn" type="string" required>
+  The subscriber's MSISDN in E.164 format without the leading `+`.
+</ResponseField>
+
+<ResponseField name="imsi" type="string" required>
+  The IMSI used during this attach attempt.
+</ResponseField>
+
+<ResponseField name="simSerial" type="string" required>
+  The ICCID of the SIM card.
+</ResponseField>
+
+<ResponseField name="subscriberNumber" type="string" required>
+  Transatel's internal subscriber identifier.
+</ResponseField>
+
+<ResponseField name="externalReference" type="string">
+  Your own reference identifier for this subscriber, if one was set.
+</ResponseField>
+
+<ResponseField name="type" type="string" required>
+  The connection type: `CS`, `PS`, or `EPS`. See the [connection types table](#connection-types) above.
+</ResponseField>
+
+<ResponseField name="mcc" type="string" required>
+  Mobile Country Code of the network the device attached to (or attempted to attach to).
+</ResponseField>
+
+<ResponseField name="mnc" type="string" required>
+  Mobile Network Code of the network.
+</ResponseField>
+
+<ResponseField name="iso2" type="string" required>
+  ISO 3166-1 alpha-2 country code of the network (e.g. `FR`).
+</ResponseField>
+
+<ResponseField name="iso3" type="string" required>
+  ISO 3166-1 alpha-3 country code of the network (e.g. `FRA`).
+</ResponseField>
+
+<ResponseField name="operatorName" type="string" required>
+  Human-readable name of the mobile network operator.
+</ResponseField>
+
+<ResponseField name="imei" type="string">
+  The IMEI of the device. Only present on `PS` (Packet-Switched) and `EPS` (4G) attach events. Not available on `CS` (Circuit-Switched) attaches.
+</ResponseField>
+
+<ResponseField name="errorCode" type="string">
+  The rejection error code. Only present on `NETWORK/LOCATION-UPDATE/DENIED` events.
+
+  The error code standard depends on the connection type:
+
+  | `type` | Error code standard |
+  |--------|---------------------|
+  | `CS` | 3GPP MAP error code (GSM 09.02 / TS 29.002) |
+  | `PS` | Diameter result code (3GPP TS 29.272) |
+  | `EPS` | Diameter result code (3GPP TS 29.272) |
+</ResponseField>
+
+<Note>
+  Consult the relevant 3GPP specification to look up the meaning of a specific `errorCode` value. Common CS MAP errors include `11` (Teleservice Not Provisioned) and `27` (Absent Subscriber). Common Diameter errors include `5001` (User Unknown) and `5004` (Unknown EPS Subscription).
+</Note>

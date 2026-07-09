@@ -1,0 +1,310 @@
+---
+title: "CDRs and Network Usage Analytics"
+sidebarTitle: "Usage"
+description: "Query detailed CDRs for data, voice, SMS, and MMS. Use aggregation endpoints to analyze usage by time interval, country, APN, or RAT type."
+---
+
+The Network Usage API gives you access to Call Detail Records (CDRs) — the raw usage events generated every time a subscriber uses data, makes or receives a call, or sends an SMS or MMS. Beyond raw records, the API provides aggregation endpoints that roll up usage by time interval, geographic origin, APN, RAT type, and more — everything you need for billing reconciliation, capacity planning, and subscriber analytics. All requests require a Bearer token with the `NETWORK-USAGE_CDR_READ` scope.
+
+## CDR event types
+
+Every CDR belongs to one of four types:
+
+| Event type | Covers | Key metrics |
+|------------|--------|-------------|
+| `CDR/DATA` | Packet data sessions | Uplink/downlink/total bytes, APN, RAT, origin country |
+| `CDR/VOICE` | Voice calls (MO and MT) | Duration in seconds, A-number, B-number, switching domain |
+| `CDR/SMS` | SMS messages | Count (always 1 per SMS), direction, origin country |
+| `CDR/MMS` | MMS messages | Message size, direction, origin country |
+
+## Retrieve CDRs
+
+`GET /api/cdr` returns a paginated list of CDRs matching your filters. With no filters, it returns all CDRs for your account sorted by most recent first.
+
+**Required scope:** `NETWORK-USAGE_CDR_READ`
+
+<CodeGroup>
+```bash CDRs by SIM serial in a date range
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/cdr?simSerial=8933012345678901234&eventDate=gte:2024-06-01T00:00:00Z&eventDate=lte:2024-06-30T23:59:59Z&sort=-eventDate&page=1&size=100" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+```bash Data CDRs only
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/cdr?eventType=CDR%2FDATA&sort=-eventDate&page=1&size=100" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+```bash Voice CDRs for a subscriber
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/cdr?msisdn=33612345678&eventType=CDR%2FVOICE&sort=-eventDate&page=1&size=50" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+</CodeGroup>
+
+### Pagination and sorting
+
+<ParamField query="page" type="integer">
+  Page number. Maximum page index is `200`.
+</ParamField>
+
+<ParamField query="size" type="integer">
+  Results per page. Maximum is `10000`.
+</ParamField>
+
+<ParamField query="sort" type="string">
+  Sort field with optional `-` prefix for descending order. Default: `-eventDate` (most recent first).
+</ParamField>
+
+### Response structure
+
+```json
+{
+  "content": [
+    {
+      "header": {
+        "eventId": "cdr-abc-001",
+        "eventType": "CDR/DATA",
+        "eventDate": "2024-06-15T10:00:00Z"
+      },
+      "body": {
+        "mvnoRef": "my-mvno",
+        "msisdn": "33612345678",
+        "imsi": "234858800000000",
+        "simSerial": "8933012345678901234",
+        "dataSession": {
+          "apn": "mobiledata",
+          "rat": 6,
+          "originCountry": "FR",
+          "usage": {
+            "uplink": 102400,
+            "downlink": 512000,
+            "total": 614400
+          }
+        }
+      }
+    }
+  ],
+  "totalElements": 4820,
+  "totalPages": 49,
+  "pageNumber": 1
+}
+```
+
+<Accordion title="All available CDR filter parameters">
+
+| Parameter | Applies to | Description |
+|-----------|-----------|-------------|
+| `eventId` | All | Filter by specific CDR ID |
+| `eventDate` | All | Supports `gt`, `gte`, `lt`, `lte` operators |
+| `eventType` | All | `CDR/DATA`, `CDR/VOICE`, `CDR/SMS`, `CDR/MMS` |
+| `msisdn` | All | Subscriber phone number |
+| `imsi` | All | International Mobile Subscriber Identity |
+| `simSerial` | All | SIM ICCID |
+| `subscriberNumber` | All | Your internal subscriber reference |
+| `externalReference` | All | Custom external reference |
+| `mvnoRef` | All | MVNO account name |
+| `group` | All | Subscriber group |
+| `imei` | All | Device IMEI |
+| `serviceType` | All | See service types table below |
+| `serviceOutcome` | All | See service outcomes table below |
+| `rat` | Data | Radio access technology (decimal) |
+| `apn` | Data | Access Point Name |
+| `deviceIPv4` | Data | Device IPv4 address |
+| `deviceIPv6` | Data | Device IPv6 address |
+| `originCountry` | Data/Voice/SMS | ISO2 country code |
+| `mcc` | Data | Mobile Country Code |
+| `mnc` | Data | Mobile Network Code |
+| `downlink` | Data | Downlink bytes (supports range operators) |
+| `uplink` | Data | Uplink bytes (supports range operators) |
+| `total` | Data | Total bytes (supports range operators) |
+| `switchingDomain` | Voice | `CS` or `PS` |
+| `aNumber` | Voice | Calling party number |
+| `bNumber` | Voice | Called party number |
+| `usedServiceUnits` | Voice/SMS | Seconds (voice) or count (SMS/MMS) |
+| `sessionId` | Data | Data session identifier |
+| `mmsSize` | MMS | MMS message size in bytes |
+
+</Accordion>
+
+## Count CDRs
+
+`GET /api/cdr/count` accepts the same filters as the CDR list endpoint but returns aggregated counts rather than individual records. Use this for dashboards, alerting thresholds, or quick billing summaries without fetching full records.
+
+```bash
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/cdr/count?simSerial=8933012345678901234&eventDate=gte:2024-06-01T00:00:00Z&eventType=CDR%2FDATA" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+The response contains aggregated counts grouped by the field values present in your filtered results.
+
+## Data usage aggregates
+
+`GET /api/data/aggregates/sim-serial/{sim-serial}` returns time-sliced data usage totals for a specific SIM. This is the primary endpoint for usage dashboards and per-SIM billing breakdowns.
+
+**Required scope:** `NETWORK-USAGE_CDR_READ`
+
+<CodeGroup>
+```bash Daily usage with APN breakdown
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/data/aggregates/sim-serial/8933012345678901234?interval=daily&breakdown=apn&eventDate=gte:2024-06-01T00:00:00Z&eventDate=lte:2024-06-30T23:59:59Z" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+```bash Monthly usage by country
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/data/aggregates/sim-serial/8933012345678901234?interval=monthly&breakdown=originCountry" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+```bash Hourly LTE usage
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/data/aggregates/sim-serial/8933012345678901234?interval=hourly&rat=6&eventDate=gte:2024-06-15T00:00:00Z" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+</CodeGroup>
+
+### Aggregate parameters
+
+<ParamField query="interval" type="string" required>
+  Time slice granularity: `hourly`, `daily`, or `monthly`.
+</ParamField>
+
+<ParamField query="breakdown" type="string">
+  Optional dimension to split results by: `apn`, `rat`, or `originCountry`.
+</ParamField>
+
+<ParamField query="eventDate" type="string">
+  Date range filter using `gte` / `lte` operators.
+</ParamField>
+
+<ParamField query="serviceType" type="string">
+  Filter to specific service types (e.g. `MOG`, `ROG`).
+</ParamField>
+
+<ParamField query="rat" type="integer">
+  Filter to a specific RAT type (decimal value).
+</ParamField>
+
+<ParamField query="apn" type="string">
+  Filter to a specific APN.
+</ParamField>
+
+<ParamField query="originCountry" type="string">
+  ISO2 country code filter.
+</ParamField>
+
+<ParamField query="serviceOutcome" type="string">
+  Filter to a specific outcome (e.g. `OK`).
+</ParamField>
+
+### Aggregate response
+
+```json
+{
+  "count": 48,
+  "uplink": 2097152,
+  "downlink": 10485760,
+  "total": 12582912,
+  "breakdown": [
+    {
+      "apn": "mobiledata",
+      "intervals": [
+        {
+          "date": "2024-06-15",
+          "count": 12,
+          "uplink": 524288,
+          "downlink": 2621440,
+          "total": 3145728
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Voice usage aggregates
+
+`GET /api/voice/aggregates/sim-serial/{sim-serial}` works the same way as data aggregates but for voice CDRs. The `usedServiceUnits` field represents total seconds of call time.
+
+<CodeGroup>
+```bash Monthly voice usage
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/voice/aggregates/sim-serial/8933012345678901234?interval=monthly&eventDate=gte:2024-01-01T00:00:00Z" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+```bash Voice by switching domain
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/voice/aggregates/sim-serial/8933012345678901234?interval=daily&breakdown=switchingDomain" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+</CodeGroup>
+
+Breakdown options for voice: `switchingDomain` (`CS` or `PS`) or `originCountry`.
+
+## SMS and MMS usage aggregates
+
+The SMS and MMS aggregate endpoints follow the same pattern:
+
+<CodeGroup>
+```bash Monthly SMS usage
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/sms/aggregates/sim-serial/8933012345678901234?interval=monthly" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+```bash MMS usage by country
+curl -X GET \
+  "https://api.transatel.com/network/usage/api/mms/aggregates/sim-serial/8933012345678901234?interval=daily&breakdown=originCountry" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+</CodeGroup>
+
+<Note>
+  SMS CDRs always carry `usedServiceUnits: 1` — one unit per message regardless of content length. Multi-segment SMS (messages over 160 GSM characters) each generate a separate CDR per segment.
+</Note>
+
+## Reference tables
+
+### Service types
+
+| Code | Direction | Bearer | Description |
+|------|-----------|--------|-------------|
+| `MOG` | MO | Data | Mobile Originated GPRS (home data) |
+| `ROG` | — | Data | Roaming data |
+| `MOC` | MO | Voice | Mobile Originated Call |
+| `MTC` | MT | Voice | Mobile Terminated Call |
+| `MOS` | MO | SMS | Mobile Originated SMS |
+| `MTS` | MT | SMS | Mobile Terminated SMS |
+| `ROS` | — | SMS | Roaming SMS |
+| `MOM` | MO | MMS | Mobile Originated MMS |
+| `ROM` | — | MMS | Roaming MMS |
+
+### Service outcomes
+
+| Outcome | Description |
+|---------|-------------|
+| `OK` | Service delivered successfully |
+| `AUTHORIZATION_REJECTED` | Request rejected during authorization |
+| `SCP_USER_HAS_NO_CREDIT` | Subscriber balance exhausted |
+| `SCP_ZONE_BLOCKED` | Service blocked in the subscriber's current zone |
+
+### RAT types
+
+| Decimal | RAT | Generation |
+|---------|-----|-----------|
+| `1` | UTRAN | 3G WCDMA/UMTS |
+| `2` | GERAN | 2G GSM/GPRS/EDGE |
+| `3` | WLAN | Wi-Fi offload |
+| `5` | HSPA | 3G HSPA/HSPA+ |
+| `6` | EUTRAN | 4G LTE |
+| `8` | NB-IoT | Narrowband IoT |
+| `9` | LTE-M | LTE Cat-M1 |
+| `10` | NR | 5G New Radio |
+
+<Tip>
+  When building data cost reports, filter by `serviceType=ROG` to isolate roaming data usage — typically billed at a different rate than home (`MOG`) usage.
+</Tip>

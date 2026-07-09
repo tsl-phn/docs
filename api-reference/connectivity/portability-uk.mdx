@@ -1,0 +1,481 @@
+---
+title: "UK MNP Portability API Reference"
+sidebarTitle: "Portability UK"
+description: "API reference for UK number portability: PAC and STAC codes, port-in/out requests, date changes, cancellation, and early termination fees."
+---
+
+UK Mobile Number Portability (MNP) follows Ofcom's code-based porting framework. Subscribers who want to keep their number when switching to Transatel must obtain either a **PAC** (Porting Authorisation Code) or a **STAC** (Service Termination Authorisation Code) from their current operator. The code type determines how the port-in is processed and has implications for early termination. You can also manage Early Termination Fees (ETF) per subscriber to define the charges that apply when a subscriber ports out before their contract end date.
+
+---
+
+## PAC vs STAC
+
+| Code | Full name | When to use |
+|---|---|---|
+| `PAC` | Porting Authorisation Code | The subscriber wants to **keep their number** and port it to Transatel. The old operator's service ends automatically on the portability date. |
+| `STAC` | Service Termination Authorisation Code | The subscriber wants to **end their current contract** without porting the number, and will use a new number on Transatel. The STAC confirms the termination of the donor contract. |
+
+Both codes are 9 characters, alphanumeric (`[A-Z0-9]{9}`), and are obtained by the subscriber from their current operator via text message or online account portal.
+
+---
+
+## POST /portability/uk/.../request
+
+Submit a UK port-in request for a subscriber. This is the primary endpoint for initiating a port-in using a PAC or STAC code.
+
+### Endpoint
+
+```
+POST /api/portability/uk/sim-serial/{sim-serial}/request
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID) of the Transatel subscriber receiving the ported number. Must match `[0-9]{13,20}`.
+</ParamField>
+
+### Request Body
+
+<ParamField body="portabilityMsisdn" type="string" required>
+  The UK mobile number to port in. Must match the format `447[0-9]{9}` (E.164 without `+`).
+</ParamField>
+
+<ParamField body="authorizationCode" type="object" required>
+  The PAC or STAC code provided by the subscriber.
+
+  <Expandable title="authorizationCode object">
+    <ParamField body="authorizationCode.type" type="string" required>
+      The code type. One of: `PAC`, `STAC`.
+    </ParamField>
+    <ParamField body="authorizationCode.code" type="string" required>
+      The 9-character alphanumeric code. Must match `[A-Z0-9]{9}`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="wishedPortabilityDate" type="string">
+  The preferred portability date in `YYYY-MM-DD` format. Optional — if omitted, the earliest permitted date is used.
+</ParamField>
+
+### Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/sim-serial/8944100000000012345/request" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "portabilityMsisdn": "447712345678",
+    "authorizationCode": {
+      "type": "PAC",
+      "code": "ABC123DEF"
+    },
+    "wishedPortabilityDate": "2024-09-01"
+  }'
+```
+
+### Example Response
+
+```json
+{
+  "transactionId": "e5f6a7b8-2345-4901-c012-ef0123456789",
+  "simSerial": "8944100000000012345",
+  "transactionStatus": "PENDING"
+}
+```
+
+---
+
+## POST /portability/uk/sim-serial/{sim-serial}/{codeType}/request
+
+Submit a port-in request specifying the code type directly in the URL path. This is an alternative form of the port-in request endpoint.
+
+### Endpoint
+
+```
+POST /api/portability/uk/sim-serial/{sim-serial}/{codeType}/request
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match `[0-9]{13,20}`.
+</ParamField>
+
+<ParamField path="codeType" type="string" required>
+  The type of authorisation code. One of: `PAC`, `STAC`.
+</ParamField>
+
+### Request Body
+
+<ParamField body="portabilityMsisdn" type="string" required>
+  The UK mobile number to port in. Format: `447[0-9]{9}`.
+</ParamField>
+
+<ParamField body="authorizationCode" type="object" required>
+  The authorisation code.
+
+  <Expandable title="authorizationCode object">
+    <ParamField body="authorizationCode.type" type="string" required>
+      Must match the `{codeType}` path parameter. One of: `PAC`, `STAC`.
+    </ParamField>
+    <ParamField body="authorizationCode.code" type="string" required>
+      The 9-character code. Must match `[A-Z0-9]{9}`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="wishedPortabilityDate" type="string">
+  Optional preferred portability date in `YYYY-MM-DD` format.
+</ParamField>
+
+### Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/sim-serial/8944100000000012345/STAC/request" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "portabilityMsisdn": "447798765432",
+    "authorizationCode": {
+      "type": "STAC",
+      "code": "XYZ987UVW"
+    },
+    "wishedPortabilityDate": "2024-09-05"
+  }'
+```
+
+---
+
+## POST /portability/uk/sim-serial/{sim-serial}/{codeType}/{code}/cancel
+
+Cancel a specific port-in request identified by its code type and code value.
+
+### Endpoint
+
+```
+POST /api/portability/uk/sim-serial/{sim-serial}/{codeType}/{code}/cancel
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match `[0-9]{13,20}`.
+</ParamField>
+
+<ParamField path="codeType" type="string" required>
+  The type of the code used in the port-in request. One of: `PAC`, `STAC`.
+</ParamField>
+
+<ParamField path="code" type="string" required>
+  The 9-character authorisation code used in the original port-in request. Must match `[A-Z0-9]{9}`.
+</ParamField>
+
+### Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/sim-serial/8944100000000012345/PAC/ABC123DEF/cancel" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{}'
+```
+
+---
+
+## GET /portability/uk
+
+List all UK portability requests associated with your account, including current statuses, code types, and portability dates.
+
+### Endpoint
+
+```
+GET /api/portability/uk
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_READ`
+
+### Request Example
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk" \
+  --header "Authorization: Bearer <token>"
+```
+
+### Example Response
+
+```json
+{
+  "portabilityRequests": [
+    {
+      "simSerial": "8944100000000012345",
+      "portabilityMsisdn": "447712345678",
+      "codeType": "PAC",
+      "portabilityDate": "2024-09-01",
+      "status": "PENDING",
+      "requestDate": "2024-08-20T11:00:00Z"
+    }
+  ]
+}
+```
+
+---
+
+## POST /portability/uk/.../cancel
+
+Cancel a pending UK portability request by SIM serial number, without needing to reference the original code.
+
+### Endpoint
+
+```
+POST /api/portability/uk/sim-serial/{sim-serial}/cancel
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID) with a pending portability request. Must match `[0-9]{13,20}`.
+</ParamField>
+
+### Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/sim-serial/8944100000000012345/cancel" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{}'
+```
+
+---
+
+## POST /portability/uk/.../portability-date/update
+
+Update the wished portability date for a pending UK port-in request.
+
+### Endpoint
+
+```
+POST /api/portability/uk/sim-serial/{sim-serial}/portability-date/update
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match `[0-9]{13,20}`.
+</ParamField>
+
+### Request Body
+
+<ParamField body="wishedPortabilityDate" type="string" required>
+  The new portability date in `YYYY-MM-DD` format. Must comply with Ofcom's minimum notice requirements.
+</ParamField>
+
+### Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/sim-serial/8944100000000012345/portability-date/update" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "wishedPortabilityDate": "2024-09-10"
+  }'
+```
+
+---
+
+## GET /portability/uk/early-termination-fees/{sim-serial}
+
+Retrieve the Early Termination Fee (ETF) configuration currently set for a subscriber. ETFs define the charges applied if a subscriber ports out before their contract end date.
+
+### Endpoint
+
+```
+GET /api/portability/uk/early-termination-fees/{sim-serial}
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_READ`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match `[0-9]{13,20}`.
+</ParamField>
+
+### Request Example
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/early-termination-fees/8944100000000012345" \
+  --header "Authorization: Bearer <token>"
+```
+
+### Example Response
+
+```json
+{
+  "simSerial": "8944100000000012345",
+  "type": "monthly",
+  "monthly": {
+    "contractEndDate": "2025-06-30",
+    "monthlyFee": 1500,
+    "maximumTerminationFee": 18000,
+    "device": {
+      "contractEndDate": "2025-06-30",
+      "monthlyFee": 800
+    }
+  }
+}
+```
+
+---
+
+## PUT /portability/uk/early-termination-fees/{sim-serial}
+
+Set or update the Early Termination Fee configuration for a subscriber. Three fee types are supported: `fixed`, `monthly`, and `none`.
+
+### Endpoint
+
+```
+PUT /api/portability/uk/early-termination-fees/{sim-serial}
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match `[0-9]{13,20}`.
+</ParamField>
+
+### Request Body
+
+<ParamField body="type" type="string" required>
+  The ETF model to apply. One of: `fixed`, `monthly`, `none`.
+</ParamField>
+
+<ParamField body="fixed" type="object">
+  Required when `type` is `fixed`. A one-time termination charge.
+
+  <Expandable title="fixed object">
+    <ParamField body="fixed.contractEndDate" type="string" required>
+      The contract end date in `YYYY-MM-DD` format.
+    </ParamField>
+    <ParamField body="fixed.terminationFee" type="integer" required>
+      The fixed fee charged on early termination, in pence (e.g. `5000` = £50.00).
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="monthly" type="object">
+  Required when `type` is `monthly`. A recurring monthly fee model calculated against remaining contract months.
+
+  <Expandable title="monthly object">
+    <ParamField body="monthly.contractEndDate" type="string" required>
+      The contract end date in `YYYY-MM-DD` format.
+    </ParamField>
+    <ParamField body="monthly.monthlyFee" type="integer" required>
+      The fee charged per remaining month, in pence.
+    </ParamField>
+    <ParamField body="monthly.maximumTerminationFee" type="integer" required>
+      The cap on the total termination fee, in pence.
+    </ParamField>
+    <ParamField body="monthly.device" type="object">
+      Optional device-specific monthly fee component.
+
+      <Expandable title="device object">
+        <ParamField body="monthly.device.contractEndDate" type="string" required>
+          Device contract end date in `YYYY-MM-DD` format.
+        </ParamField>
+        <ParamField body="monthly.device.monthlyFee" type="integer" required>
+          Monthly device fee in pence.
+        </ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### ETF Type Summary
+
+| `type` | Description | Pence examples |
+|---|---|---|
+| `fixed` | A single flat fee charged at the point of early termination | `5000` = £50.00 |
+| `monthly` | Fee × remaining contract months, capped at `maximumTerminationFee` | `1500` = £15.00/month |
+| `none` | No early termination fee applies | — |
+
+### Request Examples
+
+<CodeGroup>
+
+```bash Fixed ETF
+curl --request PUT \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/early-termination-fees/8944100000000012345" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "type": "fixed",
+    "fixed": {
+      "contractEndDate": "2025-06-30",
+      "terminationFee": 5000
+    }
+  }'
+```
+
+```bash Monthly ETF
+curl --request PUT \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/early-termination-fees/8944100000000012345" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "type": "monthly",
+    "monthly": {
+      "contractEndDate": "2025-06-30",
+      "monthlyFee": 1500,
+      "maximumTerminationFee": 18000,
+      "device": {
+        "contractEndDate": "2025-06-30",
+        "monthlyFee": 800
+      }
+    }
+  }'
+```
+
+```bash No ETF
+curl --request PUT \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/uk/early-termination-fees/8944100000000012345" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "type": "none"
+  }'
+```
+
+</CodeGroup>
+
+---
+
+## Error Responses
+
+| HTTP Status | Code | Description |
+|---|---|---|
+| `400` | `BAD_REQUEST` | Invalid MSISDN format, invalid PAC/STAC code, missing required fields, or mismatched `codeType` |
+| `403` | `INSUFFICIENT_PERMISSION` | Token does not carry the required scope |
+| `404` | `SUBSCRIBER_NOT_FOUND` | No subscriber found for the provided SIM serial number |
+| `404` | `PORTABILITY_NOT_FOUND` | No portability request found for this subscriber |
+| `409` | `CONFLICT` | Another provisioning or portability request is already pending on this SIM |
+| `500` | `INTERNAL_ERROR` | An unexpected server-side error occurred |
+| `501` | `NOT_IMPLEMENTED` | The operation is not available for this account configuration |

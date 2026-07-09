@@ -1,0 +1,98 @@
+---
+title: "Over-the-Air Network Switch for SIM Cards"
+sidebarTitle: "OTA"
+description: "Send an OTA command to switch a SIM card from a public network to its configured private network by ICCID or MSISDN."
+---
+
+The Network OTA API lets you send an over-the-air (OTA) command directly to a SIM card to switch it from a public network onto its pre-configured private network. This is useful in IoT and enterprise deployments where SIMs start life on a standard public network and need to be migrated to a dedicated private APN or core network without physical intervention. All requests require a Bearer token with the `NETWORK-OTA_SWITCH2PRIVATE` scope.
+
+## What the OTA switch does
+
+When you call the `switch2private` endpoint, Transatel sends an OTA message to the SIM over the air. The SIM processes the command and:
+
+1. Detaches from its current public network.
+2. Re-attaches using the private network profile configured for your account.
+
+The process is transparent to the end user's application once the re-attach completes. No physical SIM swap or manual reconfiguration is required.
+
+### When to use it
+
+<CardGroup cols={2}>
+  <Card title="Fleet activation" icon="truck">
+    You deploy devices connected to a public network during manufacturing and switch them to your private network at activation time.
+  </Card>
+  <Card title="Network migration" icon="arrows-rotate">
+    You're migrating a fleet from a shared public network to a dedicated private core and want to do it programmatically at scale.
+  </Card>
+  <Card title="Incident response" icon="shield-exclamation">
+    A device is misbehaving on the public network and you need to force it onto your controlled private network immediately.
+  </Card>
+  <Card title="Provisioning workflow" icon="gear">
+    Your onboarding pipeline automatically switches newly registered SIMs to private as part of a multi-step activation sequence.
+  </Card>
+</CardGroup>
+
+## Switch by ICCID
+
+If you know the SIM's ICCID (the 19- or 20-digit serial number printed on the SIM card), use this endpoint. ICCIDs must be exactly 19 or 20 digits.
+
+**Required scope:** `NETWORK-OTA_SWITCH2PRIVATE`
+
+```bash
+curl -X POST \
+  "https://api.transatel.com/network/ota/api/switch2private/iccid/89330123456789012345" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+A successful command returns HTTP **204 No Content** with an empty body.
+
+## Switch by MSISDN
+
+If you're working from a subscriber's phone number rather than their SIM serial, use the MSISDN variant. The MSISDN must be in E.164 format without a `+` prefix.
+
+**Required scope:** `NETWORK-OTA_SWITCH2PRIVATE`
+
+```bash
+curl -X POST \
+  "https://api.transatel.com/network/ota/api/switch2private/msisdn/33612345678" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+Again, a `204 No Content` response confirms the OTA message was dispatched.
+
+<Note>
+  A `204` response means the OTA command was **accepted and dispatched** to the network. It does not guarantee that the SIM has already re-attached to the private network — that depends on the device being reachable. Use the [Attach API](/network/attach) to confirm the SIM has re-registered after sending the command.
+</Note>
+
+## What happens after the switch
+
+<Steps>
+  <Step title="OTA message dispatched">
+    Transatel's OTA platform sends an encrypted SMS-based command to the SIM card's profile management application.
+  </Step>
+  <Step title="SIM processes the command">
+    The SIM's applet validates the command, updates its preferred network configuration, and triggers a detach from the current public network.
+  </Step>
+  <Step title="Device re-attaches">
+    The device automatically attempts to register on the private network. Depending on signal conditions and device behavior, this typically completes within seconds to a few minutes.
+  </Step>
+  <Step title="Confirm with Attach API">
+    Poll `GET /api/sim-serial/{sim-serial}/last` on the Attach API to verify a new `ACCEPTED` location update event has appeared with the expected private network MCC/MNC.
+  </Step>
+</Steps>
+
+<Tip>
+  If the device is offline when you send the OTA command, the SIM will process it the next time the device powers on and registers with the network. You don't need to resend the command.
+</Tip>
+
+## Error reference
+
+| HTTP status | Error code | Description |
+|-------------|-----------|-------------|
+| `400` | `BAD_REQUEST` | The ICCID or MSISDN format is invalid (e.g., ICCID not 19–20 digits) |
+| `404` | `SUBSCRIBER_NOT_FOUND` | No subscriber found matching the provided ICCID or MSISDN |
+| `500` | `INTERNAL_ERROR` | Unexpected server-side error; retry with exponential back-off |
+
+<Warning>
+  If you receive `404 SUBSCRIBER_NOT_FOUND`, verify that the ICCID or MSISDN belongs to your MVNO account and that the subscription is active. SIMs that have been terminated or transferred to another account will not be found.
+</Warning>

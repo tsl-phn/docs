@@ -1,0 +1,150 @@
+---
+title: "Service Options: Safeguards and Spending Controls"
+sidebarTitle: "Options"
+description: "Retrieve data safeguard, overspend safeguard, and payment safeguard options available in your Class of Service catalog."
+---
+
+Your Class of Service (COS) can be configured with account-level spending and data controls known as **service options**. These options define the safeguard mechanisms available across your entire subscriber base — such as cutting off data when a spending threshold is reached, or blocking transactions that would push a subscriber into overspend. The Options API lets you read the safeguard configurations in your catalog so you can understand what controls are available and how they're structured before applying them to individual subscribers. The required OAuth scope for all options endpoints is `CATALOG_OPTIONS_READ`.
+
+<Note>
+  This API lets you **read** the options defined in your catalog. To apply, modify, or remove safeguards on a specific subscriber, use the **Connectivity Management API**.
+</Note>
+
+## Option Types
+
+Your COS may include up to three types of safeguard option:
+
+<CardGroup cols={3}>
+  <Card title="Data Safeguard" icon="database">
+    Cuts off a subscriber's data access when a spending limit (expressed in cents) is reached. Supports granular states including temporary and permanent deactivation.
+  </Card>
+  <Card title="Overspend Safeguard" icon="triangle-exclamation">
+    Prevents a subscriber from spending beyond their allocated allowance. Binary control — either active or inactive.
+  </Card>
+  <Card title="Payment Safeguard" icon="credit-card">
+    A payment-level cut-off that blocks transactions once a threshold is reached. Binary control — either active or inactive.
+  </Card>
+</CardGroup>
+
+## Retrieve All Options for a COS
+
+To see every option configured for your Class of Service in a single call, use the top-level options endpoint:
+
+```bash
+curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/options" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+<Note>
+  Replace `{cosRef}` with the Class of Service reference provided by your Transatel account manager.
+</Note>
+
+The response returns all option types available in your catalog, each with its configuration and supported states.
+
+## Retrieve Individual Options
+
+If you only need the details for a specific safeguard, you can call each option endpoint directly.
+
+<Tabs>
+  <Tab title="Data Safeguard">
+    ```bash
+    curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/options/dataSafeguard" \
+      -H "Authorization: Bearer <your_access_token>"
+    ```
+
+    **Example response:**
+    ```json
+    {
+      "cutOff": {
+        "limit": 6000,
+        "unit": "CENTS",
+        "currency": "EUR"
+      },
+      "states": [
+        "active",
+        "temporarily-inactive",
+        "permanently-inactive"
+      ]
+    }
+    ```
+  </Tab>
+  <Tab title="Overspend Safeguard">
+    ```bash
+    curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/options/overspendSafeguard" \
+      -H "Authorization: Bearer <your_access_token>"
+    ```
+
+    **Example response:**
+    ```json
+    {
+      "states": [
+        "active",
+        "inactive"
+      ]
+    }
+    ```
+  </Tab>
+  <Tab title="Payment Safeguard">
+    ```bash
+    curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/options/paymentSafeguard" \
+      -H "Authorization: Bearer <your_access_token>"
+    ```
+
+    **Example response:**
+    ```json
+    {
+      "states": [
+        "active",
+        "inactive"
+      ]
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Understanding Option States
+
+Different safeguard types support different sets of states. The `states` array in each option response lists every state that can be applied to a subscriber for that option type within your COS.
+
+<AccordionGroup>
+  <Accordion title="active">
+    The safeguard is enabled and operating. For **dataSafeguard**, this means the subscriber's data will be cut off once the `cutOff.limit` is reached. For **overspendSafeguard** and **paymentSafeguard**, the corresponding protection is in effect.
+  </Accordion>
+  <Accordion title="inactive">
+    The safeguard is disabled. The subscriber is not subject to the corresponding spending or data control. Applies to `overspendSafeguard` and `paymentSafeguard`.
+  </Accordion>
+  <Accordion title="temporarily-inactive">
+    The safeguard has been suspended for a defined period. Once the suspension window ends, the safeguard returns to `active`. This state is only available for **dataSafeguard** and gives subscribers a controlled grace window without permanently disabling protection.
+  </Accordion>
+  <Accordion title="permanently-inactive">
+    The safeguard has been permanently disabled for the subscriber. Unlike `temporarily-inactive`, this does not revert automatically. This state is only available for **dataSafeguard** and should be used when you want to explicitly opt a subscriber out of the data cut-off permanently.
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+  Not every COS supports every state. Always check the `states` array in the option response for your specific COS before attempting to apply a state to a subscriber via the Connectivity Management API. Attempting to set an unsupported state will result in an error.
+</Warning>
+
+## Understanding the `cutOff` Amount
+
+The `cutOff.limit` for `dataSafeguard` is expressed in **cents** (the smallest unit of the configured currency). To display this value to end users, divide by 100.
+
+For example:
+- `6000 CENTS EUR` = **€60.00**
+- `1500 CENTS EUR` = **€15.00**
+
+```json
+"cutOff": {
+  "limit": 6000,
+  "unit": "CENTS",
+  "currency": "EUR"
+}
+```
+
+<Tip>
+  Store the raw `CENTS` value in your system and only convert to the decimal representation at display time. This avoids floating-point rounding issues when comparing or processing amounts programmatically.
+</Tip>
+
+## Applying Options to Subscribers
+
+Reading options via the Catalog API shows you what's available in your COS configuration. To actually apply a safeguard to a specific subscriber — or to change or remove their current safeguard state — use the **Connectivity Management API**. That API operates on individual subscribers and accepts the state values listed in the catalog option response.

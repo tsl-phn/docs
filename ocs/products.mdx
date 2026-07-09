@@ -1,0 +1,214 @@
+---
+title: "Browse and Query Your Product Catalog"
+sidebarTitle: "Products"
+description: "Retrieve available products from your OCS catalog, filter by category or tags, and check subscription eligibility for a specific subscriber."
+---
+
+The Products API lets you explore every bundle available within your Class of Service (COS) — from one-time data packs to auto-renewing monthly plans and supplementary add-ons. You can narrow your query with filters for category, tags, and parent product, and you can pass a subscriber's MSISDN to find out whether they're eligible to activate a specific product right now. The required OAuth scope for all product endpoints is `CATALOG_PRODUCTS_READ`.
+
+## Product Categories
+
+Every product in your catalog belongs to one of three categories:
+
+<CardGroup cols={3}>
+  <Card title="One-off" icon="bolt">
+    A fixed allowance that expires after a set validity period. For example, 1 GB of data valid for 30 days. Once the allowance is consumed or the period ends, the product is not renewed.
+  </Card>
+  <Card title="Recurring" icon="rotate">
+    An auto-renewing allowance that resets at each billing cycle. For example, 2 GB per month. You can optionally cap the number of renewals with `maxOccurrences`.
+  </Card>
+  <Card title="Add-on" icon="circle-plus">
+    A supplementary allowance added on top of an active parent product. Add-ons carry a `parentProductIds` list and are only applicable when the subscriber already holds one of those parent products.
+  </Card>
+</CardGroup>
+
+## Retrieve All Products for a COS
+
+To list the full catalog for your Class of Service, call the products endpoint with your `cosRef`. The response returns a `ProductCatalog` object containing the COS reference, the resolved locale, and an array of products.
+
+```bash
+curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/products" \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Accept-Language: en-US"
+```
+
+<Note>
+  Replace `{cosRef}` with the Class of Service reference provided by your Transatel account manager.
+</Note>
+
+### Example Response
+
+```json
+{
+  "cos": "MY_COS_REF",
+  "currentLocale": "en-US",
+  "products": [
+    {
+      "productDefinition": {
+        "productId": "ONE_OFF",
+        "productCategory": "One-off",
+        "validityPeriod": {
+          "validityDurationUnit": "days",
+          "validityDuration": 30
+        },
+        "countryList": ["FRA", "GBR"],
+        "allowances": {
+          "data": [
+            {
+              "resourceName": "DATA_BUNDLE",
+              "resourceUnit": "KB",
+              "resourceValue": 1048576,
+              "resourceDurationUnit": "days",
+              "resourceDuration": 30
+            }
+          ]
+        }
+      },
+      "prices": {
+        "subscriptionFee": [[{ "currency": "EUR", "unit": "CENTS", "amount": 1000 }]]
+      },
+      "availability": {
+        "available": true,
+        "startDate": "2023-04-19T13:30:00Z",
+        "endDate": "2024-04-19T13:30:00Z"
+      },
+      "canSubscribe": {
+        "allowed": true,
+        "mode": "add"
+      }
+    }
+  ],
+  "links": []
+}
+```
+
+## Filter Products
+
+You can add query parameters to narrow your results. Combine any of the filters below in a single request.
+
+<AccordionGroup>
+  <Accordion title="Filter by category">
+    Use the `categories` parameter to return only products of a specific type. Accepted values are `Add-on`, `One-off`, and `Recurring`. You can pass multiple values as a comma-separated list.
+
+    ```bash
+    curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/products?categories=Recurring" \
+      -H "Authorization: Bearer <your_access_token>"
+    ```
+  </Accordion>
+  <Accordion title="Filter add-ons by parent product">
+    When you want to show which add-ons are compatible with a specific base product, pass the parent product's `productId` as the `childOf` parameter. Only add-ons whose `parentProductIds` includes that value will be returned.
+
+    ```bash
+    curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/products?categories=Add-on&childOf=MY_RECURRING_PLAN" \
+      -H "Authorization: Bearer <your_access_token>"
+    ```
+  </Accordion>
+  <Accordion title="Filter by tags">
+    Products can carry arbitrary tags (for example, `promo` or `summer`). Use the `tags` parameter to retrieve only products with a matching tag.
+
+    ```bash
+    curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/products?tags=promo" \
+      -H "Authorization: Bearer <your_access_token>"
+    ```
+  </Accordion>
+  <Accordion title="Control availability status">
+    By default, the API returns only `AVAILABLE` products. Pass `availabilityStatus=ALL` to include products that are currently outside their availability window — useful for building product management tooling.
+
+    ```bash
+    curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/products?availabilityStatus=ALL" \
+      -H "Authorization: Bearer <your_access_token>"
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Check Subscriber Eligibility
+
+Pass a subscriber's MSISDN using the `msisdn` query parameter to enrich each product in the response with a `canSubscribe` object. This tells you whether that specific subscriber can activate the product right now, and if so, how the subscription will be applied.
+
+```bash
+curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/products?msisdn=+33600000000" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+### Understanding `canSubscribe`
+
+| Field | Type | Description |
+|---|---|---|
+| `allowed` | boolean | `true` if the subscriber can activate this product now |
+| `mode` | string | How the subscription will be applied — see below |
+| `errorKey` | string | Machine-readable reason code when `allowed` is `false` |
+| `errorMessage` | string | Human-readable explanation when `allowed` is `false` |
+
+### Subscription Modes
+
+When `allowed` is `true`, the `mode` field tells you how the product will enter the subscriber's inventory:
+
+<Tabs>
+  <Tab title="add">
+    The product is added to the subscriber's active inventory **immediately** upon subscription. This is the standard mode for One-off products and Add-ons.
+  </Tab>
+  <Tab title="scheduled-switch">
+    The product is queued to replace the subscriber's current plan at the **next renewal date**. This mode applies when the subscriber already has an active Recurring product and is switching to a different one — the switch is deferred to avoid mid-cycle disruption.
+  </Tab>
+</Tabs>
+
+<Tip>
+  When building a self-service portal, always pass the subscriber's `msisdn` to the products endpoint so you can hide or grey out products where `canSubscribe.allowed` is `false`, and display the correct call-to-action based on the subscription `mode`.
+</Tip>
+
+## Understanding Allowances
+
+Each product's `allowances.data` array describes the resources the subscriber receives. The `resourceUnit` field tells you the unit of measurement:
+
+| Unit | Applies to |
+|---|---|
+| `KB` | Data allowances (kilobytes) |
+| `SECOND` | Voice allowances (seconds) |
+| `SMS` | SMS allowances (message count) |
+
+The `resourceValue` is always expressed in the unit shown. For example, `1048576 KB` equals 1 GB. The `resourceDuration` and `resourceDurationUnit` fields describe how long that allowance is valid once consumed (which may differ from the product's overall `validityPeriod`).
+
+<Note>
+  When `unlimited` is `true` on the `productDefinition`, the allowance values should be treated as informational only — the subscriber is not metered against them.
+</Note>
+
+## Understanding Prices
+
+Prices are returned in the `prices` object. The `subscriptionFee` is always expressed in **cents** (smallest currency unit), so you need to divide by 100 to display the decimal amount to end users.
+
+```json
+"prices": {
+  "subscriptionFee": [[{ "currency": "EUR", "unit": "CENTS", "amount": 1000 }]]
+}
+```
+
+In this example, `1000 CENTS EUR` is **€10.00**. The `renewalFee` field follows the same structure and is present for Recurring products.
+
+## Deferred Activation
+
+Some products carry a `deferredActivationPeriod` on their `productDefinition`. When this field is present, the product is added to the subscriber's inventory at subscription time but does **not** start consuming its validity period until the subscriber first uses the service (for example, generates the first data session). This is particularly common for promotional bundles designed to activate on first use.
+
+<Note>
+  If `deferredActivationPeriod` is set, the product's validity clock starts on first use, not on the subscription date.
+</Note>
+
+## Retrieve a Specific Product
+
+If you already know the `productId`, you can fetch that product directly rather than listing the full catalog. This is useful for displaying a product details page or validating a product before subscription.
+
+```bash
+curl -X GET "https://api.transatel.com/ocs/catalog/api/cos/{cosRef}/products/{productId}" \
+  -H "Authorization: Bearer <your_access_token>"
+```
+
+You can also pass a comma-separated list of product IDs to retrieve multiple specific products in one call.
+
+## Error Reference
+
+| HTTP Status | Error Code | Description |
+|---|---|---|
+| `400` | `BAD_REQUEST` | The request is malformed or contains invalid parameter values |
+| `404` | `CATALOG_NOT_FOUND` | The `cosRef` does not match any known catalog |
+| `404` | `PRODUCT_NOT_FOUND` | The requested `productId` does not exist in this catalog |
+| `404` | `SUBSCRIBER_NOT_FOUND` | The `msisdn` passed does not match any known subscriber |
+| `500` | `INTERNAL_ERROR` | An unexpected server-side error occurred |

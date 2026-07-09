@@ -1,0 +1,176 @@
+---
+title: "GET /data-session — Active Session Lookup"
+sidebarTitle: "Data Session"
+description: "Retrieve active data session details for a subscriber by IMSI or MSISDN including APN, IP address, and RAT type."
+---
+
+The Data Session API lets you inspect the current active packet data sessions for a subscriber in real time. The response includes the Access Point Name (APN), assigned IP address, the radio access technology (RAT) type in use, and device IMEI when available. This is useful for troubleshooting connectivity issues, verifying that a device has successfully attached to the right APN, or confirming roaming behaviour.
+
+You can look up sessions by either IMSI or MSISDN. Both endpoints return the same response shape and require the `NETWORK-DATA-SESSION_SESSION_READ` scope.
+
+**Base URL:** `https://api.transatel.com/network/data-session`
+
+---
+
+## GET /api/data-session/imsi/{imsi}
+
+Returns all active data sessions for the subscriber identified by IMSI.
+
+### Required Scope
+
+`NETWORK-DATA-SESSION_SESSION_READ`
+
+### Path Parameters
+
+<ParamField path="imsi" type="string" required>
+  The subscriber's International Mobile Subscriber Identity. Must match `[0-9]{15}`.
+</ParamField>
+
+### Error Responses
+
+| HTTP Status | Error Code           | Meaning                                                       |
+|-------------|----------------------|---------------------------------------------------------------|
+| 400         | `BAD_REQUEST`        | The `imsi` path parameter is malformed.                       |
+| 403         | `INSUFFICIENT_PERMISSION` | Your token does not carry the required scope.          |
+| 404         | `SESSION_NOT_FOUND`  | The subscriber has no active data session.                    |
+| 404         | `NOT_FOUND`          | No subscriber found with the given IMSI.                      |
+| 500         | `INTERNAL_ERROR`     | Unexpected server-side error.                                 |
+
+---
+
+## GET /api/data-session/msisdn/{msisdn}
+
+Returns all active data sessions for the subscriber identified by MSISDN. Functionally identical to the IMSI endpoint — choose whichever identifier is most convenient for your integration.
+
+### Required Scope
+
+`NETWORK-DATA-SESSION_SESSION_READ`
+
+### Path Parameters
+
+<ParamField path="msisdn" type="string" required>
+  The subscriber's MSISDN in international format without the leading `+`. Must match `[0-9]{6,15}`.
+</ParamField>
+
+---
+
+## Response Fields
+
+Both endpoints return a `DataSessionInformationResponseDto` object.
+
+<ResponseField name="imsi" type="string">
+  The subscriber's IMSI.
+</ResponseField>
+
+<ResponseField name="msisdn" type="string">
+  The subscriber's MSISDN.
+</ResponseField>
+
+<ResponseField name="sessions" type="Session[]">
+  Array of active data session objects. A subscriber may have multiple concurrent sessions (e.g. one per APN).
+</ResponseField>
+
+### Session Object
+
+<ResponseField name="Session-Id" type="string">
+  Platform-assigned session identifier.
+</ResponseField>
+
+<ResponseField name="startTime" type="string">
+  ISO 8601 timestamp when the session was established.
+</ResponseField>
+
+<ResponseField name="lastUpdateTime" type="string">
+  ISO 8601 timestamp of the most recent session update (e.g. interim accounting record).
+</ResponseField>
+
+<ResponseField name="PS-Information" type="object">
+  Packet-switched session details.
+</ResponseField>
+
+<ResponseField name="PS-Information.Called-Station-Id" type="string">
+  The Access Point Name (APN) the device has connected to.
+</ResponseField>
+
+<ResponseField name="PS-Information.PDP-Address" type="string">
+  The IP address assigned to the device for this session.
+</ResponseField>
+
+<ResponseField name="PS-Information.3GPP-GGSN-MCC-MNC" type="string">
+  The MCC+MNC of the GGSN/PGW handling the session, identifying the serving network.
+</ResponseField>
+
+<ResponseField name="PS-Information.User-Equipment-Info" type="object[]">
+  Array of equipment info entries for the connected device.
+</ResponseField>
+
+<ResponseField name="PS-Information.User-Equipment-Info[].User-Equipment-Info-Type" type="string">
+  The type of equipment identifier: `IMEI` or `IMEISV`.
+</ResponseField>
+
+<ResponseField name="PS-Information.User-Equipment-Info[].User-Equipment-Info-Value" type="string">
+  The IMEI or IMEISV value.
+</ResponseField>
+
+<ResponseField name="PS-Information.3GPP-RAT-Type" type="integer">
+  Numeric Radio Access Technology type. See the RAT type table below.
+</ResponseField>
+
+---
+
+## RAT Type Reference
+
+| Value | Technology                          |
+|-------|-------------------------------------|
+| 1     | UTRAN (3G UMTS)                     |
+| 2     | GERAN (2G GSM/GPRS/EDGE)            |
+| 3     | WLAN                                |
+| 5     | HSPA Evolution (3.5G)               |
+| 6     | EUTRAN / LTE (4G)                   |
+| 8     | NB-IoT (Narrowband IoT)             |
+| 9     | LTE-M (LTE Cat-M1)                  |
+| 10    | NR / 5G New Radio                   |
+
+<Note>
+  A `404 SESSION_NOT_FOUND` response indicates the subscriber exists but currently has no active data session — for example, if the device is off or has disconnected. This is different from `404 NOT_FOUND`, which means the subscriber identifier could not be found on your account at all.
+</Note>
+
+<CodeGroup>
+```bash Look up session by IMSI
+curl --request GET \
+  --url "https://api.transatel.com/network/data-session/api/data-session/imsi/208930000012345" \
+  --header "Authorization: Bearer <token>"
+```
+
+```bash Look up session by MSISDN
+curl --request GET \
+  --url "https://api.transatel.com/network/data-session/api/data-session/msisdn/33612345678" \
+  --header "Authorization: Bearer <token>"
+```
+
+```json Response (200 OK)
+{
+  "imsi": "208930000012345",
+  "msisdn": "33612345678",
+  "sessions": [
+    {
+      "Session-Id": "ggsn01.transatel.com;1717235400;42",
+      "startTime": "2024-06-01T08:30:00Z",
+      "lastUpdateTime": "2024-06-01T10:15:00Z",
+      "PS-Information": {
+        "Called-Station-Id": "iot.private.apn",
+        "PDP-Address": "10.14.22.187",
+        "3GPP-GGSN-MCC-MNC": "20801",
+        "User-Equipment-Info": [
+          {
+            "User-Equipment-Info-Type": "IMEI",
+            "User-Equipment-Info-Value": "353123456789012"
+          }
+        ],
+        "3GPP-RAT-Type": 6
+      }
+    }
+  ]
+}
+```
+</CodeGroup>

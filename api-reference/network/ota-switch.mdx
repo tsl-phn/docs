@@ -1,0 +1,93 @@
+---
+title: "POST /switch2private — OTA Network Switch"
+sidebarTitle: "OTA Switch"
+description: "Send an OTA switch command via POST /api/switch2private to move a SIM card to its configured private network by ICCID or MSISDN."
+---
+
+The OTA Switch API lets you send an over-the-air (OTA) command that instructs a SIM card to switch from the public network to its pre-configured private network. This is typically used for IoT deployments where devices are provisioned on a public profile and later need to be migrated to a dedicated private APN or MVNO network without physical SIM replacement.
+
+You can address the target SIM by either its ICCID (circuit-switched SIM serial number) or its MSISDN. Both variants require the `NETWORK-OTA_SWITCH2PRIVATE` scope and return HTTP `204 No Content` on success.
+
+**Base URL:** `https://api.transatel.com/network/ota`
+
+---
+
+## POST /api/switch2private/iccid/{iccid}
+
+Sends an OTA switch-to-private command addressed to the SIM identified by ICCID. Use this variant when you have the physical SIM serial number available.
+
+<Warning>
+  OTA commands are delivered over the SMS channel. The SIM must be network-attached and reachable for the command to be executed. Commands may be queued if the SIM is temporarily out of coverage.
+</Warning>
+
+### Required Scope
+
+`NETWORK-OTA_SWITCH2PRIVATE`
+
+### Path Parameters
+
+<ParamField path="iccid" type="string" required>
+  The SIM card's ICCID (Integrated Circuit Card Identifier). Must match `[0-9]{19,20}`.
+</ParamField>
+
+### Response
+
+| HTTP Status | Error Code              | Meaning                                                       |
+|-------------|-------------------------|---------------------------------------------------------------|
+| 204         | —                       | OTA command accepted for delivery. No response body.          |
+| 400         | `BAD_REQUEST`           | The `iccid` path parameter is malformed.                      |
+| 404         | `SUBSCRIBER_NOT_FOUND`  | No subscriber found with the given ICCID on your account.     |
+| 500         | `INTERNAL_ERROR`        | Unexpected server-side error.                                 |
+
+<CodeGroup>
+```bash Switch to private by ICCID
+curl --request POST \
+  --url "https://api.transatel.com/network/ota/api/switch2private/iccid/89330123456789012345" \
+  --header "Authorization: Bearer <token>"
+```
+
+```text Response (204 No Content)
+(empty body)
+```
+</CodeGroup>
+
+---
+
+## POST /api/switch2private/msisdn/{msisdn}
+
+Sends an OTA switch-to-private command addressed by MSISDN. Use this variant when you know the subscriber's phone number rather than the physical SIM identifier.
+
+### Required Scope
+
+`NETWORK-OTA_SWITCH2PRIVATE`
+
+### Path Parameters
+
+<ParamField path="msisdn" type="string" required>
+  The subscriber's MSISDN in international format without the leading `+`. Must match `[0-9]{6,15}`.
+</ParamField>
+
+### Response
+
+| HTTP Status | Error Code              | Meaning                                                       |
+|-------------|-------------------------|---------------------------------------------------------------|
+| 204         | —                       | OTA command accepted for delivery. No response body.          |
+| 400         | `BAD_REQUEST`           | The `msisdn` path parameter is malformed.                     |
+| 404         | `SUBSCRIBER_NOT_FOUND`  | No subscriber found with the given MSISDN on your account.    |
+| 500         | `INTERNAL_ERROR`        | Unexpected server-side error.                                 |
+
+<CodeGroup>
+```bash Switch to private by MSISDN
+curl --request POST \
+  --url "https://api.transatel.com/network/ota/api/switch2private/msisdn/33612345678" \
+  --header "Authorization: Bearer <token>"
+```
+
+```text Response (204 No Content)
+(empty body)
+```
+</CodeGroup>
+
+<Note>
+  The two endpoints are functionally equivalent — choose whichever identifier you have available in your system. If you have both, prefer ICCID as it is a stable hardware identifier that does not change with MSISDN reassignment.
+</Note>

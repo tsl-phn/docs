@@ -1,0 +1,310 @@
+---
+title: "French MNP Portability API Reference"
+sidebarTitle: "Portability FR"
+description: "API reference for France number portability: activate with port-in, request portability for existing subscribers, retrieve RIO, and cancel."
+---
+
+The French Mobile Number Portability (MNP) endpoints let you port an existing French mobile number onto the Transatel network, either as part of a new subscriber activation or for a subscriber already on your account. The process relies on the **RIO** (Relevé d'Identité Opérateur), a 12-character code that the subscriber retrieves from their current operator by dialling `#667#`. You provide the RIO, the French mobile number to port, and the desired portability date when submitting a port-in request.
+
+<Note>
+  French MNP regulations require the portability date to be a business day and at least a certain number of days in the future. Your account configuration specifies the minimum notice period. Check with your Transatel account manager if you are unsure of the applicable rules.
+</Note>
+
+---
+
+## POST /portability/fr/.../activate-request
+
+Activate a new subscriber on Transatel and simultaneously initiate a French port-in request. Use this endpoint when a customer is porting their existing French mobile number from another operator and does not yet have an active Transatel subscription.
+
+### Endpoint
+
+```
+POST /api/portability/fr/sim-serial/{sim-serial}/activate-request
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID) for the new subscriber. Must match the pattern `[0-9]{13,20}`.
+</ParamField>
+
+### Request Body
+
+The request body supports two variants depending on whether you use a service profile or a rate plan with options. `serviceProfile` and `options` are mutually exclusive.
+
+<ParamField body="portabilityMsisdn" type="string" required>
+  The French mobile number to port in. Must match the format `33[6-7][0-9]{8}` (E.164 without `+`, French mobile prefix).
+</ParamField>
+
+<ParamField body="rio" type="string" required>
+  The RIO code from the subscriber's current operator. Maximum 12 characters. The subscriber obtains this by dialling `#667#`.
+</ParamField>
+
+<ParamField body="portabilityDate" type="string" required>
+  The requested portability date in `YYYY-MM-DD` format. Must be a business day within the window permitted by your account configuration.
+</ParamField>
+
+<ParamField body="ratePlan" type="string">
+  The rate plan to assign at activation. Maximum 50 characters. Optional when using `serviceProfile`.
+</ParamField>
+
+<ParamField body="serviceProfile" type="string">
+  A pre-configured service profile to apply. Mutually exclusive with `options`.
+</ParamField>
+
+<ParamField body="options" type="array">
+  Service option overrides. Mutually exclusive with `serviceProfile`.
+
+  <Expandable title="Option object">
+    <ParamField body="options[].name" type="string" required>
+      The service option name.
+    </ParamField>
+    <ParamField body="options[].value" type="string" required>
+      `on` or `off`.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="externalReference" type="string">
+  Your reference identifier for this activation and portability event.
+</ParamField>
+
+<ParamField body="group" type="string">
+  Logical grouping label for the subscriber.
+</ParamField>
+
+<ParamField body="subscriberCountryOfResidence" type="string">
+  ISO 3166-1 alpha-2 country code (e.g. `FR`).
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Key-value map of custom attributes. Maximum 10 string entries.
+</ParamField>
+
+### Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/fr/sim-serial/8933150000000012345/activate-request" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "portabilityMsisdn": "33612345678",
+    "rio": "ABCD1234EFGH",
+    "portabilityDate": "2024-08-15",
+    "ratePlan": "VOICE_DATA_FR",
+    "externalReference": "port-fr-00789",
+    "group": "consumer-fr",
+    "subscriberCountryOfResidence": "FR",
+    "metadata": {
+      "customerId": "CUS-001234"
+    }
+  }'
+```
+
+### Example Response
+
+```json
+{
+  "transactionId": "a1b2c3d4-ef01-4567-8901-abcdef012345",
+  "simSerial": "8933150000000012345",
+  "transactionStatus": "PENDING"
+}
+```
+
+---
+
+## POST /portability/fr/.../request
+
+Submit a port-in request for a subscriber who is already active on the Transatel network. Use this when a subscriber wants to replace their current Transatel number with a number they are porting in from another French operator.
+
+### Endpoint
+
+```
+POST /api/portability/fr/sim-serial/{sim-serial}/request
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID) of the existing Transatel subscriber. Must match `[0-9]{13,20}`.
+</ParamField>
+
+### Request Body
+
+<ParamField body="portabilityMsisdn" type="string" required>
+  The French mobile number to port in. Format: `33[6-7][0-9]{8}`.
+</ParamField>
+
+<ParamField body="rio" type="string" required>
+  The subscriber's RIO code from their current operator. Maximum 12 characters.
+</ParamField>
+
+<ParamField body="portabilityDate" type="string" required>
+  The desired portability date in `YYYY-MM-DD` format.
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Key-value map of custom attributes. Maximum 10 string entries.
+</ParamField>
+
+### Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/fr/sim-serial/8933150000000012345/request" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "portabilityMsisdn": "33698765432",
+    "rio": "WXYZ5678MNOP",
+    "portabilityDate": "2024-08-20",
+    "metadata": {
+      "agentRef": "AGT-099"
+    }
+  }'
+```
+
+### Example Response
+
+```json
+{
+  "transactionId": "b2c3d4e5-f012-4678-9012-bcdef0123456",
+  "simSerial": "8933150000000012345",
+  "transactionStatus": "PENDING"
+}
+```
+
+---
+
+## GET /portability/fr/sim-serial/{sim-serial}/rio
+
+Retrieve the RIO code for an active Transatel subscriber. This is useful when one of your subscribers wants to port out to another operator and requests their RIO from you.
+
+### Endpoint
+
+```
+GET /api/portability/fr/sim-serial/{sim-serial}/rio
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_READ`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match `[0-9]{13,20}`.
+</ParamField>
+
+### Request Example
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/fr/sim-serial/8933150000000012345/rio" \
+  --header "Authorization: Bearer <token>"
+```
+
+### Example Response
+
+```json
+{
+  "rio": "ABCD1234EFGH",
+  "msisdn": "33612345678",
+  "simSerial": "8933150000000012345"
+}
+```
+
+---
+
+## GET /portability/fr
+
+List all French portability requests associated with your account, including their current statuses.
+
+### Endpoint
+
+```
+GET /api/portability/fr
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_READ`
+
+### Request Example
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/fr" \
+  --header "Authorization: Bearer <token>"
+```
+
+### Example Response
+
+```json
+{
+  "portabilityRequests": [
+    {
+      "simSerial": "8933150000000012345",
+      "portabilityMsisdn": "33612345678",
+      "portabilityDate": "2024-08-15",
+      "status": "PENDING",
+      "requestDate": "2024-08-01T10:00:00Z"
+    }
+  ]
+}
+```
+
+---
+
+## POST /portability/fr/.../cancel
+
+Cancel a pending French portability request. You can only cancel a request before the portability date. Once the port-in has been executed, it cannot be reversed through this endpoint.
+
+### Endpoint
+
+```
+POST /api/portability/fr/sim-serial/{sim-serial}/cancel
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+### Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID) of the subscriber with a pending portability request. Must match `[0-9]{13,20}`.
+</ParamField>
+
+### Request Example
+
+```bash
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/portability/fr/sim-serial/8933150000000012345/cancel" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{}'
+```
+
+### Example Response
+
+```json
+{
+  "transactionId": "c3d4e5f6-0123-4789-a012-cdef01234567",
+  "simSerial": "8933150000000012345",
+  "transactionStatus": "PENDING"
+}
+```
+
+---
+
+## Error Responses
+
+| HTTP Status | Code | Description |
+|---|---|---|
+| `400` | `BAD_REQUEST` | Invalid RIO format, invalid MSISDN format, or missing required fields |
+| `403` | `INSUFFICIENT_PERMISSION` | Token does not carry the required scope |
+| `404` | `SUBSCRIBER_NOT_FOUND` | No subscriber found for the provided SIM serial number |
+| `404` | `PORTABILITY_NOT_FOUND` | No portability request found for this subscriber |
+| `409` | `CONFLICT` | Another provisioning or portability request is already pending on this SIM |
+| `500` | `INTERNAL_ERROR` | An unexpected server-side error occurred |
+| `501` | `NOT_IMPLEMENTED` | The operation is not available for this account configuration |

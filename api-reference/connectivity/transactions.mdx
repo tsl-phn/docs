@@ -1,0 +1,175 @@
+---
+title: "GET /transactions — Check Transaction Status"
+sidebarTitle: "Transactions"
+description: "Poll GET /api/transactions/{transactionId} to check the status of an asynchronous provisioning operation."
+---
+
+Every write operation in the Connectivity Management API — activations, modifications, suspensions, terminations, SIM swaps, and portability requests — is asynchronous. When you submit one of these operations, the API returns `HTTP 201 Created` immediately with a `transactionId` and an initial `transactionStatus` of `PENDING`. You then poll this endpoint with the `transactionId` until the operation resolves. Understanding the difference between `syncStatus` and `asyncStatus` is key to correctly determining the final outcome.
+
+## Endpoint
+
+```
+GET /api/transactions/{transactionId}
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_READ`
+
+## syncStatus vs asyncStatus
+
+Transatel provisioning involves two distinct processing stages, each with its own status field:
+
+| Field | Stage | Values | What it means |
+|---|---|---|---|
+| `syncStatus` | Immediate request validation | `SUCCESS`, `ERROR` | Whether the API accepted and queued the request successfully |
+| `asyncStatus` | Backend provisioning execution | `DONE`, `PENDING`, `ERROR` | Whether the actual network provisioning has completed |
+
+A `syncStatus` of `SUCCESS` means your request was valid and accepted — it does **not** mean provisioning is complete. You must wait for `asyncStatus` to be `DONE` before treating the operation as finished. If `asyncStatus` is `ERROR`, the provisioning failed and the subscriber state has not changed.
+
+<Note>
+  **Polling recommendation:** Wait at least 2–5 seconds between poll attempts. Most operations complete within 30 seconds, but complex provisioning tasks or network-side changes may take longer. Implement an exponential backoff with a reasonable timeout (e.g. 5 minutes) to avoid hammering the endpoint.
+</Note>
+
+## Path Parameters
+
+<ParamField path="transactionId" type="string" required>
+  The UUID of the transaction to check. This is returned in the `transactionId` field of the initial provisioning response.
+</ParamField>
+
+## Response Fields
+
+<ResponseField name="transactionId" type="string">
+  The UUID identifying this transaction, echoed from the path parameter.
+</ResponseField>
+
+<ResponseField name="simSerial" type="string">
+  The SIM card serial number (ICCID) associated with this transaction.
+</ResponseField>
+
+<ResponseField name="syncStatus" type="string">
+  The synchronous processing status. `SUCCESS` means the request was accepted; `ERROR` means it was rejected at the API layer.
+</ResponseField>
+
+<ResponseField name="syncStatusDate" type="string">
+  ISO 8601 timestamp of when the `syncStatus` was set.
+</ResponseField>
+
+<ResponseField name="asyncStatus" type="string">
+  The asynchronous provisioning status. One of:
+  - `PENDING` — provisioning is still in progress
+  - `DONE` — provisioning completed successfully
+  - `ERROR` — provisioning failed; the subscriber state is unchanged
+</ResponseField>
+
+<ResponseField name="asyncStatusDate" type="string">
+  ISO 8601 timestamp of when the `asyncStatus` was last updated.
+</ResponseField>
+
+<ResponseField name="creationDate" type="string">
+  ISO 8601 timestamp of when the transaction was created.
+</ResponseField>
+
+<ResponseField name="externalReference" type="string">
+  The `externalReference` value you provided in the original request body, if any. Useful for correlating transactions with your internal systems.
+</ResponseField>
+
+<ResponseField name="serviceRef" type="string">
+  An internal service reference identifier assigned by the Transatel platform.
+</ResponseField>
+
+## Request Example
+
+```bash
+curl --request GET \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/transactions/a3f1c2e4-88b0-4d21-9f3a-bc120d445e77" \
+  --header "Authorization: Bearer <token>"
+```
+
+## Example Responses
+
+<CodeGroup>
+
+```json Still Pending
+{
+  "transactionId": "a3f1c2e4-88b0-4d21-9f3a-bc120d445e77",
+  "simSerial": "8933150000000012345",
+  "syncStatus": "SUCCESS",
+  "syncStatusDate": "2024-08-01T10:00:01Z",
+  "asyncStatus": "PENDING",
+  "asyncStatusDate": "2024-08-01T10:00:01Z",
+  "creationDate": "2024-08-01T10:00:00Z",
+  "externalReference": "customer-acct-00123",
+  "serviceRef": "SVC-REF-0099887"
+}
+```
+
+```json Completed Successfully
+{
+  "transactionId": "a3f1c2e4-88b0-4d21-9f3a-bc120d445e77",
+  "simSerial": "8933150000000012345",
+  "syncStatus": "SUCCESS",
+  "syncStatusDate": "2024-08-01T10:00:01Z",
+  "asyncStatus": "DONE",
+  "asyncStatusDate": "2024-08-01T10:00:28Z",
+  "creationDate": "2024-08-01T10:00:00Z",
+  "externalReference": "customer-acct-00123",
+  "serviceRef": "SVC-REF-0099887"
+}
+```
+
+```json Failed
+{
+  "transactionId": "a3f1c2e4-88b0-4d21-9f3a-bc120d445e77",
+  "simSerial": "8933150000000012345",
+  "syncStatus": "SUCCESS",
+  "syncStatusDate": "2024-08-01T10:00:01Z",
+  "asyncStatus": "ERROR",
+  "asyncStatusDate": "2024-08-01T10:00:45Z",
+  "creationDate": "2024-08-01T10:00:00Z",
+  "externalReference": "customer-acct-00123",
+  "serviceRef": "SVC-REF-0099887"
+}
+```
+
+</CodeGroup>
+
+## Polling Pattern
+
+The following pseudo-code illustrates a robust polling loop:
+
+```bash
+#!/bin/bash
+TRANSACTION_ID="a3f1c2e4-88b0-4d21-9f3a-bc120d445e77"
+MAX_ATTEMPTS=30
+WAIT_SECONDS=5
+
+for i in $(seq 1 $MAX_ATTEMPTS); do
+  RESPONSE=$(curl --silent --request GET \
+    --url "https://api.transatel.com/connectivity-management/subscribers/api/transactions/${TRANSACTION_ID}" \
+    --header "Authorization: Bearer <token>")
+
+  ASYNC_STATUS=$(echo "$RESPONSE" | grep -o '"asyncStatus":"[^"]*"' | cut -d'"' -f4)
+
+  echo "Attempt $i: asyncStatus = $ASYNC_STATUS"
+
+  if [ "$ASYNC_STATUS" = "DONE" ]; then
+    echo "Provisioning completed successfully."
+    exit 0
+  elif [ "$ASYNC_STATUS" = "ERROR" ]; then
+    echo "Provisioning failed. Check the transaction record for details."
+    exit 1
+  fi
+
+  sleep $WAIT_SECONDS
+done
+
+echo "Timed out waiting for provisioning to complete."
+exit 2
+```
+
+## Error Responses
+
+| HTTP Status | Code | Description |
+|---|---|---|
+| `403` | `INSUFFICIENT_PERMISSION` | Token does not have the `CONNECTIVITY_MANAGEMENT_READ` scope |
+| `404` | `TRANSACTION_ID_NOT_FOUND` | No transaction found for the provided ID |
+| `500` | `INTERNAL_ERROR` | An unexpected server-side error occurred |

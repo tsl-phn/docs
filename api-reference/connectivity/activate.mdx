@@ -1,0 +1,160 @@
+---
+title: "POST /activate — Activate a Subscriber"
+sidebarTitle: "Activate"
+description: "POST to /api/subscribers/sim-serial/{sim-serial}/activate to activate a SIM card and create a subscriber with a rate plan and options."
+---
+
+Activating a subscriber provisions a SIM card against your account, assigns a rate plan (or service profile), and makes the subscriber live on the network. You identify the target SIM card using its serial number in the URL path. The request body supports two mutually exclusive variants: a **service-profile activation** where you reference a named profile, or a **rate-plan activation** where you explicitly specify options. The operation is asynchronous — you receive a `transactionId` immediately and poll for the final result.
+
+## Endpoint
+
+```
+POST /api/subscribers/sim-serial/{sim-serial}/activate
+```
+
+**Required scope:** `CONNECTIVITY_MANAGEMENT_WRITE`
+
+## Path Parameters
+
+<ParamField path="sim-serial" type="string" required>
+  The SIM card serial number (ICCID). Must match the pattern `[0-9]{13,20}`.
+</ParamField>
+
+## Request Body
+
+The request body uses one of two mutually exclusive variants depending on whether you specify a `serviceProfile` or `options`.
+
+<Note>
+  `serviceProfile` and `options` are mutually exclusive. Including both in the same request returns a `400 BAD_REQUEST` error.
+</Note>
+
+### Shared Fields (both variants)
+
+<ParamField body="ratePlan" type="string">
+  The rate plan to assign to the subscriber. Maximum 50 characters. Required when using the options variant; optional when using the service-profile variant.
+</ParamField>
+
+<ParamField body="externalReference" type="string">
+  Your own reference identifier for this subscriber or activation event. Returned on the transaction record for correlation.
+</ParamField>
+
+<ParamField body="group" type="string">
+  A logical grouping label for the subscriber. Useful for filtering and reporting.
+</ParamField>
+
+<ParamField body="subscriberCountryOfResidence" type="string">
+  The subscriber's country of residence as an ISO 3166-1 alpha-2 code (e.g. `FR`, `GB`, `BE`).
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  A key-value map of custom attributes. Supports up to 10 string entries. Keys and values are plain strings.
+</ParamField>
+
+### Variant A — Service Profile
+
+<ParamField body="serviceProfile" type="string" required>
+  The name of a pre-configured service profile to apply to this subscriber. Mutually exclusive with `options`.
+</ParamField>
+
+### Variant B — Rate Plan with Options
+
+<ParamField body="ratePlan" type="string" required>
+  The rate plan identifier. Required in this variant.
+</ParamField>
+
+<ParamField body="options" type="array">
+  A list of service option overrides to apply on top of the rate plan defaults.
+
+  <Expandable title="Option object">
+    <ParamField body="options[].name" type="string" required>
+      The service option name.
+    </ParamField>
+    <ParamField body="options[].value" type="string" required>
+      Either `on` to enable or `off` to disable the option.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response Fields
+
+The endpoint returns `HTTP 201 Created` with a `ProvisioningResponse` body.
+
+<ResponseField name="transactionId" type="string">
+  A UUID that uniquely identifies this provisioning operation. Use this to poll `GET /api/transactions/{transactionId}` for the final result.
+</ResponseField>
+
+<ResponseField name="simSerial" type="string">
+  The SIM serial number that was activated, echoed from the path parameter.
+</ResponseField>
+
+<ResponseField name="transactionStatus" type="string">
+  The initial status of the operation. Always `PENDING` on a 201 response.
+</ResponseField>
+
+## Request Examples
+
+<CodeGroup>
+
+```bash Service Profile Variant
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8933150000000012345/activate" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "serviceProfile": "IoT_Standard_EU",
+    "externalReference": "customer-acct-00123",
+    "group": "fleet-emea",
+    "subscriberCountryOfResidence": "FR",
+    "metadata": {
+      "deviceId": "tracker-009",
+      "contractRef": "CTR-2024-099"
+    }
+  }'
+```
+
+```bash Rate Plan + Options Variant
+curl --request POST \
+  --url "https://api.transatel.com/connectivity-management/subscribers/api/subscribers/sim-serial/8933150000000012345/activate" \
+  --header "Authorization: Bearer <token>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "ratePlan": "DATA_100MB_MONTHLY",
+    "externalReference": "customer-acct-00123",
+    "group": "fleet-emea",
+    "subscriberCountryOfResidence": "FR",
+    "options": [
+      { "name": "DATA_ROAMING", "value": "on" },
+      { "name": "SMS_MT", "value": "off" }
+    ],
+    "metadata": {
+      "deviceId": "tracker-009"
+    }
+  }'
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "transactionId": "a3f1c2e4-88b0-4d21-9f3a-bc120d445e77",
+  "simSerial": "8933150000000012345",
+  "transactionStatus": "PENDING"
+}
+```
+
+<Note>
+  Poll `GET /api/transactions/a3f1c2e4-88b0-4d21-9f3a-bc120d445e77` until `asyncStatus` is `DONE` or `ERROR`. See the [Transactions reference](/api-reference/connectivity/transactions) for full details.
+</Note>
+
+## Error Responses
+
+| HTTP Status | Code | Description |
+|---|---|---|
+| `400` | `BAD_REQUEST` | Missing required fields, invalid parameter format, or both `serviceProfile` and `options` provided |
+| `403` | `INSUFFICIENT_PERMISSION` | Token does not have the `CONNECTIVITY_MANAGEMENT_WRITE` scope |
+| `404` | `SUBSCRIBER_NOT_FOUND` | No SIM card found for the provided serial number |
+| `409` | `CONFLICT` | Another provisioning request is already pending on this SIM |
+| `500` | `INTERNAL_ERROR` | An unexpected server-side error occurred |
+| `501` | `NOT_IMPLEMENTED` | Activation is not supported for this account configuration |
