@@ -111,7 +111,8 @@
               "api-reference/ocs/publications"
             ]
           }
-        ]
+        ],
+        "openapi": "https://tsl-phn.github.io/tsl-ai-assistant/open-api.yaml"
       }
     ]
   }
