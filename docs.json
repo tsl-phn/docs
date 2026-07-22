@@ -497,8 +497,7 @@
                             "api-reference/ocs/publications"
                         ]
                     }
-                ],
-                "openapi": "https://raw.githubusercontent.com/tsl-phn/tsl-doc-gitbook/refs/heads/main/open-api/open-api.yaml"
+                ]
             }
         ]
     }
