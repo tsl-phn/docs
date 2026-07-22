@@ -86,98 +86,98 @@
                                 "group": "Business Intelligence Reports",
                                 "pages":
                                 [
-                                    "analytics-reports/business-intelligence-reports/billing-reports",
-                                    "analytics-reports/business-intelligence-reports/how-to-access-the-bi-reports-for-iot-customers"
+                                    "knowledge-center/analytics-reports/business-intelligence-reports/billing-reports",
+                                    "knowledge-center/analytics-reports/business-intelligence-reports/how-to-access-the-bi-reports-for-iot-customers"
                                 ]
                             },
-                            "analytics-reports/how-to-use-the-top-consumption-report",
-                            "analytics-reports/how-to-use-the-usage-overview-report",
-                            "analytics-reports/how-to-use-the-worldwide-usage-report",
+                            "knowledge-center/analytics-reports/how-to-use-the-top-consumption-report",
+                            "knowledge-center/analytics-reports/how-to-use-the-usage-overview-report",
+                            "knowledge-center/analytics-reports/how-to-use-the-worldwide-usage-report",
                             {
                                 "group": "Invoices",
                                 "pages":
                                 [
-                                    "analytics-reports/invoices/the-detailed-invoice-file"
+                                    "knowledge-center/analytics-reports/invoices/the-detailed-invoice-file"
                                 ]
                             },
-                            "analytics-reports/iot-understanding-your-transatel-invoice",
-                            "analytics-reports/near-real-time-cdrs",
+                            "knowledge-center/analytics-reports/iot-understanding-your-transatel-invoice",
+                            "knowledge-center/analytics-reports/near-real-time-cdrs",
                             {
                                 "group": "Report Files",
                                 "pages":
                                 [
-                                    "analytics-reports/report-files/bundle-inventory-report",
-                                    "analytics-reports/report-files/near-real-time-call-detail-records-nrt-cdrs",
-                                    "analytics-reports/report-files/rated-call-detail-records-cdrs",
-                                    "analytics-reports/report-files/sim-delivery-file",
-                                    "analytics-reports/report-files/sim-swap-report",
-                                    "analytics-reports/report-files/subscription-report",
-                                    "analytics-reports/report-files/switching-termination-fees-report",
-                                    "analytics-reports/report-files/transatels-call-detail-records-cdr-files",
-                                    "analytics-reports/report-files/wholesale-call-detail-records-wholesale-cdrs-rated-cdrs"
+                                    "knowledge-center/analytics-reports/report-files/bundle-inventory-report",
+                                    "knowledge-center/analytics-reports/report-files/near-real-time-call-detail-records-nrt-cdrs",
+                                    "knowledge-center/analytics-reports/report-files/rated-call-detail-records-cdrs",
+                                    "knowledge-center/analytics-reports/report-files/sim-delivery-file",
+                                    "knowledge-center/analytics-reports/report-files/sim-swap-report",
+                                    "knowledge-center/analytics-reports/report-files/subscription-report",
+                                    "knowledge-center/analytics-reports/report-files/switching-termination-fees-report",
+                                    "knowledge-center/analytics-reports/report-files/transatels-call-detail-records-cdr-files",
+                                    "knowledge-center/analytics-reports/report-files/wholesale-call-detail-records-wholesale-cdrs-rated-cdrs"
                                 ]
                             },
-                            "analytics-reports/services-report",
-                            "analytics-reports/transatels-call-detail-record-cdr-files",
-                            "analytics-reports/understanding-each-bi-report-in-the-interface",
-                            "analytics-reports/using-the-pooled-bundle-management-report",
-                            "analytics-reports/your-transatel-sftp-account"
+                            "knowledge-center/analytics-reports/services-report",
+                            "knowledge-center/analytics-reports/transatels-call-detail-record-cdr-files",
+                            "knowledge-center/analytics-reports/understanding-each-bi-report-in-the-interface",
+                            "knowledge-center/analytics-reports/using-the-pooled-bundle-management-report",
+                            "knowledge-center/analytics-reports/your-transatel-sftp-account"
                         ]
                     },
                     {
                         "group": "Devices Set Up Troubleshooting",
                         "pages":
                         [
-                            "devices-set-up-troubleshooting/cdr-delivery-template",
-                            "devices-set-up-troubleshooting/compatible-modules",
+                            "knowledge-center/devices-set-up-troubleshooting/cdr-delivery-template",
+                            "knowledge-center/devices-set-up-troubleshooting/compatible-modules",
                             {
                                 "group": "Device Configuration",
                                 "pages":
                                 [
-                                    "devices-set-up-troubleshooting/device-configuration/bonnes-pratiques-de-diagnostic-esim",
-                                    "devices-set-up-troubleshooting/device-configuration/internet-hotspot-mms-access-settings",
-                                    "devices-set-up-troubleshooting/device-configuration/iot-configuring-your-device-for-our-iot-sim-cards",
-                                    "devices-set-up-troubleshooting/device-configuration/uk-mvno-mobile-internet-and-mms-apn-settings"
+                                    "knowledge-center/devices-set-up-troubleshooting/device-configuration/bonnes-pratiques-de-diagnostic-esim",
+                                    "knowledge-center/devices-set-up-troubleshooting/device-configuration/internet-hotspot-mms-access-settings",
+                                    "knowledge-center/devices-set-up-troubleshooting/device-configuration/iot-configuring-your-device-for-our-iot-sim-cards",
+                                    "knowledge-center/devices-set-up-troubleshooting/device-configuration/uk-mvno-mobile-internet-and-mms-apn-settings"
                                 ]
                             },
                             {
                                 "group": "Diagnostic Tools",
                                 "pages":
                                 [
-                                    "devices-set-up-troubleshooting/diagnostic-tools/classification-des-incidents",
-                                    "devices-set-up-troubleshooting/diagnostic-tools/comprendre-le-mecanisme-data-safegarding-2",
-                                    "devices-set-up-troubleshooting/diagnostic-tools/data-session-diagnostic-tool",
-                                    "devices-set-up-troubleshooting/diagnostic-tools/esim-troubleshooting",
-                                    "devices-set-up-troubleshooting/diagnostic-tools/ims-service-troubleshooting",
-                                    "devices-set-up-troubleshooting/diagnostic-tools/informations-obligatoires-pour-ouvrir-un-ticket",
-                                    "devices-set-up-troubleshooting/diagnostic-tools/resolution-de-probleme-lies-a-la-connectivite-data",
-                                    "devices-set-up-troubleshooting/diagnostic-tools/resynchronise-the-services",
-                                    "devices-set-up-troubleshooting/diagnostic-tools/roaming-data-troubleshooting"
+                                    "knowledge-center/devices-set-up-troubleshooting/diagnostic-tools/classification-des-incidents",
+                                    "knowledge-center/devices-set-up-troubleshooting/diagnostic-tools/comprendre-le-mecanisme-data-safegarding-2",
+                                    "knowledge-center/devices-set-up-troubleshooting/diagnostic-tools/data-session-diagnostic-tool",
+                                    "knowledge-center/devices-set-up-troubleshooting/diagnostic-tools/esim-troubleshooting",
+                                    "knowledge-center/devices-set-up-troubleshooting/diagnostic-tools/ims-service-troubleshooting",
+                                    "knowledge-center/devices-set-up-troubleshooting/diagnostic-tools/informations-obligatoires-pour-ouvrir-un-ticket",
+                                    "knowledge-center/devices-set-up-troubleshooting/diagnostic-tools/resolution-de-probleme-lies-a-la-connectivite-data",
+                                    "knowledge-center/devices-set-up-troubleshooting/diagnostic-tools/resynchronise-the-services",
+                                    "knowledge-center/devices-set-up-troubleshooting/diagnostic-tools/roaming-data-troubleshooting"
                                 ]
                             },
                             {
                                 "group": "Iot Inter Operable Devices",
                                 "pages":
                                 [
-                                    "devices-set-up-troubleshooting/iot-inter-operable-devices/introduction-to-sim-device-testing-program"
+                                    "knowledge-center/devices-set-up-troubleshooting/iot-inter-operable-devices/introduction-to-sim-device-testing-program"
                                 ]
                             },
                             {
                                 "group": "Service Desk Templates",
                                 "pages":
                                 [
-                                    "devices-set-up-troubleshooting/service-desk-templates/mobile-switching-template",
-                                    "devices-set-up-troubleshooting/service-desk-templates/porting-issue-template",
-                                    "devices-set-up-troubleshooting/service-desk-templates/roaming-template",
-                                    "devices-set-up-troubleshooting/service-desk-templates/sim-swap-template",
-                                    "devices-set-up-troubleshooting/service-desk-templates/subscriber-provisioning-service-orders-template",
-                                    "devices-set-up-troubleshooting/service-desk-templates/voice-sms-data-template",
-                                    "devices-set-up-troubleshooting/service-desk-templates/voicemail-access-template",
-                                    "devices-set-up-troubleshooting/service-desk-templates/welcome-sms-roaming-template"
+                                    "knowledge-center/devices-set-up-troubleshooting/service-desk-templates/mobile-switching-template",
+                                    "knowledge-center/devices-set-up-troubleshooting/service-desk-templates/porting-issue-template",
+                                    "knowledge-center/devices-set-up-troubleshooting/service-desk-templates/roaming-template",
+                                    "knowledge-center/devices-set-up-troubleshooting/service-desk-templates/sim-swap-template",
+                                    "knowledge-center/devices-set-up-troubleshooting/service-desk-templates/subscriber-provisioning-service-orders-template",
+                                    "knowledge-center/devices-set-up-troubleshooting/service-desk-templates/voice-sms-data-template",
+                                    "knowledge-center/devices-set-up-troubleshooting/service-desk-templates/voicemail-access-template",
+                                    "knowledge-center/devices-set-up-troubleshooting/service-desk-templates/welcome-sms-roaming-template"
                                 ]
                             },
-                            "devices-set-up-troubleshooting/tested-and-compatible-devices",
-                            "devices-set-up-troubleshooting/verification-du-statut-de-la-sim"
+                            "knowledge-center/devices-set-up-troubleshooting/tested-and-compatible-devices",
+                            "knowledge-center/devices-set-up-troubleshooting/verification-du-statut-de-la-sim"
                         ]
                     },
                     {
@@ -188,89 +188,89 @@
                                 "group": "Api Integration",
                                 "pages":
                                 [
-                                    "getting-started/api-integration/about-the-transatel-developer-console",
-                                    "getting-started/api-integration/how-to-integrate-our-apis",
-                                    "getting-started/api-integration/iot-connect-api-integration",
-                                    "getting-started/api-integration/iot-connect-capped-plans-api-integration",
-                                    "getting-started/api-integration/iot-service-provider-connect-api-integration",
-                                    "getting-started/api-integration/sms-api-and-a2p-sms",
-                                    "getting-started/api-integration/ubigi-for-business-api-integration",
-                                    "getting-started/api-integration/which-apis-and-interfaces-do-i-need",
-                                    "getting-started/api-integration/which-apis-and-interfaces-do-i-need-2"
+                                    "knowledge-center/getting-started/api-integration/about-the-transatel-developer-console",
+                                    "knowledge-center/getting-started/api-integration/how-to-integrate-our-apis",
+                                    "knowledge-center/getting-started/api-integration/iot-connect-api-integration",
+                                    "knowledge-center/getting-started/api-integration/iot-connect-capped-plans-api-integration",
+                                    "knowledge-center/getting-started/api-integration/iot-service-provider-connect-api-integration",
+                                    "knowledge-center/getting-started/api-integration/sms-api-and-a2p-sms",
+                                    "knowledge-center/getting-started/api-integration/ubigi-for-business-api-integration",
+                                    "knowledge-center/getting-started/api-integration/which-apis-and-interfaces-do-i-need",
+                                    "knowledge-center/getting-started/api-integration/which-apis-and-interfaces-do-i-need-2"
                                 ]
                             },
                             {
                                 "group": "Home Page Dashboard Menus",
                                 "pages":
                                 [
-                                    "getting-started/home-page-dashboard-menus/how-to-download-my-invoice-from-auriga",
-                                    "getting-started/home-page-dashboard-menus/how-to-log-into-the-interface",
-                                    "getting-started/home-page-dashboard-menus/the-dashboard"
+                                    "knowledge-center/getting-started/home-page-dashboard-menus/how-to-download-my-invoice-from-auriga",
+                                    "knowledge-center/getting-started/home-page-dashboard-menus/how-to-log-into-the-interface",
+                                    "knowledge-center/getting-started/home-page-dashboard-menus/the-dashboard"
                                 ]
                             },
-                            "getting-started/how-to-use-configure-fields-and-columns-in-the-tables",
-                            "getting-started/how-to-use-the-filter-panel",
+                            "knowledge-center/getting-started/how-to-use-configure-fields-and-columns-in-the-tables",
+                            "knowledge-center/getting-started/how-to-use-the-filter-panel",
                             {
                                 "group": "Iot Latest Coverage Updates",
                                 "pages":
                                 [
-                                    "getting-started/iot-latest-coverage-updates/3g-sunset-what-do-i-need-to-do-as-an-mvno"
+                                    "knowledge-center/getting-started/iot-latest-coverage-updates/3g-sunset-what-do-i-need-to-do-as-an-mvno"
                                 ]
                             },
                             {
                                 "group": "Iot Quick Start Guides",
                                 "pages":
                                 [
-                                    "getting-started/iot-quick-start-guides/getting-started-with-iot-connect",
-                                    "getting-started/iot-quick-start-guides/getting-started-with-mobile-workplace-connect",
-                                    "getting-started/iot-quick-start-guides/getting-started-with-service-provider-connect",
-                                    "getting-started/iot-quick-start-guides/testing-all-the-features-of-your-iot-demo-account"
+                                    "knowledge-center/getting-started/iot-quick-start-guides/getting-started-with-iot-connect",
+                                    "knowledge-center/getting-started/iot-quick-start-guides/getting-started-with-mobile-workplace-connect",
+                                    "knowledge-center/getting-started/iot-quick-start-guides/getting-started-with-service-provider-connect",
+                                    "knowledge-center/getting-started/iot-quick-start-guides/testing-all-the-features-of-your-iot-demo-account"
                                 ]
                             },
-                            "getting-started/ubigi-esim-reseller-api-integration-guide"
+                            "knowledge-center/getting-started/ubigi-esim-reseller-api-integration-guide"
                         ]
                     },
                     {
                         "group": "User Management",
                         "pages":
                         [
-                            "getting-started/user-management/cloning-an-existing-user-account",
-                            "getting-started/user-management/creating-user-accounts",
-                            "getting-started/user-management/deactivating-or-deleting-user-accounts",
-                            "getting-started/user-management/editing-user-accounts",
-                            "getting-started/user-management/managing-editing-user-accounts",
-                            "getting-started/user-management/new-creating-a-new-user",
-                            "getting-started/user-management/new-managing-users",
-                            "getting-started/user-management/new-our-standard-user-roles",
-                            "getting-started/user-management/new-restricted-users",
-                            "getting-started/user-management/new-role-based-user-management",
-                            "getting-started/user-management/understanding-user-account-architecture",
-                            "getting-started/user-management/user-rights",
-                            "getting-started/which-apis-and-interfaces-do-i-need-3"
+                            "knowledge-center/getting-started/user-management/cloning-an-existing-user-account",
+                            "knowledge-center/getting-started/user-management/creating-user-accounts",
+                            "knowledge-center/getting-started/user-management/deactivating-or-deleting-user-accounts",
+                            "knowledge-center/getting-started/user-management/editing-user-accounts",
+                            "knowledge-center/getting-started/user-management/managing-editing-user-accounts",
+                            "knowledge-center/getting-started/user-management/new-creating-a-new-user",
+                            "knowledge-center/getting-started/user-management/new-managing-users",
+                            "knowledge-center/getting-started/user-management/new-our-standard-user-roles",
+                            "knowledge-center/getting-started/user-management/new-restricted-users",
+                            "knowledge-center/getting-started/user-management/new-role-based-user-management",
+                            "knowledge-center/getting-started/user-management/understanding-user-account-architecture",
+                            "knowledge-center/getting-started/user-management/user-rights",
+                            "knowledge-center/getting-started/which-apis-and-interfaces-do-i-need-3"
                         ]
                     },
                     {
                         "group": "Glossary",
                         "pages":
                         [
-                            "glossary/glossary",
+                            "knowledge-center/glossary/glossary",
                             {
                                 "group": "Glossary 2",
                                 "pages":
                                 [
-                                    "glossary/glossary-2/glossary-of-esim-status"
+                                    "knowledge-center/glossary/glossary-2/glossary-of-esim-status"
                                 ]
                             },
                             {
                                 "group": "Sim Lifecycle Glossary",
                                 "pages":
                                 [
-                                    "glossary/sim-lifecycle-glossary/iot-sim-lifecycle",
-                                    "glossary/sim-lifecycle-glossary/the-sleep-mode-tariff-holiday-iot-optional-status"
+                                    "knowledge-center/glossary/sim-lifecycle-glossary/iot-sim-lifecycle",
+                                    "knowledge-center/glossary/sim-lifecycle-glossary/the-sleep-mode-tariff-holiday-iot-optional-status"
                                 ]
                             },
-                            "glossary/sim-statuses",
-                            "glossary/telecom-glossary"
+                            "knowledge-center/glossary/sim-statuses",
+                            "knowledge-center/glossary/telecom-glossary"
                         ]
                     },
                     {
@@ -281,87 +281,87 @@
                                 "group": "Data Coverage",
                                 "pages":
                                 [
-                                    "services/data-coverage/access-to-the-5g-network",
-                                    "services/data-coverage/data-content-filtering-parental-controls",
-                                    "services/data-coverage/mvna-uk-how-do-i-include-a-coverage-checker-on-my-website",
-                                    "services/data-coverage/mvno-uk-our-5g-roaming-footprint",
-                                    "services/data-coverage/volte-roaming-footprint"
+                                    "knowledge-center/services/data-coverage/access-to-the-5g-network",
+                                    "knowledge-center/services/data-coverage/data-content-filtering-parental-controls",
+                                    "knowledge-center/services/data-coverage/mvna-uk-how-do-i-include-a-coverage-checker-on-my-website",
+                                    "knowledge-center/services/data-coverage/mvno-uk-our-5g-roaming-footprint",
+                                    "knowledge-center/services/data-coverage/volte-roaming-footprint"
                                 ]
                             },
-                            "services/data-safeguarding",
+                            "knowledge-center/services/data-safeguarding",
                             {
                                 "group": "High Usage And Subscriber Protection",
                                 "pages":
                                 [
-                                    "services/high-usage-and-subscriber-protection/alerting-cutoff",
-                                    "services/high-usage-and-subscriber-protection/all-about-hiya-protect",
-                                    "services/high-usage-and-subscriber-protection/iot-new-high-usage-alert-menu",
-                                    "services/high-usage-and-subscriber-protection/overspend-safeguarding-osg",
-                                    "services/high-usage-and-subscriber-protection/overspend-safeguarding-osg-2",
-                                    "services/high-usage-and-subscriber-protection/payment-safeguarding-psg",
-                                    "services/high-usage-and-subscriber-protection/sms-spam-solution-and-fraud-prevention"
+                                    "knowledge-center/services/high-usage-and-subscriber-protection/alerting-cutoff",
+                                    "knowledge-center/services/high-usage-and-subscriber-protection/all-about-hiya-protect",
+                                    "knowledge-center/services/high-usage-and-subscriber-protection/iot-new-high-usage-alert-menu",
+                                    "knowledge-center/services/high-usage-and-subscriber-protection/overspend-safeguarding-osg",
+                                    "knowledge-center/services/high-usage-and-subscriber-protection/overspend-safeguarding-osg-2",
+                                    "knowledge-center/services/high-usage-and-subscriber-protection/payment-safeguarding-psg",
+                                    "knowledge-center/services/high-usage-and-subscriber-protection/sms-spam-solution-and-fraud-prevention"
                                 ]
                             },
-                            "services/high-usage-file-report-alert-emails",
-                            "services/how-to-activate-5g-for-my-sim-base",
-                            "services/how-to-create-a-service-profile",
-                            "services/how-to-create-manage-high-usage-alerts-in-our-sim-management-platform",
-                            "services/how-to-find-your-sims-static-ip",
-                            "services/iot-adding-a-capped-bundle-to-a-sim",
-                            "services/iot-adding-sim-cards-to-a-pooled-bundle",
-                            "services/iot-managing-capped-bundles",
-                            "services/iot-select-the-radio-types-2g-3g-lte-of-your-sims",
+                            "knowledge-center/services/high-usage-file-report-alert-emails",
+                            "knowledge-center/services/how-to-activate-5g-for-my-sim-base",
+                            "knowledge-center/services/how-to-create-a-service-profile",
+                            "knowledge-center/services/how-to-create-manage-high-usage-alerts-in-our-sim-management-platform",
+                            "knowledge-center/services/how-to-find-your-sims-static-ip",
+                            "knowledge-center/services/iot-adding-a-capped-bundle-to-a-sim",
+                            "knowledge-center/services/iot-adding-sim-cards-to-a-pooled-bundle",
+                            "knowledge-center/services/iot-managing-capped-bundles",
+                            "knowledge-center/services/iot-select-the-radio-types-2g-3g-lte-of-your-sims",
                             {
                                 "group": "Iot Services",
                                 "pages":
                                 [
-                                    "services/iot-services/about-sms-recording",
-                                    "services/iot-services/default-services",
-                                    "services/iot-services/how-to-use-the-imei-lock-feature",
-                                    "services/iot-services/iot-network-coverage-selection",
-                                    "services/iot-services/key-shortcodes",
-                                    "services/iot-services/ngcs-voice-non-geographic-call-services",
-                                    "services/iot-services/premium-services",
-                                    "services/iot-services/premium-sms",
-                                    "services/iot-services/raoming-alerts",
-                                    "services/iot-services/shortcode-voice",
-                                    "services/iot-services/sim-card-artwork",
-                                    "services/iot-services/smart-barring",
-                                    "services/iot-services/the-test-mode"
+                                    "knowledge-center/services/iot-services/about-sms-recording",
+                                    "knowledge-center/services/iot-services/default-services",
+                                    "knowledge-center/services/iot-services/how-to-use-the-imei-lock-feature",
+                                    "knowledge-center/services/iot-services/iot-network-coverage-selection",
+                                    "knowledge-center/services/iot-services/key-shortcodes",
+                                    "knowledge-center/services/iot-services/ngcs-voice-non-geographic-call-services",
+                                    "knowledge-center/services/iot-services/premium-services",
+                                    "knowledge-center/services/iot-services/premium-sms",
+                                    "knowledge-center/services/iot-services/raoming-alerts",
+                                    "knowledge-center/services/iot-services/shortcode-voice",
+                                    "knowledge-center/services/iot-services/sim-card-artwork",
+                                    "knowledge-center/services/iot-services/smart-barring",
+                                    "knowledge-center/services/iot-services/the-test-mode"
                                 ]
                             },
-                            "services/iot-understanding-capped-bundles",
-                            "services/managing-high-usage-rules",
-                            "services/mvno-how-to-activate-the-static-public-ip-option-on-a-sim",
+                            "knowledge-center/services/iot-understanding-capped-bundles",
+                            "knowledge-center/services/managing-high-usage-rules",
+                            "knowledge-center/services/mvno-how-to-activate-the-static-public-ip-option-on-a-sim",
                             {
                                 "group": "Plans Bundles",
                                 "pages":
                                 [
-                                    "services/plans-bundles/bundles-with-delayed-activation",
-                                    "services/plans-bundles/how-to-subscribe-to-an-add-on-bundle",
-                                    "services/plans-bundles/i-want-to-switch-the-bundle-of-a-subscriber-during-the-month",
-                                    "services/plans-bundles/iot-connect-capped-bundles",
-                                    "services/plans-bundles/iot-understanding-pooled-bundles",
-                                    "services/plans-bundles/mvno-managing-bundles-from-the-sim-management-platform",
-                                    "services/plans-bundles/types-of-plans-and-bundles"
+                                    "knowledge-center/services/plans-bundles/bundles-with-delayed-activation",
+                                    "knowledge-center/services/plans-bundles/how-to-subscribe-to-an-add-on-bundle",
+                                    "knowledge-center/services/plans-bundles/i-want-to-switch-the-bundle-of-a-subscriber-during-the-month",
+                                    "knowledge-center/services/plans-bundles/iot-connect-capped-bundles",
+                                    "knowledge-center/services/plans-bundles/iot-understanding-pooled-bundles",
+                                    "knowledge-center/services/plans-bundles/mvno-managing-bundles-from-the-sim-management-platform",
+                                    "knowledge-center/services/plans-bundles/types-of-plans-and-bundles"
                                 ]
                             },
                             {
                                 "group": "Service Profiles",
                                 "pages":
                                 [
-                                    "services/service-profiles/changing-service-profiles"
+                                    "knowledge-center/services/service-profiles/changing-service-profiles"
                                 ]
                             },
                             {
                                 "group": "Volte Vowifi",
                                 "pages":
                                 [
-                                    "services/volte-vowifi/ims-services-volte-vowifi-smsoip",
-                                    "services/volte-vowifi/roaming-ims-services",
-                                    "services/volte-vowifi/voicemail-notifications",
-                                    "services/what-is-a-deviation-from-a-service-profile",
-                                    "services/what-is-a-service-profile"
+                                    "knowledge-center/services/volte-vowifi/ims-services-volte-vowifi-smsoip",
+                                    "knowledge-center/services/volte-vowifi/roaming-ims-services",
+                                    "knowledge-center/services/volte-vowifi/voicemail-notifications",
+                                    "knowledge-center/services/what-is-a-deviation-from-a-service-profile",
+                                    "knowledge-center/services/what-is-a-service-profile"
                                 ]
                             }
                         ]
@@ -374,73 +374,73 @@
                                 "group": "Activate Or Change Sim Status",
                                 "pages":
                                 [
-                                    "sim-management/activate-or-change-sim-status/how-to-activate-a-single-iot-sim-card",
-                                    "sim-management/activate-or-change-sim-status/how-to-activate-sim-cards-in-bulk",
-                                    "sim-management/activate-or-change-sim-status/sim-lifecycle",
-                                    "sim-management/activate-or-change-sim-status/sim-swap"
+                                    "knowledge-center/sim-management/activate-or-change-sim-status/how-to-activate-a-single-iot-sim-card",
+                                    "knowledge-center/sim-management/activate-or-change-sim-status/how-to-activate-sim-cards-in-bulk",
+                                    "knowledge-center/sim-management/activate-or-change-sim-status/sim-lifecycle",
+                                    "knowledge-center/sim-management/activate-or-change-sim-status/sim-swap"
                                 ]
                             },
-                            "sim-management/activating-a-single-sim-card-2",
-                            "sim-management/adding-subscriber-data-in-bulk",
-                            "sim-management/all-you-want-to-know-about-the-sim-cards",
-                            "sim-management/checking-a-sims-history-and-logs",
+                            "knowledge-center/sim-management/activating-a-single-sim-card-2",
+                            "knowledge-center/sim-management/adding-subscriber-data-in-bulk",
+                            "knowledge-center/sim-management/all-you-want-to-know-about-the-sim-cards",
+                            "knowledge-center/sim-management/checking-a-sims-history-and-logs",
                             {
                                 "group": "Checking Your Sim Card Details",
                                 "pages":
                                 [
-                                    "sim-management/checking-your-sim-card-details/error-cdrs",
-                                    "sim-management/checking-your-sim-card-details/esim-faqs",
-                                    "sim-management/checking-your-sim-card-details/esim-quickstart-guide",
-                                    "sim-management/checking-your-sim-card-details/what-are-the-different-types-of-sim-sales-swap"
+                                    "knowledge-center/sim-management/checking-your-sim-card-details/error-cdrs",
+                                    "knowledge-center/sim-management/checking-your-sim-card-details/esim-faqs",
+                                    "knowledge-center/sim-management/checking-your-sim-card-details/esim-quickstart-guide",
+                                    "knowledge-center/sim-management/checking-your-sim-card-details/what-are-the-different-types-of-sim-sales-swap"
                                 ]
                             },
-                            "sim-management/creating-groups-of-sims",
-                            "sim-management/how-to-add-multiple-sims-to-a-group",
-                            "sim-management/how-to-find-an-esims-status-and-retrieve-the-activation-code",
-                            "sim-management/how-to-group-tag-and-label-your-sims",
-                            "sim-management/how-to-perform-actions-in-bulk",
+                            "knowledge-center/sim-management/creating-groups-of-sims",
+                            "knowledge-center/sim-management/how-to-add-multiple-sims-to-a-group",
+                            "knowledge-center/sim-management/how-to-find-an-esims-status-and-retrieve-the-activation-code",
+                            "knowledge-center/sim-management/how-to-group-tag-and-label-your-sims",
+                            "knowledge-center/sim-management/how-to-perform-actions-in-bulk",
                             {
                                 "group": "Managing Groups",
                                 "pages":
                                 [
-                                    "sim-management/managing-groups/how-to-add-a-sim-to-a-group",
-                                    "sim-management/managing-groups/how-to-edit-manage-or-delete-sim-groups",
-                                    "sim-management/managing-groups/how-to-remove-a-sim-from-a-group"
+                                    "knowledge-center/sim-management/managing-groups/how-to-add-a-sim-to-a-group",
+                                    "knowledge-center/sim-management/managing-groups/how-to-edit-manage-or-delete-sim-groups",
+                                    "knowledge-center/sim-management/managing-groups/how-to-remove-a-sim-from-a-group"
                                 ]
                             },
-                            "sim-management/metadata-custom-fields",
+                            "knowledge-center/sim-management/metadata-custom-fields",
                             {
                                 "group": "Mobile Number Portability",
                                 "pages":
                                 [
-                                    "sim-management/mobile-number-portability/managing-mobile-number-portability-in-belgium",
-                                    "sim-management/mobile-number-portability/managing-mobile-number-portability-in-france",
-                                    "sim-management/mobile-number-portability/managing-mobile-number-portability-in-the-uk",
-                                    "sim-management/mobile-number-portability/mvna-uk-how-do-i-enter-switching-information-in-auriga",
-                                    "sim-management/mobile-number-portability/mvna-uk-switching-information",
-                                    "sim-management/mobile-number-portability/number-portability",
-                                    "sim-management/mobile-number-portability/sw-api-providing-custom-switching-information",
-                                    "sim-management/mobile-number-portability/switching-information"
+                                    "knowledge-center/sim-management/mobile-number-portability/managing-mobile-number-portability-in-belgium",
+                                    "knowledge-center/sim-management/mobile-number-portability/managing-mobile-number-portability-in-france",
+                                    "knowledge-center/sim-management/mobile-number-portability/managing-mobile-number-portability-in-the-uk",
+                                    "knowledge-center/sim-management/mobile-number-portability/mvna-uk-how-do-i-enter-switching-information-in-auriga",
+                                    "knowledge-center/sim-management/mobile-number-portability/mvna-uk-switching-information",
+                                    "knowledge-center/sim-management/mobile-number-portability/number-portability",
+                                    "knowledge-center/sim-management/mobile-number-portability/sw-api-providing-custom-switching-information",
+                                    "knowledge-center/sim-management/mobile-number-portability/switching-information"
                                 ]
                             },
-                            "sim-management/msisdn-swap",
-                            "sim-management/network-attach-diagnostic",
-                            "sim-management/sim-page-overview",
-                            "sim-management/sim-usage-history"
+                            "knowledge-center/sim-management/msisdn-swap",
+                            "knowledge-center/sim-management/network-attach-diagnostic",
+                            "knowledge-center/sim-management/sim-page-overview",
+                            "knowledge-center/sim-management/sim-usage-history"
                         ]
                     },
                     {
                         "group": "Uncategorized",
                         "pages":
                         [
-                            "uncategorized/activating-a-single-sim-card",
-                            "uncategorized/adding-capped-bundles-in-bulk",
-                            "uncategorized/all-about-public-static-ip",
-                            "uncategorized/auriga-role-based-user-management",
-                            "uncategorized/iot-network-coverage-selection-advanced",
-                            "uncategorized/portability-information-report",
-                            "uncategorized/sim-order",
-                            "uncategorized/time-zone-management"
+                            "knowledge-center/uncategorized/activating-a-single-sim-card",
+                            "knowledge-center/uncategorized/adding-capped-bundles-in-bulk",
+                            "knowledge-center/uncategorized/all-about-public-static-ip",
+                            "knowledge-center/uncategorized/auriga-role-based-user-management",
+                            "knowledge-center/uncategorized/iot-network-coverage-selection-advanced",
+                            "knowledge-center/uncategorized/portability-information-report",
+                            "knowledge-center/uncategorized/sim-order",
+                            "knowledge-center/uncategorized/time-zone-management"
                         ]
                     }
                 ]
