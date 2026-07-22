@@ -83,5 +83,3 @@ If you have correctly selected a graph, you’ll see the the following choices t
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -42,5 +42,3 @@ For the launch, the change will apply to the following destinations, with the ne
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

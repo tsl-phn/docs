@@ -84,5 +84,3 @@ Below you can find all the devices that we have tested internally with our Sim c
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

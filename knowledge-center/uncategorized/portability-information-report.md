@@ -45,5 +45,3 @@ Below, you can find an example of the portability information report
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

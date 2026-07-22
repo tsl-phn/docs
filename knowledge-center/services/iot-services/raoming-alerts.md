@@ -130,5 +130,3 @@ If the option is enabled: the Advice of Charge/roaming alert message is barred (
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

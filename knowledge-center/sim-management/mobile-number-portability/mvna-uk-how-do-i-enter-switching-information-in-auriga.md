@@ -110,5 +110,3 @@ More information on the report [here](../../analytics-reports/report-files/switc
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

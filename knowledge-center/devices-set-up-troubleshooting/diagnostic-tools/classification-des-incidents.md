@@ -82,5 +82,3 @@ If this information is not provided, the incident may be reclassified as a **sin
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

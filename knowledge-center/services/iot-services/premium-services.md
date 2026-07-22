@@ -157,5 +157,3 @@ Premium Services provide regulated, value‑added functionality beyond standard 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

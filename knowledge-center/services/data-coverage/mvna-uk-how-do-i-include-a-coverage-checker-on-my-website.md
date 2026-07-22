@@ -123,5 +123,3 @@ It can be found here: https://www.ofcom.org.uk/mobile-coverage-checker
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

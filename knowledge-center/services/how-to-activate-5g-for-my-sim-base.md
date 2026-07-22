@@ -126,5 +126,3 @@ In order to find the correct value for the 5G options, you can go to the Catalog
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

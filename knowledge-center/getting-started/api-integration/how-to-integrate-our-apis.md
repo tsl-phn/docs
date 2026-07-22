@@ -93,5 +93,3 @@ Here is an example for one of our IoT generic offers :
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

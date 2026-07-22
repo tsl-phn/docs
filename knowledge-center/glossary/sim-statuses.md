@@ -56,5 +56,3 @@ During this period, the line fee is not charged. If you have a commitment for yo
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

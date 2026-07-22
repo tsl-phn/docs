@@ -155,5 +155,3 @@ Switching shortcodes can only be accessed from the UK, they will not work in roa
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -207,5 +207,3 @@ The generic rate plan for this offer is **M2MA\_WW\_TSL\_IOTCONNECT\_CAPPED**
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -112,5 +112,3 @@ For more help, read [our article on creating high usage alerts](how-to-create-ma
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

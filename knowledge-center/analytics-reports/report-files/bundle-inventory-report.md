@@ -63,5 +63,3 @@ If your offer contains real-time bundles, and that you want to use this report, 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

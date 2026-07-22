@@ -138,5 +138,3 @@ Instead of landing on Transatel’s corporate website, you will arrive on this d
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

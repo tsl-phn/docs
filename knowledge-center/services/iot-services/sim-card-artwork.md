@@ -100,5 +100,3 @@ Yes! Your account manager can send you a template in Photoshop or AI format.
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

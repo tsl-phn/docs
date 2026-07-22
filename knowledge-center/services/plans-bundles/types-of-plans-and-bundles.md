@@ -111,5 +111,3 @@ Pay per Use is the easiest pricing model to implement. The SIM just needs to be 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

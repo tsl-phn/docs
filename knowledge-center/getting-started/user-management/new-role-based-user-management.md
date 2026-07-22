@@ -108,5 +108,3 @@ Custom roles are an option. They are created on customer request, please contact
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

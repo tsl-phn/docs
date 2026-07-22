@@ -149,5 +149,3 @@ You can also use the following fields – some may not be applicable to your bus
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

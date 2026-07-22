@@ -193,5 +193,3 @@ You can find your RatePlan in the SIM Management Plaftorm in Catalogue > Options
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -123,5 +123,3 @@ Another question? Visit the [eSIM FAQs](https://docs.transatel.com/sim-manageme
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

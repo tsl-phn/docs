@@ -134,5 +134,3 @@ Yes, even when outgoing SMS is barred, customers will continue to receive SMS me
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

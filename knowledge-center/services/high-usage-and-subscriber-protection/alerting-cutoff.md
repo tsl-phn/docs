@@ -217,5 +217,3 @@ Alerting Cutoff is operated by Orange on all MVNO subscriber lines and applies w
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

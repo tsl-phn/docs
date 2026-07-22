@@ -101,5 +101,3 @@ If you want to remove a SIM from the pool and migrate it to another Rate Plan, i
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

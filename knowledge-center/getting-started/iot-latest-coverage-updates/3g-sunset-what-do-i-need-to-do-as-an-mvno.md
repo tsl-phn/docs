@@ -133,5 +133,3 @@ Additionally, before the 4G network was launched, the telecom industry was less 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

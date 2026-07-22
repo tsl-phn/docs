@@ -129,5 +129,3 @@ Dial 555 to listen to your voicemail.”**
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

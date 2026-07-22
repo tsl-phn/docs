@@ -140,5 +140,3 @@ This role is meant for : Fleet administrators, super-users responsible for setup
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

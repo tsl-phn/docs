@@ -108,5 +108,3 @@ NB: In this scenario, the subscriber effectively has 8GB of allowance, before ou
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

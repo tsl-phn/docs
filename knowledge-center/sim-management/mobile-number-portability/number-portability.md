@@ -94,5 +94,3 @@ The portability process is different in each country. For more details, you can 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -93,5 +93,3 @@ Transatel provides 3 different methods to provide switching information to MVNOs
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

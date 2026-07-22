@@ -117,5 +117,3 @@ When using VoWiFi, the network name will appear as “EE-WiFi”. You will know 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

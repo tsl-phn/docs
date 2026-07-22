@@ -132,5 +132,3 @@ Remaining\_Voice\_CSD\_Allowance
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

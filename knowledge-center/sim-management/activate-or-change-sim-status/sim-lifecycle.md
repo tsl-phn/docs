@@ -88,5 +88,3 @@ Terminated SIMs have been removed from the networks. The resources attributed to
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

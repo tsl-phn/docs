@@ -65,5 +65,3 @@ To make sure that Support have all of the information required and don’t need 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

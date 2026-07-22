@@ -82,5 +82,3 @@ You will need to remove the SIMs from the group, or migrate them to a different 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

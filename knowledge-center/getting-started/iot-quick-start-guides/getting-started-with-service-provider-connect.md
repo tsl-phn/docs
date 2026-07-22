@@ -161,5 +161,3 @@ Now that you have added your first data plans to your SIMs, the following articl
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

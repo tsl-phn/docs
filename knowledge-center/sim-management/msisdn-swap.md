@@ -99,5 +99,3 @@ Once the operation has completed, the new MSISDN can be retrieved via Auriga, al
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

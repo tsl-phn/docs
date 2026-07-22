@@ -82,5 +82,3 @@ Only devices following the consumer eSIM protocol from the GSMA can use a Transa
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

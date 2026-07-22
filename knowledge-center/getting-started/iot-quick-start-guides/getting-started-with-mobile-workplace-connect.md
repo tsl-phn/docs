@@ -182,5 +182,3 @@ We recommend you take a look at some of the following articles:
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

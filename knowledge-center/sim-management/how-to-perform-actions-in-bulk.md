@@ -94,5 +94,3 @@ In the example of a suspension, the last step, which is adding a group and a ref
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

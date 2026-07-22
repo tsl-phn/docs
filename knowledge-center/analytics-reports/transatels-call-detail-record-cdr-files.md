@@ -62,5 +62,3 @@ The CDR files deposited on the SFTP directory are in CSV files compressed in GZ 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

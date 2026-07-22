@@ -171,5 +171,3 @@ Link to BT Call Protect: [https://www.bt.com/help/security/bt-call-protect—-ho
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -79,5 +79,3 @@ In summary, “Resynchronise the services” is a tool used to reset and re-prov
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

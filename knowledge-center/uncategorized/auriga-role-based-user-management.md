@@ -66,5 +66,3 @@ Then you have the possibility to create a new user or select from your user opti
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

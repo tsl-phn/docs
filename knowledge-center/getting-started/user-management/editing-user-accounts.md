@@ -98,5 +98,3 @@ To add rights, tick the boxes in the right-side section, then use the arrow to m
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

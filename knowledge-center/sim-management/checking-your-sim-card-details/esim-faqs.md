@@ -162,5 +162,3 @@ Note, some brands require eSIMs to be downloaded onto the secondary device via a
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -152,5 +152,3 @@ The following useful services are available to subscribers. They are managed by 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

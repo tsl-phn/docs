@@ -123,5 +123,3 @@ It is **not** recommended for Subscribers to manually switch networks, as this w
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

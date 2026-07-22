@@ -112,5 +112,3 @@ For IoT customers (accounts starting in “M2MA\_…”), you now have the possi
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

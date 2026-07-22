@@ -120,5 +120,3 @@ You will see a new CDR type generated for SMS sent via the SMS-API. To note:
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -85,5 +85,3 @@ Made of Virtual + PLMN (Public Land Mobile Network), here we’re talking about 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

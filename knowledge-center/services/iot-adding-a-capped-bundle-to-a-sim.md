@@ -156,5 +156,3 @@ Based on the pricing model of your offer, the price of the bundle will be added 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

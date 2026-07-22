@@ -72,5 +72,3 @@ The following file lists the full details of all fields available in the Wholesa
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

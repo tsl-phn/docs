@@ -55,5 +55,3 @@ Please note that the monthly Fleet Inventory report has been deprecated, and is 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

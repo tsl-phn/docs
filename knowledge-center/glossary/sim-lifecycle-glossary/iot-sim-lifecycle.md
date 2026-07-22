@@ -32,5 +32,3 @@ This image explains the different statuses of our SIM cards for our IoT offers
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -122,5 +122,3 @@ Above and out of zone traffic will be billed at the as per the Pay per Use rates
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

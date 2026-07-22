@@ -147,5 +147,3 @@ After a minute, you can try to refresh the last attach – if the device has suc
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

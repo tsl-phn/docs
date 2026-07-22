@@ -93,5 +93,3 @@ You can change the invoice month in the filter, and you can also search for a sp
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

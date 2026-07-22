@@ -65,5 +65,3 @@ Remember to check the status of the SIM card to be sure that it is activated and
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

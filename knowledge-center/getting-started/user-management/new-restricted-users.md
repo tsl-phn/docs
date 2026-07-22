@@ -114,5 +114,3 @@ You can then add or remove Groups to this user’s permissions
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

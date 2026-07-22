@@ -140,5 +140,3 @@ If there is no active data session, the IP of the previously made sessions can b
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

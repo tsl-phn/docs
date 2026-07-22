@@ -60,5 +60,3 @@ The report provides the service provider with a view of the fleet subscriptionsâ
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -75,5 +75,3 @@ You can then download the data in PDF or image format.
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

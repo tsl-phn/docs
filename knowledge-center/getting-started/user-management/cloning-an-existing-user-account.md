@@ -112,5 +112,3 @@ The user account is created automatically, and an email is sent to the new user 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

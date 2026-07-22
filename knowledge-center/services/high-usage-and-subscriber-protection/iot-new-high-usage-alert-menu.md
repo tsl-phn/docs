@@ -117,5 +117,3 @@ Finally, rules can be deactivated at any time, without needing to be deleted. Ju
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

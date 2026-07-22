@@ -156,5 +156,3 @@ What’s more, all of our APIs come with Webhook events – they give you real-t
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

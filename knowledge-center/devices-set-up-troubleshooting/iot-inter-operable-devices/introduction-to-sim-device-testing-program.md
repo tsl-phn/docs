@@ -81,5 +81,3 @@ This reduces the burden on client’s purchasing team, reduces cost and results 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

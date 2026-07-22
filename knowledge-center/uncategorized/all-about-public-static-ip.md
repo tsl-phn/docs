@@ -95,5 +95,3 @@ The IP address assigned to the SIM is available in the Single IP Report (see [he
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -56,5 +56,3 @@ The susbcription fee of the ongoing month will be prorated based on the current 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

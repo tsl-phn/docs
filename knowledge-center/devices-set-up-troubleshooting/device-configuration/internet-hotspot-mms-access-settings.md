@@ -81,5 +81,3 @@ New SIMs are shipped with ‘Available’ status and must be activated on the Au
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -157,5 +157,3 @@ The fee is only charged once, if you change the value multiple times during the 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

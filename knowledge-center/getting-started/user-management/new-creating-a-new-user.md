@@ -128,5 +128,3 @@ An email will be sent to the new user, inviting them to finalize their account b
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

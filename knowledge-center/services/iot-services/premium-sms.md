@@ -170,5 +170,3 @@ Refunds appear as negative charges in billing records. Refunds do not re‑credi
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

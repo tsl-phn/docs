@@ -152,5 +152,3 @@ Here is the full detailed list of the fields:
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -147,5 +147,3 @@ Surfing on 5G whilst on a call will become possible with the launch of VoNR (Voi
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

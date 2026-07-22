@@ -122,5 +122,3 @@ It can also be provisioned using the Connectvity Management API. Check out your 
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -132,5 +132,3 @@ Switching a SIM between [pooled bundles](iot-understanding-pooled-bundles.md) an
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

@@ -159,5 +159,3 @@ The other way round, you can find the order a SIM comes from in the details of t
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

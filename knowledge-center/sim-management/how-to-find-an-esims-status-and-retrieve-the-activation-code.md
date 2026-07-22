@@ -91,5 +91,3 @@ A pop up will appear with the QR code and the activation code, and buttons to qu
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

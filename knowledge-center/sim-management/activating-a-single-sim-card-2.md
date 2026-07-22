@@ -103,5 +103,3 @@ SIM card activations typically take between 5-30 minutes, but could take up to 2
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

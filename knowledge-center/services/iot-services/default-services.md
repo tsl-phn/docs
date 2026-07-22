@@ -52,5 +52,3 @@ The default value is overridden if the service is specified in the activation re
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

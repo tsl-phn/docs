@@ -87,5 +87,3 @@ The user login is reminded in the email, so make sure to use it when accessing t
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

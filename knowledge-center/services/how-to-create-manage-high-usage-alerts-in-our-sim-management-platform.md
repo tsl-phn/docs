@@ -138,5 +138,3 @@ You can select “Line suspension” for the automated suspension of the line wh
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

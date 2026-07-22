@@ -113,5 +113,3 @@ For example, if your SIMs with usage have consumed 73MB in average on a complete
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

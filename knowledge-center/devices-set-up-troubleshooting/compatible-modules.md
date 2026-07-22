@@ -72,5 +72,3 @@ Below are the Modules of the tested devices by Transatel:
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

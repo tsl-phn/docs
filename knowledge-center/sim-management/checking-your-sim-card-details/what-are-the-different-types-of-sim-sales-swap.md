@@ -90,5 +90,3 @@ They may be used for the following circumstances:
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page

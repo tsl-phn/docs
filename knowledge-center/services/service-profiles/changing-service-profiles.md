@@ -126,5 +126,3 @@ To find out more about Service Profile Deviation, [please check out this article
 Can't find your answer?
 
 [Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
-
-## On this page
