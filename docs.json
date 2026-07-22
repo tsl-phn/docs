@@ -129,6 +129,7 @@
                         "pages":
                         [
                             "knowledge-center/devices-set-up-troubleshooting/cdr-delivery-template",
+                            "devices-set-up-troubleshooting/compatible-modules",
                             "knowledge-center/devices-set-up-troubleshooting/compatible-modules",
                             {
                                 "group": "Device Configuration",
