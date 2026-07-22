@@ -6,7 +6,7 @@ title: "New High Usage Alert Menu"
 
 ## Services
 
-## [Service profiles​](../service-profiles/README.md)
+## [Service profiles](../service-profiles/README.md)
 
 - [Changing Service Profiles](../service-profiles/changing-service-profiles.md)
 - [What is a Service Profile](../what-is-a-service-profile.md)

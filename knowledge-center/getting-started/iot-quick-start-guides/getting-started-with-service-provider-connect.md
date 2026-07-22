@@ -6,7 +6,7 @@ title: "Getting Started with Service Provider Connect"
 
 ## Services
 
-## [Service profiles​](../../services/service-profiles/README.md)
+## [Service profiles](../../services/service-profiles/README.md)
 
 - [Changing Service Profiles](../../services/service-profiles/changing-service-profiles.md)
 - [What is a Service Profile](../../services/what-is-a-service-profile.md)

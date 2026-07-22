@@ -6,7 +6,7 @@ title: "Changing Service Profiles"
 
 ## Services
 
-## [Service profiles​](README.md)
+## [Service profiles](README.md)
 
 - [Changing Service Profiles](changing-service-profiles.md)
 - [What is a Service Profile](../what-is-a-service-profile.md)

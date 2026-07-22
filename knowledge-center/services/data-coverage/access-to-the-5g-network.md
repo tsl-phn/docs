@@ -6,7 +6,7 @@ title: "Access to the 5G network"
 
 ## Services
 
-## [Service profiles​](../service-profiles/README.md)
+## [Service profiles](../service-profiles/README.md)
 
 - [Changing Service Profiles](../service-profiles/changing-service-profiles.md)
 - [What is a Service Profile](../what-is-a-service-profile.md)
