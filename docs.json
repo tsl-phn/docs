@@ -1,132 +1,505 @@
 {
-  "theme": "sequoia",
-  "name": "Transatel Developer Platform",
-  "colors": {
-    "primary": "#ef7025",
-    "light": "#eec9bc",
-    "dark": "#4fa1ab"
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "favicon": "/favicon.svg",
-  "markdown": {
-    "schema": true
-  },
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Documentation",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "introduction",
-              "authentication",
-              "eligibility"
-            ]
-          },
-          {
-            "group": "Connectivity Management",
-            "pages": [
-              "connectivity/overview",
-              "connectivity/subscribers",
-              "connectivity/portability",
-              "connectivity/iot-lifecycle"
-            ]
-          },
-          {
-            "group": "Network",
-            "pages": [
-              "network/overview",
-              "network/attach",
-              "network/sms",
-              "network/ota",
-              "network/data-session",
-              "network/usage"
-            ]
-          },
-          {
-            "group": "OCS Catalog",
-            "pages": [
-              "ocs/overview",
-              "ocs/products",
-              "ocs/options",
-              "ocs/product-factory"
-            ]
-          },
-          {
-            "group": "Events & Webhooks",
-            "pages": [
-              "events/overview",
-              "events/connectivity-events",
-              "events/network-events"
-            ]
-          }
+    "$schema": "https://mintlify.com/docs.json",
+    "name": "Transatel Developer Platform",
+    "theme": "sequoia",
+    "colors":
+    {
+        "primary": "#ef7025",
+        "light": "#eec9bc",
+        "dark": "#4fa1ab"
+    },
+    "favicon": "/favicon.svg",
+    "logo":
+    {
+        "light": "/logo/light.svg",
+        "dark": "/logo/dark.svg"
+    },
+    "navigation":
+    {
+        "tabs":
+        [
+            {
+                "tab": "Documentation",
+                "groups":
+                [
+                    {
+                        "group": "Get Started",
+                        "pages":
+                        [
+                            "introduction",
+                            "authentication",
+                            "eligibility"
+                        ]
+                    },
+                    {
+                        "group": "Connectivity Management",
+                        "pages":
+                        [
+                            "connectivity/overview",
+                            "connectivity/subscribers",
+                            "connectivity/portability",
+                            "connectivity/iot-lifecycle"
+                        ]
+                    },
+                    {
+                        "group": "Network",
+                        "pages":
+                        [
+                            "network/overview",
+                            "network/attach",
+                            "network/sms",
+                            "network/ota",
+                            "network/data-session",
+                            "network/usage"
+                        ]
+                    },
+                    {
+                        "group": "OCS Catalog",
+                        "pages":
+                        [
+                            "ocs/overview",
+                            "ocs/products",
+                            "ocs/options",
+                            "ocs/product-factory"
+                        ]
+                    },
+                    {
+                        "group": "Events & Webhooks",
+                        "pages":
+                        [
+                            "events/overview",
+                            "events/connectivity-events",
+                            "events/network-events"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tab": "Knowledge Center",
+                "groups":
+                [
+                    {
+                        "group": "Analytics Reports",
+                        "pages":
+                        [
+                            {
+                                "group": "Business Intelligence Reports",
+                                "pages":
+                                [
+                                    "analytics-reports/business-intelligence-reports/billing-reports",
+                                    "analytics-reports/business-intelligence-reports/how-to-access-the-bi-reports-for-iot-customers"
+                                ]
+                            },
+                            "analytics-reports/how-to-use-the-top-consumption-report",
+                            "analytics-reports/how-to-use-the-usage-overview-report",
+                            "analytics-reports/how-to-use-the-worldwide-usage-report",
+                            {
+                                "group": "Invoices",
+                                "pages":
+                                [
+                                    "analytics-reports/invoices/the-detailed-invoice-file"
+                                ]
+                            },
+                            "analytics-reports/iot-understanding-your-transatel-invoice",
+                            "analytics-reports/near-real-time-cdrs",
+                            {
+                                "group": "Report Files",
+                                "pages":
+                                [
+                                    "analytics-reports/report-files/bundle-inventory-report",
+                                    "analytics-reports/report-files/near-real-time-call-detail-records-nrt-cdrs",
+                                    "analytics-reports/report-files/rated-call-detail-records-cdrs",
+                                    "analytics-reports/report-files/sim-delivery-file",
+                                    "analytics-reports/report-files/sim-swap-report",
+                                    "analytics-reports/report-files/subscription-report",
+                                    "analytics-reports/report-files/switching-termination-fees-report",
+                                    "analytics-reports/report-files/transatels-call-detail-records-cdr-files",
+                                    "analytics-reports/report-files/wholesale-call-detail-records-wholesale-cdrs-rated-cdrs"
+                                ]
+                            },
+                            "analytics-reports/services-report",
+                            "analytics-reports/transatels-call-detail-record-cdr-files",
+                            "analytics-reports/understanding-each-bi-report-in-the-interface",
+                            "analytics-reports/using-the-pooled-bundle-management-report",
+                            "analytics-reports/your-transatel-sftp-account"
+                        ]
+                    },
+                    {
+                        "group": "Devices Set Up Troubleshooting",
+                        "pages":
+                        [
+                            "devices-set-up-troubleshooting/cdr-delivery-template",
+                            "devices-set-up-troubleshooting/compatible-modules",
+                            {
+                                "group": "Device Configuration",
+                                "pages":
+                                [
+                                    "devices-set-up-troubleshooting/device-configuration/bonnes-pratiques-de-diagnostic-esim",
+                                    "devices-set-up-troubleshooting/device-configuration/internet-hotspot-mms-access-settings",
+                                    "devices-set-up-troubleshooting/device-configuration/iot-configuring-your-device-for-our-iot-sim-cards",
+                                    "devices-set-up-troubleshooting/device-configuration/uk-mvno-mobile-internet-and-mms-apn-settings"
+                                ]
+                            },
+                            {
+                                "group": "Diagnostic Tools",
+                                "pages":
+                                [
+                                    "devices-set-up-troubleshooting/diagnostic-tools/classification-des-incidents",
+                                    "devices-set-up-troubleshooting/diagnostic-tools/comprendre-le-mecanisme-data-safegarding-2",
+                                    "devices-set-up-troubleshooting/diagnostic-tools/data-session-diagnostic-tool",
+                                    "devices-set-up-troubleshooting/diagnostic-tools/esim-troubleshooting",
+                                    "devices-set-up-troubleshooting/diagnostic-tools/ims-service-troubleshooting",
+                                    "devices-set-up-troubleshooting/diagnostic-tools/informations-obligatoires-pour-ouvrir-un-ticket",
+                                    "devices-set-up-troubleshooting/diagnostic-tools/resolution-de-probleme-lies-a-la-connectivite-data",
+                                    "devices-set-up-troubleshooting/diagnostic-tools/resynchronise-the-services",
+                                    "devices-set-up-troubleshooting/diagnostic-tools/roaming-data-troubleshooting"
+                                ]
+                            },
+                            {
+                                "group": "Iot Inter Operable Devices",
+                                "pages":
+                                [
+                                    "devices-set-up-troubleshooting/iot-inter-operable-devices/introduction-to-sim-device-testing-program"
+                                ]
+                            },
+                            {
+                                "group": "Service Desk Templates",
+                                "pages":
+                                [
+                                    "devices-set-up-troubleshooting/service-desk-templates/mobile-switching-template",
+                                    "devices-set-up-troubleshooting/service-desk-templates/porting-issue-template",
+                                    "devices-set-up-troubleshooting/service-desk-templates/roaming-template",
+                                    "devices-set-up-troubleshooting/service-desk-templates/sim-swap-template",
+                                    "devices-set-up-troubleshooting/service-desk-templates/subscriber-provisioning-service-orders-template",
+                                    "devices-set-up-troubleshooting/service-desk-templates/voice-sms-data-template",
+                                    "devices-set-up-troubleshooting/service-desk-templates/voicemail-access-template",
+                                    "devices-set-up-troubleshooting/service-desk-templates/welcome-sms-roaming-template"
+                                ]
+                            },
+                            "devices-set-up-troubleshooting/tested-and-compatible-devices",
+                            "devices-set-up-troubleshooting/verification-du-statut-de-la-sim"
+                        ]
+                    },
+                    {
+                        "group": "Getting Started",
+                        "pages":
+                        [
+                            {
+                                "group": "Api Integration",
+                                "pages":
+                                [
+                                    "getting-started/api-integration/about-the-transatel-developer-console",
+                                    "getting-started/api-integration/how-to-integrate-our-apis",
+                                    "getting-started/api-integration/iot-connect-api-integration",
+                                    "getting-started/api-integration/iot-connect-capped-plans-api-integration",
+                                    "getting-started/api-integration/iot-service-provider-connect-api-integration",
+                                    "getting-started/api-integration/sms-api-and-a2p-sms",
+                                    "getting-started/api-integration/ubigi-for-business-api-integration",
+                                    "getting-started/api-integration/which-apis-and-interfaces-do-i-need",
+                                    "getting-started/api-integration/which-apis-and-interfaces-do-i-need-2"
+                                ]
+                            },
+                            {
+                                "group": "Home Page Dashboard Menus",
+                                "pages":
+                                [
+                                    "getting-started/home-page-dashboard-menus/how-to-download-my-invoice-from-auriga",
+                                    "getting-started/home-page-dashboard-menus/how-to-log-into-the-interface",
+                                    "getting-started/home-page-dashboard-menus/the-dashboard"
+                                ]
+                            },
+                            "getting-started/how-to-use-configure-fields-and-columns-in-the-tables",
+                            "getting-started/how-to-use-the-filter-panel",
+                            {
+                                "group": "Iot Latest Coverage Updates",
+                                "pages":
+                                [
+                                    "getting-started/iot-latest-coverage-updates/3g-sunset-what-do-i-need-to-do-as-an-mvno"
+                                ]
+                            },
+                            {
+                                "group": "Iot Quick Start Guides",
+                                "pages":
+                                [
+                                    "getting-started/iot-quick-start-guides/getting-started-with-iot-connect",
+                                    "getting-started/iot-quick-start-guides/getting-started-with-mobile-workplace-connect",
+                                    "getting-started/iot-quick-start-guides/getting-started-with-service-provider-connect",
+                                    "getting-started/iot-quick-start-guides/testing-all-the-features-of-your-iot-demo-account"
+                                ]
+                            },
+                            "getting-started/ubigi-esim-reseller-api-integration-guide"
+                        ]
+                    },
+                    {
+                        "group": "User Management",
+                        "pages":
+                        [
+                            "getting-started/user-management/cloning-an-existing-user-account",
+                            "getting-started/user-management/creating-user-accounts",
+                            "getting-started/user-management/deactivating-or-deleting-user-accounts",
+                            "getting-started/user-management/editing-user-accounts",
+                            "getting-started/user-management/managing-editing-user-accounts",
+                            "getting-started/user-management/new-creating-a-new-user",
+                            "getting-started/user-management/new-managing-users",
+                            "getting-started/user-management/new-our-standard-user-roles",
+                            "getting-started/user-management/new-restricted-users",
+                            "getting-started/user-management/new-role-based-user-management",
+                            "getting-started/user-management/understanding-user-account-architecture",
+                            "getting-started/user-management/user-rights",
+                            "getting-started/which-apis-and-interfaces-do-i-need-3"
+                        ]
+                    },
+                    {
+                        "group": "Glossary",
+                        "pages":
+                        [
+                            "glossary/glossary",
+                            {
+                                "group": "Glossary 2",
+                                "pages":
+                                [
+                                    "glossary/glossary-2/glossary-of-esim-status"
+                                ]
+                            },
+                            {
+                                "group": "Sim Lifecycle Glossary",
+                                "pages":
+                                [
+                                    "glossary/sim-lifecycle-glossary/iot-sim-lifecycle",
+                                    "glossary/sim-lifecycle-glossary/the-sleep-mode-tariff-holiday-iot-optional-status"
+                                ]
+                            },
+                            "glossary/sim-statuses",
+                            "glossary/telecom-glossary"
+                        ]
+                    },
+                    {
+                        "group": "Services",
+                        "pages":
+                        [
+                            {
+                                "group": "Data Coverage",
+                                "pages":
+                                [
+                                    "services/data-coverage/access-to-the-5g-network",
+                                    "services/data-coverage/data-content-filtering-parental-controls",
+                                    "services/data-coverage/mvna-uk-how-do-i-include-a-coverage-checker-on-my-website",
+                                    "services/data-coverage/mvno-uk-our-5g-roaming-footprint",
+                                    "services/data-coverage/volte-roaming-footprint"
+                                ]
+                            },
+                            "services/data-safeguarding",
+                            {
+                                "group": "High Usage And Subscriber Protection",
+                                "pages":
+                                [
+                                    "services/high-usage-and-subscriber-protection/alerting-cutoff",
+                                    "services/high-usage-and-subscriber-protection/all-about-hiya-protect",
+                                    "services/high-usage-and-subscriber-protection/iot-new-high-usage-alert-menu",
+                                    "services/high-usage-and-subscriber-protection/overspend-safeguarding-osg",
+                                    "services/high-usage-and-subscriber-protection/overspend-safeguarding-osg-2",
+                                    "services/high-usage-and-subscriber-protection/payment-safeguarding-psg",
+                                    "services/high-usage-and-subscriber-protection/sms-spam-solution-and-fraud-prevention"
+                                ]
+                            },
+                            "services/high-usage-file-report-alert-emails",
+                            "services/how-to-activate-5g-for-my-sim-base",
+                            "services/how-to-create-a-service-profile",
+                            "services/how-to-create-manage-high-usage-alerts-in-our-sim-management-platform",
+                            "services/how-to-find-your-sims-static-ip",
+                            "services/iot-adding-a-capped-bundle-to-a-sim",
+                            "services/iot-adding-sim-cards-to-a-pooled-bundle",
+                            "services/iot-managing-capped-bundles",
+                            "services/iot-select-the-radio-types-2g-3g-lte-of-your-sims",
+                            {
+                                "group": "Iot Services",
+                                "pages":
+                                [
+                                    "services/iot-services/about-sms-recording",
+                                    "services/iot-services/default-services",
+                                    "services/iot-services/how-to-use-the-imei-lock-feature",
+                                    "services/iot-services/iot-network-coverage-selection",
+                                    "services/iot-services/key-shortcodes",
+                                    "services/iot-services/ngcs-voice-non-geographic-call-services",
+                                    "services/iot-services/premium-services",
+                                    "services/iot-services/premium-sms",
+                                    "services/iot-services/raoming-alerts",
+                                    "services/iot-services/shortcode-voice",
+                                    "services/iot-services/sim-card-artwork",
+                                    "services/iot-services/smart-barring",
+                                    "services/iot-services/the-test-mode"
+                                ]
+                            },
+                            "services/iot-understanding-capped-bundles",
+                            "services/managing-high-usage-rules",
+                            "services/mvno-how-to-activate-the-static-public-ip-option-on-a-sim",
+                            {
+                                "group": "Plans Bundles",
+                                "pages":
+                                [
+                                    "services/plans-bundles/bundles-with-delayed-activation",
+                                    "services/plans-bundles/how-to-subscribe-to-an-add-on-bundle",
+                                    "services/plans-bundles/i-want-to-switch-the-bundle-of-a-subscriber-during-the-month",
+                                    "services/plans-bundles/iot-connect-capped-bundles",
+                                    "services/plans-bundles/iot-understanding-pooled-bundles",
+                                    "services/plans-bundles/mvno-managing-bundles-from-the-sim-management-platform",
+                                    "services/plans-bundles/types-of-plans-and-bundles"
+                                ]
+                            },
+                            {
+                                "group": "Service Profiles",
+                                "pages":
+                                [
+                                    "services/service-profiles/changing-service-profiles"
+                                ]
+                            },
+                            {
+                                "group": "Volte Vowifi",
+                                "pages":
+                                [
+                                    "services/volte-vowifi/ims-services-volte-vowifi-smsoip",
+                                    "services/volte-vowifi/roaming-ims-services",
+                                    "services/volte-vowifi/voicemail-notifications",
+                                    "services/what-is-a-deviation-from-a-service-profile",
+                                    "services/what-is-a-service-profile"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "group": "Sim Management",
+                        "pages":
+                        [
+                            {
+                                "group": "Activate Or Change Sim Status",
+                                "pages":
+                                [
+                                    "sim-management/activate-or-change-sim-status/how-to-activate-a-single-iot-sim-card",
+                                    "sim-management/activate-or-change-sim-status/how-to-activate-sim-cards-in-bulk",
+                                    "sim-management/activate-or-change-sim-status/sim-lifecycle",
+                                    "sim-management/activate-or-change-sim-status/sim-swap"
+                                ]
+                            },
+                            "sim-management/activating-a-single-sim-card-2",
+                            "sim-management/adding-subscriber-data-in-bulk",
+                            "sim-management/all-you-want-to-know-about-the-sim-cards",
+                            "sim-management/checking-a-sims-history-and-logs",
+                            {
+                                "group": "Checking Your Sim Card Details",
+                                "pages":
+                                [
+                                    "sim-management/checking-your-sim-card-details/error-cdrs",
+                                    "sim-management/checking-your-sim-card-details/esim-faqs",
+                                    "sim-management/checking-your-sim-card-details/esim-quickstart-guide",
+                                    "sim-management/checking-your-sim-card-details/what-are-the-different-types-of-sim-sales-swap"
+                                ]
+                            },
+                            "sim-management/creating-groups-of-sims",
+                            "sim-management/how-to-add-multiple-sims-to-a-group",
+                            "sim-management/how-to-find-an-esims-status-and-retrieve-the-activation-code",
+                            "sim-management/how-to-group-tag-and-label-your-sims",
+                            "sim-management/how-to-perform-actions-in-bulk",
+                            {
+                                "group": "Managing Groups",
+                                "pages":
+                                [
+                                    "sim-management/managing-groups/how-to-add-a-sim-to-a-group",
+                                    "sim-management/managing-groups/how-to-edit-manage-or-delete-sim-groups",
+                                    "sim-management/managing-groups/how-to-remove-a-sim-from-a-group"
+                                ]
+                            },
+                            "sim-management/metadata-custom-fields",
+                            {
+                                "group": "Mobile Number Portability",
+                                "pages":
+                                [
+                                    "sim-management/mobile-number-portability/managing-mobile-number-portability-in-belgium",
+                                    "sim-management/mobile-number-portability/managing-mobile-number-portability-in-france",
+                                    "sim-management/mobile-number-portability/managing-mobile-number-portability-in-the-uk",
+                                    "sim-management/mobile-number-portability/mvna-uk-how-do-i-enter-switching-information-in-auriga",
+                                    "sim-management/mobile-number-portability/mvna-uk-switching-information",
+                                    "sim-management/mobile-number-portability/number-portability",
+                                    "sim-management/mobile-number-portability/sw-api-providing-custom-switching-information",
+                                    "sim-management/mobile-number-portability/switching-information"
+                                ]
+                            },
+                            "sim-management/msisdn-swap",
+                            "sim-management/network-attach-diagnostic",
+                            "sim-management/sim-page-overview",
+                            "sim-management/sim-usage-history"
+                        ]
+                    },
+                    {
+                        "group": "Uncategorized",
+                        "pages":
+                        [
+                            "uncategorized/activating-a-single-sim-card",
+                            "uncategorized/adding-capped-bundles-in-bulk",
+                            "uncategorized/all-about-public-static-ip",
+                            "uncategorized/auriga-role-based-user-management",
+                            "uncategorized/iot-network-coverage-selection-advanced",
+                            "uncategorized/portability-information-report",
+                            "uncategorized/sim-order",
+                            "uncategorized/time-zone-management"
+                        ]
+                    }
+                ]
+            },
+            {
+                "tab": "API Reference",
+                "groups":
+                [
+                    {
+                        "group": "Authentication",
+                        "pages":
+                        [
+                            "api-reference/authentication/overview",
+                            "api-reference/authentication/token"
+                        ]
+                    },
+                    {
+                        "group": "Connectivity Management",
+                        "pages":
+                        [
+                            "api-reference/connectivity/subscribers-overview",
+                            "api-reference/connectivity/activate",
+                            "api-reference/connectivity/modify",
+                            "api-reference/connectivity/suspend-reactivate",
+                            "api-reference/connectivity/terminate",
+                            "api-reference/connectivity/sim-swap",
+                            "api-reference/connectivity/portability-fr",
+                            "api-reference/connectivity/portability-be",
+                            "api-reference/connectivity/portability-uk",
+                            "api-reference/connectivity/transactions"
+                        ]
+                    },
+                    {
+                        "group": "Network",
+                        "pages":
+                        [
+                            "api-reference/network/attach-history",
+                            "api-reference/network/detach",
+                            "api-reference/network/sms-send",
+                            "api-reference/network/sms-retrieve",
+                            "api-reference/network/ota-switch",
+                            "api-reference/network/data-session",
+                            "api-reference/network/cdr",
+                            "api-reference/network/cdr-aggregates"
+                        ]
+                    },
+                    {
+                        "group": "OCS Catalog",
+                        "pages":
+                        [
+                            "api-reference/ocs/products",
+                            "api-reference/ocs/options",
+                            "api-reference/ocs/product-models",
+                            "api-reference/ocs/publications"
+                        ]
+                    }
+                ],
+                "openapi": "https://raw.githubusercontent.com/tsl-phn/tsl-doc-gitbook/refs/heads/main/open-api/open-api.yaml"
+            }
         ]
-      },
-      {
-        "tab": "API Reference",
-        "openapi": "https://raw.githubusercontent.com/tsl-phn/tsl-doc-gitbook/refs/heads/main/open-api/open-api.yaml",
-        "groups": [
-          {
-            "group": "Authentication",
-            "pages": [
-              "api-reference/authentication/overview",
-              "api-reference/authentication/token"
-            ]
-          },
-          {
-            "group": "Connectivity Management",
-            "pages": [
-              "api-reference/connectivity/subscribers-overview",
-              "api-reference/connectivity/activate",
-              "api-reference/connectivity/modify",
-              "api-reference/connectivity/suspend-reactivate",
-              "api-reference/connectivity/terminate",
-              "api-reference/connectivity/sim-swap",
-              "api-reference/connectivity/portability-fr",
-              "api-reference/connectivity/portability-be",
-              "api-reference/connectivity/portability-uk",
-              "api-reference/connectivity/transactions"
-            ]
-          },
-          {
-            "group": "Network",
-            "pages": [
-              "api-reference/network/attach-history",
-              "api-reference/network/detach",
-              "api-reference/network/sms-send",
-              "api-reference/network/sms-retrieve",
-              "api-reference/network/ota-switch",
-              "api-reference/network/data-session",
-              "api-reference/network/cdr",
-              "api-reference/network/cdr-aggregates"
-            ]
-          },
-          {
-            "group": "OCS Catalog",
-            "pages": [
-              "api-reference/ocs/products",
-              "api-reference/ocs/options",
-              "api-reference/ocs/product-models",
-              "api-reference/ocs/publications"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Knowledge Center",
-        "pages": [
-          "untitled-page",
-          "knowledge-center/analytics-reports/how-to-use-the-top-consumption-report",
-          {
-            "group": "Untitled Group",
-            "pages": []
-          }
-        ]
-      }
-    ]
-  }
+    }
 }
