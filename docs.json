@@ -26,50 +26,50 @@
                         "group": "Get Started",
                         "pages":
                         [
-                            "introduction",
-                            "authentication",
-                            "eligibility"
+                            "documentation/introduction",
+                            "documentation/authentication",
+                            "documentation/eligibility"
                         ]
                     },
                     {
                         "group": "Connectivity Management",
                         "pages":
                         [
-                            "connectivity/overview",
-                            "connectivity/subscribers",
-                            "connectivity/portability",
-                            "connectivity/iot-lifecycle"
+                            "documentation/connectivity/overview",
+                            "documentation/connectivity/subscribers",
+                            "documentation/connectivity/portability",
+                            "documentation/connectivity/iot-lifecycle"
                         ]
                     },
                     {
                         "group": "Network",
                         "pages":
                         [
-                            "network/overview",
-                            "network/attach",
-                            "network/sms",
-                            "network/ota",
-                            "network/data-session",
-                            "network/usage"
+                            "documentation/network/overview",
+                            "documentation/network/attach",
+                            "documentation/network/sms",
+                            "documentation/network/ota",
+                            "documentation/network/data-session",
+                            "documentation/network/usage"
                         ]
                     },
                     {
                         "group": "OCS Catalog",
                         "pages":
                         [
-                            "ocs/overview",
-                            "ocs/products",
-                            "ocs/options",
-                            "ocs/product-factory"
+                            "documentation/ocs/overview",
+                            "documentation/ocs/products",
+                            "documentation/ocs/options",
+                            "documentation/ocs/product-factory"
                         ]
                     },
                     {
                         "group": "Events & Webhooks",
                         "pages":
                         [
-                            "events/overview",
-                            "events/connectivity-events",
-                            "events/network-events"
+                            "documentation/events/overview",
+                            "documentation/events/connectivity-events",
+                            "documentation/events/network-events"
                         ]
                     }
                 ]
