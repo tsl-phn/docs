@@ -1,16 +1,18 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "Transatel Developer Platform",
   "theme": "sequoia",
+  "name": "Transatel Developer Platform",
   "colors": {
     "primary": "#ef7025",
     "light": "#eec9bc",
     "dark": "#4fa1ab"
   },
-  "favicon": "/favicon.svg",
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
+  },
+  "favicon": "/favicon.svg",
+  "markdown": {
+    "schema": true
   },
   "navigation": {
     "tabs": [
@@ -65,18 +67,8 @@
         ]
       },
       {
-        "tab": "Knowledge Center",
-        "groups": [
-          {
-            "group": "Analytics Reports",
-            "pages": [
-              "analytics-reports/near-real-time-cdrs"
-            ]
-          }
-        ]
-      }
-      {
         "tab": "API Reference",
+        "openapi": "https://raw.githubusercontent.com/tsl-phn/tsl-doc-gitbook/refs/heads/main/open-api/open-api.yaml",
         "groups": [
           {
             "group": "Authentication",
@@ -122,8 +114,7 @@
               "api-reference/ocs/publications"
             ]
           }
-        ],
-        "openapi": "https://raw.githubusercontent.com/tsl-phn/tsl-doc-gitbook/refs/heads/main/open-api/open-api.yaml"
+        ]
       }
     ]
   }
