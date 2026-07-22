@@ -1,0 +1,144 @@
+---
+title: "How to find your SIMs\u2019 static IP?"
+---
+
+# How to find your SIMs’ static IP?
+
+## Services
+
+## [Service profiles​](service-profiles/README.md)
+
+- [Changing Service Profiles](service-profiles/changing-service-profiles.md)
+- [What is a Service Profile](what-is-a-service-profile.md)
+- [Creating a Service Profile](how-to-create-a-service-profile.md)
+- [What is a deviation from a Service Profile](what-is-a-deviation-from-a-service-profile.md)
+
+## [Plans & Bundles](plans-bundles/README.md)
+
+- [Adding Capped Bundles in Bulk](../uncategorized/adding-capped-bundles-in-bulk.md)
+- [IoT Connect Capped Bundles](plans-bundles/iot-connect-capped-bundles.md)
+- [Bundles with delayed activation](plans-bundles/bundles-with-delayed-activation.md)
+- [How to subscribe to an Add-On Bundle](plans-bundles/how-to-subscribe-to-an-add-on-bundle.md)
+- [Switching bundles during a month cycle](plans-bundles/i-want-to-switch-the-bundle-of-a-subscriber-during-the-month.md)
+- [Managing Bundles from the SIM Management platform](plans-bundles/mvno-managing-bundles-from-the-sim-management-platform.md)
+- [Pricing models of our IoT offers](plans-bundles/types-of-plans-and-bundles.md)
+- [Understanding Pooled Bundles](plans-bundles/iot-understanding-pooled-bundles.md)
+- [Adding SIM cards to a pooled bundle](iot-adding-sim-cards-to-a-pooled-bundle.md)
+- [Understanding Capped bundles](iot-understanding-capped-bundles.md)
+- [Adding a capped bundle to a SIM](iot-adding-a-capped-bundle-to-a-sim.md)
+- [Managing capped bundles](iot-managing-capped-bundles.md)
+
+## [High Usage and Subscriber protection](high-usage-and-subscriber-protection/README.md)
+
+- [Alerting Cutoff](high-usage-and-subscriber-protection/alerting-cutoff.md)
+
+- [Overspend Safeguarding](high-usage-and-subscriber-protection/overspend-safeguarding-osg.md)
+- [All about Hiya protect](high-usage-and-subscriber-protection/all-about-hiya-protect.md)
+- [SMS Spam Solution and Fraud Prevention](high-usage-and-subscriber-protection/sms-spam-solution-and-fraud-prevention.md)
+- [Managing High Usage Rules](managing-high-usage-rules.md)
+- [Creating High Usage Alerts](how-to-create-manage-high-usage-alerts-in-our-sim-management-platform.md)
+- [High Usage File Report & Alert emails](high-usage-file-report-alert-emails.md)
+- [New High Usage Alert Menu](high-usage-and-subscriber-protection/iot-new-high-usage-alert-menu.md)
+
+## [Services & features](iot-services/README.md)
+
+- [Premium Services](iot-services/premium-services.md)
+- [NGCS Voice (Non‑Geographic Call Services)](iot-services/ngcs-voice-non-geographic-call-services.md)
+- [Shortcode Voice](iot-services/shortcode-voice.md)
+- [Premium SMS](iot-services/premium-sms.md)
+- [About SMS Recording](iot-services/about-sms-recording.md)
+- [Roaming Alerts](iot-services/raoming-alerts.md)
+- [SIM Card Artwork](iot-services/sim-card-artwork.md)
+- [How to use the IMEI Lock feature](iot-services/how-to-use-the-imei-lock-feature.md)
+- [Default Services](iot-services/default-services.md)
+- [The Sleep Mode (Tariff Holiday) - IoT optional status](../glossary/sim-lifecycle-glossary/the-sleep-mode-tariff-holiday-iot-optional-status.md)
+- [the Test Mode for IoT SIMs](iot-services/the-test-mode.md)
+- [Data Safeguarding](data-safeguarding.md)
+- [Key shortcodes](iot-services/key-shortcodes.md)
+- [Smart Barring](iot-services/smart-barring.md)
+- [Select the radio types (2G, 3G, LTE) of your SIMs](iot-select-the-radio-types-2g-3g-lte-of-your-sims.md)
+- [Network Coverage Selection](iot-services/iot-network-coverage-selection.md)
+
+## [Data & coverage](data-coverage/README.md)
+
+- [VoLTE Roaming Footprint](data-coverage/volte-roaming-footprint.md)
+- [Data Content Filtering/Parental Controls](data-coverage/data-content-filtering-parental-controls.md)
+- [How to activate 5G for my SIM base?](how-to-activate-5g-for-my-sim-base.md)
+- [How do I include a coverage checker on my website?](data-coverage/mvna-uk-how-do-i-include-a-coverage-checker-on-my-website.md)
+- [Our 5G roaming footprint](data-coverage/mvno-uk-our-5g-roaming-footprint.md)
+- [Access to the 5G network](data-coverage/access-to-the-5g-network.md)
+
+## [Static IP solutions](https://docs.transatel.com/services/static-ip-solutions/)
+
+- [All about Static IP](../uncategorized/all-about-public-static-ip.md)
+- [How to find your SIMs' static IP?](how-to-find-your-sims-static-ip.md)
+- [How to activate the Static Public IP option on a SIM?](mvno-how-to-activate-the-static-public-ip-option-on-a-sim.md)
+
+## [VoLTE / VoWIFI](volte-vowifi/README.md)
+
+- [Voicemail Notifications](volte-vowifi/voicemail-notifications.md)
+- [VoLTE Roaming Footprint](data-coverage/volte-roaming-footprint.md)
+- [IMS service (VoLTE/VoWiFi/SMSoIP)](volte-vowifi/ims-services-volte-vowifi-smsoip.md)
+- [Roaming IMS Services](volte-vowifi/roaming-ims-services.md)
+
+## On this page
+
+# How to find your SIMs’ static IP?
+
+If your offer contains one of our static IP services (private or fixed static IP), we offer two solutions enabling you to retrieve the IPs assigned to your SIMs.
+
+- Whole fleet IP retrieval: in a **dedicated report** generated daily for your whole fleet – Perfect to retrieve all IPs at once
+- Individual IP check: in the **detailed view** of the SIM in our interface – Great for finding out the IP immediately  
+    
+  Before we detail how to use each method, here are a few important notes regarding the assignation of static IPs:   
+  IPs are paired with the SIMs at the first data session:
+- If you have just switched your SIM card from dynamic IPs to fixed IPs, a new data session must be started for the fixed IP to be assigned
+- If your SIM has not made a first data session, you cannot retrive the static IP
+
+## The Single IP Report
+
+Every morning (around 10AM Paris time), a file containing all fixed IPs (public or private) assigned to SIMs active in the last 30 days is deposited on your account’s SFTP, and can be downloaded from our interface.
+
+**In the interface**  
+The reports can be downladed in “Tracking & Reports” > “File Reports” > “Fleet inventory”
+
+![image](assets/image-1.png)
+
+**On the SFTP**  
+You will find the daily reports in the “Reports” folder:
+
+![image](assets/image-2.gif)
+
+The file format is as follows:
+
+![image](assets/image-3.png)
+
+## In the interface
+
+If you wish to immediately retrieve the IP assigned to a SIM, go to the detailed SIM view in our SIM Management Portal.
+
+**New! You can now see the IP in the line details**
+
+In the SIM’s detailed view, click on “see more info”
+
+![image](assets/image-4.png)
+
+and the IP will be the last field:
+
+![image](assets/image-5.png)
+
+If the SIM currently has an active data session, the IP will also be displayed in the data session tool, in the checkup bar:  
+  
+![image](assets/image-6.gif)  
+  
+Please note that the interface still displays “Private IP” even if a public IP is being used.  
+  
+If there is no active data session, the IP of the previously made sessions can be found in the data usage tab – if you do not see the IP column, check that this field in selected by clicking on the “+” :  
+  
+![image](assets/image-7.png)
+
+Can't find your answer?
+
+[Ask our support](https://support.transatel.com/secure/Dashboard.jspa)
+
+## On this page
