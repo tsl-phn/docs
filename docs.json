@@ -112,7 +112,7 @@
             ]
           }
         ],
-        "openapi": "https://tsl-phn.github.io/tsl-ai-assistant/open-api.yaml"
+        "openapi": "https://raw.githubusercontent.com/tsl-phn/tsl-doc-gitbook/refs/heads/main/open-api/open-api.yaml"
       }
     ]
   }
