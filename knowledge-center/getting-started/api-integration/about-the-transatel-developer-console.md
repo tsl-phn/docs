@@ -81,7 +81,7 @@ It can be used in conjunction with the Developer’s Portal which equips Develop
 
 **Dashboard**
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 The dashboard provides users with a comprehensive overview of API usage, making it easy to spot and resolve any integration issues. Analytics can be filtered by 4 hours, 12 hours, 24 hours, or 1 week. The available analytics include:
 
@@ -109,7 +109,7 @@ On the right side of the screen, users can view a list of the 20 most recent err
 
 Data Streams allows you to manage your webhook events that can either be pushed to an endpoint or to a cloud platform.
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 You will be able to
 
@@ -123,7 +123,7 @@ Please check the detailed article on creating and managing datastreams for furth
 
 **Logs**
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 The log section allows users to view all API and event logs to easily identify API error, with a retention period of 30 days.
 
@@ -171,31 +171,31 @@ Data Streams allows you to manage your webhook events that can either be pushed 
 
 ## How to create a new datastream?
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Click on a data stream to display the events that were sent to it
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 There is also the ability to simulate events on the datastream to check the integration (however, just tests will not appear in the logs).
 
 To create a new datastream, click on Add a Datastream.
 
-![image](assets/image-6.png)
+![image](/knowledge-center/assets/image-6.png)
 
 You will be then asked to select an MVNO account (if multiple are linked to your user), and in the following screen, you will be able to select the events you wish to receive in this stream
 
-![image](assets/image-7.png)
+![image](/knowledge-center/assets/image-7.png)
 
 Please refer to the list of events detailed for each API in the Developer Portal.
 
 You can search for a specific event
 
-![image](assets/image-8.png)
+![image](/knowledge-center/assets/image-8.png)
 
 Once your configuration is complete, you can send a test event to validate your setup.
 
-![image](assets/image-9.png)
+![image](/knowledge-center/assets/image-9.png)
 
 The test event is only sent to your endpoint, it will not appear in the dashbaord log.
 
@@ -203,7 +203,7 @@ The test event is only sent to your endpoint, it will not appear in the dashbaor
 
 All of the webhooks that you have previously subscribed to via API will be displayed here.
 
-![image](assets/image-10.png)
+![image](/knowledge-center/assets/image-10.png)
 
 To check or edit a data stream, click on it to display its configuration
 
@@ -215,8 +215,8 @@ You will be able to
 - Send a test event
 - See the events sent to this stream
 
-![image](assets/image-11.png)
-![image](assets/image-12.png)
+![image](/knowledge-center/assets/image-11.png)
+![image](/knowledge-center/assets/image-12.png)
 
 If a datastream is suspended, it either means that the endpoint is no longer valid or the event is longer available.
 

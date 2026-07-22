@@ -83,7 +83,7 @@ In this Quick Start Guide you will learn:
 
 **1) What are the SIM statuses of a SIM’s lifecycle**
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **2) What are Service Profiles?**
 
@@ -103,11 +103,11 @@ A Service Profile is a configuration that will be applied to your SIMs to:
 
 Go to Catalogue > Service Profile  
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 Click on the button at the top on the right “Create a profile”  
   
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
   
 In the new window, to create a Service Profile, you’ll need to:  
 – choose a name (it has to be unique to your account)  
@@ -118,7 +118,7 @@ For most customers, your account probably has a single service and a single rate
 Once you have selected a Service pack, the options and services you can configure will be displayed below.  
 The options that appear are the ones that are available for your contract. Here is an example for our standard Ubigi for Business offer.   
   
-![image](assets/image-4.png)  
+![image](/knowledge-center/assets/image-4.png)
   
 Once you have selected the required options, click on **Create**.  
 That’s it!  
@@ -136,12 +136,12 @@ Now that you have a Service Profile, you can activate SIM cards, either unitaril
 To be activated, a SIM card must be in available or preactivated status.  
   
 1. Go to the SIM card’s page and click on the **Activate**button at the top right of the screen  
-![image](assets/image-5.gif)  
+![image](/knowledge-center/assets/image-5.gif)
   
   
 2. Select the **[Service Profile](https://docs.transatel.com/services-setup/what-is-a-service-profile/) to apply to the SIM**  
   
-![image](assets/image-6.gif)
+![image](/knowledge-center/assets/image-6.gif)
 
 **5) Adding a bundle to a SIM in Ubigi bundles pricing model**
 
@@ -149,16 +149,16 @@ To add a bundle, go to the detailed SIM view of the SIM, and go to the **Plans &
   
 You have the choice to add either a One Off bundle or a Recurring bundle.  
   
-![image](assets/image-11.png)  
+![image](/knowledge-center/assets/image-11.png)
   
 Click on **Add** for the type of bundle you wish to add, and the catalogue of your offer will be displayed  
-![image](assets/image-12.gif)  
+![image](/knowledge-center/assets/image-12.gif)
   
 Now you will have to make a few choices:  
 – Select “Subscribe” as OrderType (this should be selected by default)  
 – Select “Monthly invoice” as payment method  
   
-![image](assets/image-13.png)  
+![image](/knowledge-center/assets/image-13.png)
   
 The data plan will be immediately added to the SIM, and will start when the end-user is using the SIM in destination included in the plan.  
   

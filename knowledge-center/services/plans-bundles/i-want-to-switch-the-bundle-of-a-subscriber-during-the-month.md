@@ -95,7 +95,7 @@ allowances flow according to priorities.
 Here is an example of a subscriber who is switched from a 3GB bundle to a 10GB bundle on the 15th of the month (presuming the month is 30 days):  
   
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
   
 **Priority 1** – the 3GB bundle allowance is applied until completion  

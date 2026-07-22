@@ -77,7 +77,7 @@ This article details the Standard User Roles available in our SIM Management Por
 
 You will see that certain roles have “Group” version and an **Restricted** “Account” version:
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 If you choose Account, the role will be applied to the whole account.
 

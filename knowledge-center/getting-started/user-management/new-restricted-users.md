@@ -81,7 +81,7 @@ For example, if you have created Groups in your account for each of your organiz
 
 These users can be easily identified, as their role will include “Restricted” in its name, and the label “Group” will be displayed next to it.
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 ## Creating a Restricted user
 
@@ -89,7 +89,7 @@ When selecting a Restricted role, you will see the down arrow below the account�
 
 Click on the down arrow to display the Groups and select which this new user should have access to
 
-![image](assets/image-2.gif)
+![image](/knowledge-center/assets/image-2.gif)
 
 Managing a Restricted User
 
@@ -97,19 +97,19 @@ You can check the Groups the user has access in the Manager users menu.
 
 The label will display how many accounts (folder icon) and groups (organigram icon) they have access to:
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 Click on the label to display the detail
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 You can add or remove groups to the Restricter users by using the “edit” button
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 You can then add or remove Groups to this user’s permissions
 
-![image](assets/image-6.png)
+![image](/knowledge-center/assets/image-6.png)
 
 Can't find your answer?
 

@@ -59,14 +59,14 @@ A recent survey ([Link](https://www.analysysmason.com/research/content/articles/
 Companies invests several man-days, if not hundreds, to select and test various solution IoT hardware with their connectivity providers. This requires coordination between their several teams: Product, R&D, Presales, Sales, & Purchasing.  
 That’s why, Transatel introduces the SIM-Device interoperability test for its clients to reduce their investments on device selections, network-device compatibility & performance tests, purchasing & procurement.  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
   
 **How we test devices:**  
 Transatel test the correct behavior of devices with the connectivity, in order to confirm the viability of the product. After the test, the device is considered as compatible.  
   
 The following services are the main focus during a SIM-Modem interoperability testing:  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
 Once a test is passed and validated, the client is recommended a list of devices for various IoT or consumer connectivity hardware, and the specific test results, to proceed to his own use-case test.   
 Once the client selects the device, Transatel can help the client to procure the device through authorized channels:  
 1.     Device manufacturer/ OEMs  
@@ -76,7 +76,7 @@ This reduces the burden on client’s purchasing team, reduces cost and results 
   
   
 **Use Cases Example:**   
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 Can't find your answer?
 

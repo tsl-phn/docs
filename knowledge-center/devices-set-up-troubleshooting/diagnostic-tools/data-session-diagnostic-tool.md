@@ -83,12 +83,12 @@ The IMEI (International Mobile Equipment Identity) is the unique identifier of 
 Go to the line view of your SIM, and in the checkup panel, click on “See more info” in the Last Communications section. This will launch the tool instantly.  
   
 See it in action below:  
-![image](assets/image-1.gif)  
+![image](/knowledge-center/assets/image-1.gif)
   
 As the tool is in real-time, it will only display information if there is an ongoing data session.  
 If there is no active data session, you will see this message:  
   
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Can't find your answer?
 

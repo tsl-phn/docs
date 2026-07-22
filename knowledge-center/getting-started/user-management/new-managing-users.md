@@ -79,25 +79,25 @@ In the ‘manage users’ menu, you can find all the users linked to your accoun
 
 If a user has multiple roles, you will see a little down arrow
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 Click on the arrow to display the roles:
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 You can click on the role to get the details of the entities for which the user has this role
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 You can manage the users by using the icons on the left
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Use the looking glass to see the details of the user, the pen to open the edit page, and the . vertical dots to display the other actions
 
 This menu contains the actions to Clone, Deactivate or Delete the user
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 ## Using the panel
 
@@ -107,7 +107,7 @@ You can use the search panel to search users by:
 - Account
 - Group role
 
-![image](assets/image-6.png)
+![image](/knowledge-center/assets/image-6.png)
 
 Can't find your answer?
 

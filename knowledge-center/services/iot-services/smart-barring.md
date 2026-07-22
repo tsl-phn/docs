@@ -115,9 +115,9 @@ If you want to change this or hadn’t requested it, simply log a ticket on the 
 **How do I provision Smart Barring?**
 
 Smart Barring can be provisioned per subscriber on Auriga under “Network Barrings”:  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
 It can also be provisioned using the Connectvity Management API. Check out your options in Auriga under Catalogue > Options:  
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Can't find your answer?
 

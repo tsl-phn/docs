@@ -46,16 +46,16 @@ Bundles can be added in bulk by importing a CSV file into Auriga from the dedica
 1. Log in to **Auriga**.
 2. Navigate to **All Assets** & Click **Import CSV**.
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 1. Select import bundle and click “Next”
 
-![image](assets/image-2.png)
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-2.png)
+![image](/knowledge-center/assets/image-3.png)
 
 1. Upload your CSV file in the follwing screen, either by drag & drop, or uploading the file from your device.
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 1. Review the **Import Validation** results.
 2. Click **OK** to confirm the import.

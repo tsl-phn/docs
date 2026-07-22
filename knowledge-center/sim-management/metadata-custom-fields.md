@@ -37,7 +37,7 @@ Metadatas  are displayed on the **Subscriber Line Details** page (except for av
 
 All metadata keys are prefixed with a **#** to distinguish them from other fields.
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 ## How to populate metadata for a single line
 
@@ -47,15 +47,15 @@ When you first enter a medata, click on “+ add metadata”
 
 Type the name of your key – if it has never been used before, the menu will suggest to create it as a new key –  click on “Validate”
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 You can then enter the value of the key, and validate
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 You can then continue to add additional keys and their values:
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Once you have started populating metadatas, the interface will help by suggesting:
 
@@ -73,7 +73,7 @@ You can use metadata to search for SIMs
 - In the search bar – directly type the value for the key
 - In the filter panel – you can see your keys in the panel
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Can't find your answer?
 

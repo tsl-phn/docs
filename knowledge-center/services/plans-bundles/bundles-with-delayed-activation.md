@@ -101,7 +101,7 @@ Plans waiting for activation will be clearly displayed as “waiting” in our i
 **Important note:**  
 If a plan isn’t activated within 6 months of subscription, it will be automatically terminated without refund.  
   
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **Stacking bundles with delayed activation**
 

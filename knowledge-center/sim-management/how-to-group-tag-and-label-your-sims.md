@@ -74,13 +74,13 @@ The type of fields available are:
 ## Description fields
 
 The first section “Description” offers 4 fields you can use:  
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 - **Reference** – we recommend using this field as a unique identifier of the SIM card: an order number, the reference of the device it is used in…
 - **Group** – this is the main field to be used to segment your fleet. This field is found in many reports (BI Reports, inventory reports, detailed invoice files…), so it’s best to use it for an important dimension of your business. Groups can be created and managed in the submenu All Assets > Groups  
   To learn more about groups, [click here](managing-groups/README.md)  
     
-  ![image](assets/image-2.png)
+  ![image](/knowledge-center/assets/image-2.png)
 - The last two fields are **Point of sale**, **Country of Purchase** – use them if relevant to your business
 
 ## Subscriber details
@@ -99,11 +99,11 @@ To learn more about metadata, please [check this detailed article on the feature
 
 All metadata keys are prefixed with a **#** to distinguish them from other fields.
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 Metadatas are displayed on the **Subscriber Line Details** page (except for available lines), below the subscriber details fields.
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Can't find your answer?
 

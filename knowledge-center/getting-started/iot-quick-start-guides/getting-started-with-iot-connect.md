@@ -80,7 +80,7 @@ In this Quick Start Guide you will learn:
 
 ## 1) What are the statuses of a SIM’s lifecycle?
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 ## 2) Service Profiles
 
@@ -102,11 +102,11 @@ To activate a SIM card, you must select a Service Profile but you can change the
 
 Go to Catalogue > Service Profile
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 click on the button at the top on the right “Create a profile”
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 In the new window, to create a Service Profile, you’ll need to:  
 – choose a name (it has to be unique to your account)  
@@ -117,7 +117,7 @@ For most customers, your account probably has a single service and a single rate
 Once you have selected a Service pack, the options and services you can configure will be displayed below.  
 The options that appear are the ones that are available for your contract. Here is an example for one of our standard IoT offers. Customers of our MVNO offers will see very different options.
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Once you have selected the required options, click on **Create**.  
 That’s it!  
@@ -136,17 +136,17 @@ To be activated, a SIM card must be in available or preactivated status.
   
 1. Go to the SIM card’s page and click on the **Activate**button at the top right of the screen
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 2. Select the **[Service Profile](https://docs.transatel.com/services-setup/what-is-a-service-profile/) to apply to the SIM** and click on **Next**
 
-![image](assets/image-6.png)
+![image](/knowledge-center/assets/image-6.png)
 
 3 & 4. (Optional Steps) Add a [**reference**, **line & subscriber details**](../../sim-management/how-to-group-tag-and-label-your-sims.md), and add the SIM to a **group**  
 The next steps are optional – at this point you can already activate the SIM.  
 But if you wish, you can go through the last steps, where you can enter a reference, add the SIM to a group, and add line details.
 
-![image](assets/image-7.png)
+![image](/knowledge-center/assets/image-7.png)
 
 You can now launch the activation order.  
 SIM card activations are processed extremely quickly for IoT customers.  
@@ -155,7 +155,7 @@ SIM card activations are processed extremely quickly for IoT customers.
   
 1. Go to **All Assets > Activate in Bulk**
 
-![image](assets/image-8.png)
+![image](/knowledge-center/assets/image-8.png)
 
 2. **Select the SIMs** to activate.  
 The list of all your SIMs in available status will be displayed.  
@@ -163,22 +163,22 @@ You can use the fields of search panel to find specific SIMs, upload a list of S
 For further details on the possibilities of the search panel, [check this article](https://docs.transatel.com/getting-started/groups-filters/how-to-use-the-filter-panel/).  
 Check the boxes of the SIMs and click on next.
 
-![image](assets/image-9.png)
+![image](/knowledge-center/assets/image-9.png)
 
 3. Select the **Service Profile to apply to the SIM**
 
-![image](assets/image-10.png)
+![image](/knowledge-center/assets/image-10.png)
 
 4. (Optional Step) Add a **reference**, and add the SIMs to a **group**  
 This step is optional – at this point you can already launch the activation request.  
 But if you wish, you can go through the last steps, where you can enter a reference (the same reference will be applied to all the SIMs), add the SIMs to a group.
 
-![image](assets/image-11.png)
+![image](/knowledge-center/assets/image-11.png)
 
 **You can now launch the activation order.**  
 SIM card activations are processed extremely quickly for IoT customers.
 
-![image](assets/image-12.png)
+![image](/knowledge-center/assets/image-12.png)
 
 ## 5) Device Setup
 

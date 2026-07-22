@@ -28,11 +28,11 @@ title: "Glossary of eSIM status"
 Our interface displays the status of the eSIM profile on the device in real time (as long as the device is connected)  
 You will see the following statuses in the Check up menu:
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 In addition, all status changes are recorded in the history displayed in the Log tab  
   
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 ## eSIM lifecycle status
 
@@ -57,7 +57,7 @@ For the eSIM to work:
 - it needs to be in **Active**  “telecom” status (or test mode if available on your account)
 - it needds to be in **Enabled** status on the device
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 ## eSIM re-installation
 

@@ -102,16 +102,16 @@ Every morning (around 10AM Paris time), a file containing all fixed IPs (public 
 **In the interface**  
 The reports can be downladed in “Tracking & Reports” > “File Reports” > “Fleet inventory”
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **On the SFTP**  
 You will find the daily reports in the “Reports” folder:
 
-![image](assets/image-2.gif)
+![image](/knowledge-center/assets/image-2.gif)
 
 The file format is as follows:
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 ## In the interface
 
@@ -121,21 +121,21 @@ If you wish to immediately retrieve the IP assigned to a SIM, go to the detailed
 
 In the SIM’s detailed view, click on “see more info”
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 and the IP will be the last field:
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 If the SIM currently has an active data session, the IP will also be displayed in the data session tool, in the checkup bar:  
   
-![image](assets/image-6.gif)  
+![image](/knowledge-center/assets/image-6.gif)
   
 Please note that the interface still displays “Private IP” even if a public IP is being used.  
   
 If there is no active data session, the IP of the previously made sessions can be found in the data usage tab – if you do not see the IP column, check that this field in selected by clicking on the “+” :  
   
-![image](assets/image-7.png)
+![image](/knowledge-center/assets/image-7.png)
 
 Can't find your answer?
 

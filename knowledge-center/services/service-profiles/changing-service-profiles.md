@@ -100,7 +100,7 @@ If you do not already have a Service Profile with desired configuration, create 
   
 Go to the SIM’s detailed view, and use one of the buttons highlighted below   
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
 Then just select the new profile in the list.
 
 **2. Modifying the current Service Profile of the SIM**
@@ -111,11 +111,11 @@ Note : The Offer and the Rate Plan of a profile cannot be changed. If you need t
   
 To do so, go to “Catalogue” then “Service Profile”  
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 and edit the Profile directly by clicking on the “edit” icon  
   
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 **3. Deviating the SIM card from its current profile (not recommended apart from tests)**
 

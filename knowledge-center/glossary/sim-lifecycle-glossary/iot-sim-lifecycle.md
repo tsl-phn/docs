@@ -27,7 +27,7 @@ title: "IoT SIM Lifecycle"
 
 This image explains the different statuses of our SIM cards for our IoT offers
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 Can't find your answer?
 

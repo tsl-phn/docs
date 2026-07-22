@@ -99,7 +99,7 @@ For details how to integrate our API for the offer, please check [this article](
 **Service Provider Connect eSIMs are delivered to you in Preactivated status.**  
 Therefore you do not need to do any activation or status change – just add the right bundle and that’s it!
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 ## 2) How to add a bundle to your SIM?
 
@@ -107,7 +107,7 @@ To add a bundle, go to the detailed SIM view of the SIM, and go to the **Plans &
   
 You have the choice to add either a One Off bundle or a Recurring bundle.
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Click on the type of bundle you wish to add, and the catalogue of your offer will be displayed  
   
@@ -119,7 +119,7 @@ Use “**Subscribe**” if your SIM is already active.
 Use “**Preload**” for preactivated SIMs, that way the bundle will be preloaded, and the SIM will not be activated until first usage.   
 **In both cases, the data plan will not start until the SIM is being used in a location covered by the plan.**
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 – The 2nd selection is **Payment Method**: select Monthly Invoice   
 This should be your only choice, and based on your offer, the price of the bundle will be added to your monthly invoice, or taken from your ongoing credit.  
@@ -129,7 +129,7 @@ This should be your only choice, and based on your offer, the price of the bundl
 Finally click on “**apply**“  
 That’s it!
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 For further information we recommend the following articles:  
 – [About our “Smart Start” bundles](../../services/plans-bundles/bundles-with-delayed-activation.md)  
@@ -141,12 +141,12 @@ Checking your balance is very easy – but only users with the Admin right will 
   
 In the interface, click on the Admin menu (the wheel icon) and go to Account information.
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 This new window will appear.  
 Your account’s balance is displayed in the last field of the “Key information” section, “**Customer account balance**“:
 
-![image](assets/image-6.png)
+![image](/knowledge-center/assets/image-6.png)
 
 ## Going further
 

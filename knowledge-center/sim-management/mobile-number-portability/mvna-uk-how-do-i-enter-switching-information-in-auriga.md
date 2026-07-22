@@ -66,16 +66,16 @@ This page explains how to add your [early termination fees](mvna-uk-switching-in
   
 1. Select the line that you want to enter the switching fees for   
    
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 2. In the subscriber details screen, select “Other Actions”   
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
    
 3. Choose “Enter Termination Fee”   
-![image](assets/image-3.png)   
+![image](/knowledge-center/assets/image-3.png) 
 Select the termination fee type and fill out the information   
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 ****What are the different types of Early Termination Fees?****
 
@@ -87,7 +87,7 @@ There are three options 
 ****How do I enter the Monthly Fee?****
 
 If the subscriber is in a fixed-term contract (I.e. for 12 or 24 months) and cancels their contract early they will need to pay early termination fees relating to the time left in-contract.   
-![image](assets/image-5.png)   
+![image](/knowledge-center/assets/image-5.png) 
 – **Contract end date**: the date in which their mobile SIM subscription (contract) ends   
 **–** **Monthly fee**: how much the subscriber pays (retail) per month   
 **–** **Maximum termination fee**: if the MVNO chooses to have a policy to limit the fee in case of early termination (I.e. maximum of 3 months charges or up to £100), enter the amount in £ here.   
@@ -97,7 +97,7 @@ If the subscriber is in a fixed-term contract (I.e. for 12 or 24 months) and can
 ****How do I enter the fixed fee?****
 
 If the subscriber chooses to leave early, the MVNO may choose to charge a one-off fixed penalty to terminate their subscription.   
-![image](assets/image-6.png)   
+![image](/knowledge-center/assets/image-6.png) 
 – **Contract end date**: the date up until which the fixed penalty fee will apply. This may not be an actual contract date but a contractual obligation. If it is for the lifetime of the subscriber, you can select a date far in the future (such as 2100!)   
 **–** **Cancellation fee**: The one-off fixed fee in £ which will be applied if the subscriber requests to switch-out before the above date.
 

@@ -54,21 +54,21 @@ You can select:
   
 The selection applies to both the map view, and to the usage histogram at the bottom, that shows the usage over the selected period.  
 Hover your cursor over the map to see usage.   
-![image](assets/image-1.gif)  
+![image](/knowledge-center/assets/image-1.gif)
   
 In addition to the usage, period & unit filters, you can also select one single country and get usage over the period.  
   
-![image](assets/image-2.gif)  
+![image](/knowledge-center/assets/image-2.gif)
   
 **Downloading data**  
 You can retrieve the data used to generate each graph in CSV format.  
 To do so, click on the relevant graph to select it, then click on the download button at the top right of the report.  
   
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
   
 If you have correctly selected a graph, you’ll see the the following choices to export data. Select “Data” to get a CSV file, and “Crosstab” to get a pivot table version in Excel format.  
   
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Can't find your answer?
 

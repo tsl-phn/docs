@@ -102,8 +102,8 @@ Don’t hesitate to get in touch with your Account Manager for any help regardin
 In order to activate the option from our SIM provisioning platform, you can go to the Configured Services tab, once you’ve chosen a SIM.  
 The option is available from the drop down list, under Network Type Selection:
 
-![image](assets/image-1.png)
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-1.png)
+![image](/knowledge-center/assets/image-2.png)
 
 **How do I activate the option via API?**
 
@@ -121,7 +121,7 @@ You can contact your Account Manager for more information regarding this integra
 
 In order to find the correct value for the 5G options, you can go to the Catalogue > Options menu of the SIM management platform.
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 Can't find your answer?
 

@@ -88,18 +88,18 @@ You’ll find all the details in the Activity section of the check-up panel, on 
 - The **visited country**
 - The visited **operator network – for 4G/LTE connections only**
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 If the SIM has not attached to the network in the past 3 months, we will display the following:
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 ## Network Attach History
 
 You can check the history of the past 3 months of network attaches by clicking on the history button
 
-![image](assets/image-3.png)
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-3.png)
+![image](/knowledge-center/assets/image-4.png)
 
 the fields available are the following:
 
@@ -130,10 +130,10 @@ And use new connectivity settings if you made a change of configuration (for exa
 
 To launch a request, just click on the “detach button”
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 You will see confirmation if the request was successfully transmitted to our HSS at the bottom of the screen  
-![image](assets/image-6.png)  
+![image](/knowledge-center/assets/image-6.png)
   
 A “cancel location” request has been sent to the network, which will then require the equipment to update its location – in simple terms, it will have to reconnect to the network.  
 After a minute, you can try to refresh the last attach – if the device has successfully updated its attach to the network, the new attach info will be displayed.

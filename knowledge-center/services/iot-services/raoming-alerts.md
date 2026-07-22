@@ -113,13 +113,13 @@ Transatel whitelists the on-net originator “WelcomeSMS” for all of its MVNOs
 
 You can check if a welcome SMS has been sent to the Subscriber in Auriga under the *Voice & SMS Usage* tab. The *Roaming Alert* is sent from the sender (ANumber) **44WelcomeSMS**.
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 ## How to opt out a Subscriber from Welcome SMS?
 
 If a Subscriber no longer wishes to receive roaming alerts, they can be opted out via API or Auriga (under the Configured Services tab, Roaming Service Options):
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 If the option is enabled: the Advice of Charge/roaming alert message is barred (blocked) and will not be sent to the subscriber. In the above image, the bar is disabled (grey) and the messages are sent.
 

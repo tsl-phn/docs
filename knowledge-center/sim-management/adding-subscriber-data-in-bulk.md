@@ -82,16 +82,16 @@ Subscriber data can be added in bulk by importing a CSV file into Auriga from th
 1. Log in to **Auriga**.
 2. Navigate to **All Assets** and click **Import CSV**.
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 1. Select **Import Subscriber Data** and click **Next**.
 
-![image](assets/image-2.png)
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-2.png)
+![image](/knowledge-center/assets/image-3.png)
 
 1. Upload your CSV file on the following screen, either by drag & drop or by selecting the file from your device.
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 1. Review the **Import Validation** results.
 2. Click **OK** to confirm the import.
@@ -100,7 +100,7 @@ Subscriber data can be added in bulk by importing a CSV file into Auriga from th
 
 Please upload a file containing your subscribers and their associated subscriber data. Feel free to use our template file, which can be downloaded from the **Import CSV** page in Auriga.
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 The file must comply with the following criteria:
 

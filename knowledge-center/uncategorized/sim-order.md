@@ -31,7 +31,7 @@ How does SIM order work?
 
 SIM orders is a new section, accessible in Catalogue > Order SIM cards
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 In this menu, you will be able to:
 
@@ -45,49 +45,49 @@ Each of these actions is related to a specific scope, so you can give the right 
 
 To create a new SIM order, go to Catalogue > Order SIM cards
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 Click on “ordew new SIMs” on the right side of the screen
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 A new step by step menu will open.
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 In the 1st step, select the type of SIMs from the dropdown menu.
 
 You should be able to select the standard eSIM or physical SIM types of your offer, and if applicable, the dedicated SIM product of your company.
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Select a product, and enter the quantity
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 Click on next. In the following menu, check that your contact information is correct, fill in your role and click on next
 
-![image](assets/image-6.png)
+![image](/knowledge-center/assets/image-6.png)
 
 If you are ordering physical SIMs, the next step is the delivery address. (If you are ordering eSIMs, you will be taken to the next step directly)
 
-![image](assets/image-7.png)
+![image](/knowledge-center/assets/image-7.png)
 
 In the next page, you can enter a note to identify the order.
 
-![image](assets/image-8.png)
+![image](/knowledge-center/assets/image-8.png)
 
 The next page contains your order summary – this is where you can also check the price of the order.
 
 Once you have confirmed that the information is correct, click on “Purchase”
 
-![image](assets/image-9.png)
+![image](/knowledge-center/assets/image-9.png)
 
 If you have right to validate orders, you will be asked if you want to confirm the order now.
 
 You can also click on “validate later” if you need more time.
 
-![image](assets/image-10.png)
+![image](/knowledge-center/assets/image-10.png)
 
 If you do not have the right to validate, the order will remain in the “pending validation” status.
 
@@ -95,14 +95,14 @@ If you do not have the right to validate, the order will remain in the “pendin
 
 The SIM order menu will display all the orders placed for the account.
 
-![image](assets/image-11.png)
+![image](/knowledge-center/assets/image-11.png)
 
 The action column is on the right side, and enables you to:
 
 - See the details of an order
 - Validate an order pending validation
 
-![image](assets/image-12.png)
+![image](/knowledge-center/assets/image-12.png)
 
 ## Order Validation
 
@@ -113,11 +113,11 @@ An order can be validated:
 
 Users with the right to validate an order can also cancel an order that has not yet been validated.
 
-![image](assets/image-13.png)
+![image](/knowledge-center/assets/image-13.png)
 
 Once an order is validated, it cannot be cancelled. Please contact your Account Manager if an order was placed by mistake.
 
-![image](assets/image-14.png)
+![image](/knowledge-center/assets/image-14.png)
 
 ## Order process
 
@@ -131,14 +131,14 @@ Please use this reference if you have any questions regarding an order.
 
 - The order will switch to the “In Progress” Status
 
-![image](assets/image-15.png)
+![image](/knowledge-center/assets/image-15.png)
 
 When the SIM cards have been assigned to your account:
 
 - The order will switch to the status “Done”
 - The CSO reference will become a link that displays the list of SIMs that have been added to your account as part of this order
 
-![image](assets/image-16.png)
+![image](/knowledge-center/assets/image-16.png)
 
 ## Search an order
 
@@ -146,15 +146,15 @@ You can search the SIM cards by order reference:
 
 - By typing the CSO reference in the search bar
 
-![image](assets/image-17.png)
+![image](/knowledge-center/assets/image-17.png)
 
 - By using the “Order Id” field in the search panel:
 
-![image](assets/image-18.png)
+![image](/knowledge-center/assets/image-18.png)
 
 The other way round, you can find the order a SIM comes from in the details of the SIM:
 
-![image](assets/image-19.png)
+![image](/knowledge-center/assets/image-19.png)
 
 Can't find your answer?
 

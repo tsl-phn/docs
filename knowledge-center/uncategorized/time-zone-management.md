@@ -27,7 +27,7 @@ If you are following a fleet of devices worldwide, or work with users in differe
 
 In order to facilitate usage & actions follow-up, you can set Auriga to specific time zones.
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 ## How the time zone management works
 
@@ -40,21 +40,21 @@ A time zone button is accessible at the Line Detail level, allowing you to updat
 
 To find the button, go to any line, and you will see the button
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 How it works :
 
 - The selected time zone is **applied instantly** to all timestamps on the page.
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 - The time zone selection **is saved when navigating between different SIMs**.
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 - You can **save one or more favorite time zones** for quicker access.
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Can't find your answer?
 

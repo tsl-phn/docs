@@ -84,13 +84,13 @@ By offering this service, MVNOs can enhance customer satisfaction and provide a 
 
 The following video shows how to perform an MSISDN swap via Auriga:
 
-![image](assets/image-1.gif)
+![image](/knowledge-center/assets/image-1.gif)
 
 **What’s next?**
 
 After the MSISDN replacement, the end-user receives an SMS requesting them to restart their device. As in the screen capture below :
 
-![image](assets/image-2.jpg)
+![image](/knowledge-center/assets/image-2.jpg)
 
 Once the operation has completed, the new MSISDN can be retrieved via Auriga, also can be retrieved from the Webhook event sent to the MVNO.
 

@@ -26,7 +26,7 @@ title: "Network Coverage Selection \u2013 Advanced"
 The Network Coverage control offers you the choice between 2 different network coverages, enabling you to lower your airtime prices in major destinations!  
   
 This new option will give you the choice between 2 types of coverages : Premium & Standard  
-![image](assets/image-1.gif)  
+![image](/knowledge-center/assets/image-1.gif)
   
 Premium network coverage is the current coverage, with the full list of operators available, and at the current prices.  
 This is the option **selected by default**, and if you leave it as is, everything will continue with no service nor price change.     
@@ -37,7 +37,7 @@ But if you select “Standard network coverage”, your SIMs will now have acces
   
 For the launch, the change will apply to the following destinations, with the new prices as shared by your Account Manager:  
   
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Can't find your answer?
 

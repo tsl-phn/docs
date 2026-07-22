@@ -26,7 +26,7 @@ title: "Network Coverage Selection"
 The Network Coverage control offers you the choice between 2 different network coverages.  
   
 This new option will give you the choice between 2 types of coverages : Premium & Standard  
-![image](assets/image-1.gif)  
+![image](/knowledge-center/assets/image-1.gif)
   
 Premium network coverage is the current coverage, with the full list of operators available/  
 This is the option **selected by default**, and if you leave it as is, everything will continue with no service change.     

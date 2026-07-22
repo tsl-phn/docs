@@ -53,7 +53,7 @@ This type of CDR is not available to customers on MVNE (Enabler) frameworks, whe
   
 You can find them on your Transatel SFTP directory, which is also accessible in our SIM Management Platform in the menu Tracking & reports >Report Files and in the Rated CDRs section :  
   
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **What do they contain?**
 

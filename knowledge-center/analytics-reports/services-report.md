@@ -51,11 +51,11 @@ The report provides details of the services associated to the service providerâ€
 
 **Services report specifications**
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **Fields description**
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Can't find your answer?
 

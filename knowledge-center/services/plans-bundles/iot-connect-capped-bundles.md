@@ -106,11 +106,11 @@ Capped bundles are managed in the interface, in the SIM’s details page. After 
 
 In the SIM’s page, go to the “Plans and options” tab:
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 To add the monthly or yearly bundle, click on **“Recurring”**. The catalogue of your offer will be displayed:
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Click on **Subscribe**, select **Monthly invoice**, and then choose the capped bundle that best fits your allowance and coverage needs.
 
@@ -120,7 +120,7 @@ If you need to do a **Top-Up**, click on **“One-Off”** and do the same proce
 
 Any SIM change from Capped bundle plans to Pay per Use (PPU) within the **“IoT Connect Capped Plans” Service Pack** shall take real time effect upon request.
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 - Once the pricing model is changed, any existing capped bundle will be lost.
 - You can make this change by [switching the service profile](../service-profiles/changing-service-profiles.md).

@@ -78,7 +78,7 @@ See our other articles for more information on portability for the [UK market](m
 
 **What is the portability process in Belgium?  
   
-![image](assets/image-1.png)**
+![image](/knowledge-center/assets/image-1.png)**
 
 It is a 3-step process: eligibility request, execution, and diffusion.  
   

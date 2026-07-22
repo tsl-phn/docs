@@ -49,7 +49,7 @@ title: "About the Analytics Reports"
 The Business Intelligence reports are a feature available for our IoT, MVNO France, MVNO BE and MVNO UK clients.   
   
 To access the reports, go to Tracking & reports > Analytics Reports  
-![image](assets/image-1.gif)  
+![image](/knowledge-center/assets/image-1.gif)
 If you do not see the menu, or have a message saying that you do not have access to the reports, please get in touch with your account manager to subscribe to the service.  
   
 **Details about data history, refresh frequency…**  

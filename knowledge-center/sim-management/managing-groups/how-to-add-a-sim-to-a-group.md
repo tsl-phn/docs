@@ -71,21 +71,21 @@ We will detail both ways:
   
 **How to add one or multiple SIMs to a group from the Group menu**  
 Go to the Group menu (All Assets > Groups), and click on the “+” icon next of the right group  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
 This will launch the step by step guide, and you’ll be taken to the list of SIMs, where you can select the SIM you want to add to the group.   
 Select your SIM and click on “Transfer to a group”.  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 **How to transfer one single SIM to a group** **from the SIM’s page**  
 You can perform this action directly from the SIM’s page by selecting the group in the **Line/Subscriber** tab :  
   
-![image](assets/image-3.gif)  
+![image](/knowledge-center/assets/image-3.gif)
   
 Just select the group in the drop-down list, then click “**Apply**“  
   
 Alternatively, you can also do it by using the “**Other actions**” button and click on “**Transfer to group**“  
 And then select the group in the modal window and click “**Apply**“  
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Can't find your answer?
 

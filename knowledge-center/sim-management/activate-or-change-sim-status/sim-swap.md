@@ -94,18 +94,18 @@ This will correspond to any of your available SIMs without an MSISDN paired to t
   
 You may want to swap to a physical SIM or an eSIM as highlighted below.  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
 Note the ICCID of the SIM that you want to use for swap.  
   
 **2. Go to the subscriber’s current active SIM**  
 Go to Auriga and search for the Subscriber’s line (the old one that will be replaced at the end of this process).  
   
 **3. On the top-right hand corner, select Other actions > Change SIM**  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 **4. Enter the ICCID of the Swap SIM (noted in step 1) into the prompt and click confirm**  
   
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
   
 **5. Track the action by going to the page for the Swap SIM in Auriga.**  
   

@@ -79,7 +79,7 @@ Transatel SIM cards are provided in a triple-cut format (2FF/3FF/4FF) and displa
 ·       The SIM card serial number (ICCID) “1234567891012131415” as in the example below  
 ·       Bar code, which corresponds to the ICCID number  
   
- ![image](assets/image-1.png)
+ ![image](/knowledge-center/assets/image-1.png)
 
 **Can I customise the look of my SIM card?**
 

@@ -83,13 +83,13 @@ For example if you have a test mode enabled with the following configuration
 When you activate the SIM (via API or our interface), it will go into Test Mode.  
 Then, when the 1MB is used, or 30 days have passed, the SIM will automatically switch to Active.  
   
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **Managing SIMs in Test Mode**
 
 In the interface, the test mode is clearly displayed.  
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 A SIM car in Test mode can be switched to the following statuses:  
 – Activated – forcing the activation is possible at any time  
@@ -98,7 +98,7 @@ A SIM car in Test mode can be switched to the following statuses:
   
 Please note that exiting Test Mode is a final action, the SIM cannot go back to Test Mode.  
   
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 **How to track usage and remaining days of the SIMs in Test Mode?**
 
@@ -113,7 +113,7 @@ The daily report lists for each SIM in test mode:
 – initial and remaning days in test mode  
   
 Here is an example for 2 SIMs :   
-![image](assets/image-4.png)  
+![image](/knowledge-center/assets/image-4.png)
   
 Below is the list of fields of the report:  
 ICCID  

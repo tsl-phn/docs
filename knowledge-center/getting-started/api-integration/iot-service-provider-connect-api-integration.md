@@ -102,7 +102,7 @@ Based on the SIM’s status, here is the recommended OrderType to use:
   
 You can use the examples provided in the [OCS Products API reference](https://api.transatel.com/ocs/subscriptions/docs/index.html#tag/Products) to find payload requests with the different values :
 
-![image](assets/image-1.gif)  
+![image](/knowledge-center/assets/image-1.gif)
   
 – [OCS Inventory](https://developers.transatel.com/docs/ocs-products/#product-inventory)   
 This API allows you to check a SIM’s inventory and remaining balance. Use this API to display the remaining balance of a plan in your own app or interface.  
@@ -179,7 +179,7 @@ As the API documentation is generic and does not list offer-specific values, her
   
 **mvnoRef**: the name of your SPC account, and starts with “M2MA\_WW\_TSL\_…..”  
 You can find it easily in our SIM Management Platform:  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 **COS:** this refers to the catalog of the offer.  
 The value for production accounts is ****WW\_M2MA\_COS\_SPC****  

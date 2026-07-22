@@ -28,7 +28,7 @@ title: "The Sleep Mode (Tariff Holiday) \u2013 IoT optional status"
 The Sleep Mode is an optional status that can be used for IoT SIMs.  
 It is also known under the name “Tariff Holiday”, especially in technical reports and API requests.  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 The Sleep Mode allows you to **block usages and suspend charges** for a SIM for a limited number of days.  
   
@@ -40,12 +40,12 @@ If you SIM has a commitment period, the number of days spent in Sleep Mode do no
 Please contact your account manager to get it set up for your account.  
 – Once Sleep mode is active for your account, you can then use the interface to request a Switch to Sleep Mode, or perform the change via [API request](https://api.transatel.com/connectivity-management/subscribers/docs/index.html#operation/scheduleTariffHolidayUsingPOST).  
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 The change is not immediate, but is **scheduled for start the 1st day of the next Bill Cycle**   
 On the 1st day of the following month, the SIM will switch to Sleep mode – this is when the susbcription fees will be paused.   
 You can see in this example of log a request to plan the switch to Sleep Mode, followed by the SIM entering the mode on the 1st :  
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
   
 On the Billing side, all subscription fees will be fully discounted while the SIM is in Sleep Mode.  
 Your invoice & detailed invoice files will show the charges, and then a negative equal charge to cancel it.  

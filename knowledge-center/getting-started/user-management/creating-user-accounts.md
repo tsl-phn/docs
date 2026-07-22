@@ -84,17 +84,17 @@ You can select any user with similar rights as the one you want to create, and y
   
 Click on the Admin icon, and go to Manage users  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 You will now see the list of user accounts of your organization.  
 Find the user account that you wish to duplicate, and click on the “Clone” icon.  
 Please not that you cannot duplicate your own user – you will need to duplicate another one.  
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 In the new window, enter the new user’s details.  
   
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
 You can decide if you wish the account to be active immediately, or you can create it but leave it deactivated for now. You’ll be able to activate it any time.  
   
 The list of scopes, rights & customer account the new user will have access to is listed below.  
@@ -103,7 +103,7 @@ This will however not block you from creating the new user.
   
 If you have correctly filled in the fields, you can now click on “Apply” at the very bottom of the page.  
   
-![image](assets/image-4.png)  
+![image](/knowledge-center/assets/image-4.png)
   
 The user account is created automatically, and an email is sent to the new user with the link to create their password to finalize their account.  
   
@@ -111,11 +111,11 @@ The user account is created automatically, and an email is sent to the new user 
 2/ **How to create a user from scratch**  
 To create a new user, click on the Admin icon and select **Create a new user**  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 You can now enter the new user’s details  
   
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 Can't find your answer?
 

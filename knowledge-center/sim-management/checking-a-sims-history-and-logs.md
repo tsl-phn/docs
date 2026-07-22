@@ -69,9 +69,9 @@ You will be able to track:
 – who made the action (user login or API)  
 – the change made (status change, service change…) – and by unfolding the arrow you’ll be able to see the old and new values for each service (ie : old = data disabled, new = data enabled)  
   
-![image](assets/image-1.gif)  
+![image](/knowledge-center/assets/image-1.gif)
 If your SIM is an eSIM profile, the log will include changes linked to its status on the user’s device (downloaded, activated…)  
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Can't find your answer?
 

@@ -78,7 +78,7 @@ Follow our [step-by-step guide](https://papyrus-dev.priv.transatel.net/docs/conn
 
 **What is the portability process in France?  
   
-![image](assets/image-1.png)**
+![image](/knowledge-center/assets/image-1.png)**
 
 It is a 3-step process: requesting the RIO, eligibility, execution.  
 The subscriber who wishes to keep their number must first call their current provider to obtain an RIO. Eligibility is then validated by the national portability body, the EGP. Then, the portability execution will be completed.
@@ -119,7 +119,7 @@ You need to send the RIO to your subscriber. You can retrieve it via our API or 
   
 Via our SIM management platform, the RIO can be retrieved by using the ‘Other actions’ tab to the right of your screen:  
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 Transatel will send you a notification once the outgoing portability is executed.
 

@@ -64,7 +64,7 @@ title: "SIM Lifecycle"
 
 What is the SIM Lifecycle  
 The SIM Lifecycle is as follows:  
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **What are the Statuses?**
 

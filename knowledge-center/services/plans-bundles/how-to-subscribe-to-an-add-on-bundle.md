@@ -100,15 +100,15 @@ Add-on bundles do not recur or renew.
 
 An add-on bundle can only be subscribed on top of an existing bundle. This means that it must be selected as on option to that existing bundle.  
 To subscribe to an add-on, select the line and go to plans and Services.  
-Click on the add-on icon ![image](assets/image-1.png) for the bundle to which you want to add the add-on, found on the actions related to the bundle:  
-![image](assets/image-2.png)  
+Click on the add-on icon ![image](/knowledge-center/assets/image-1.png) for the bundle to which you want to add the add-on, found on the actions related to the bundle:
+![image](/knowledge-center/assets/image-2.png)
 You can then select the add-on required and click “Apply”:  
-![image](assets/image-3.gif)
+![image](/knowledge-center/assets/image-3.gif)
 
 **How do I check the add-ons subscribed?**
 
 The add-ons that have been susbcribed will appear in a new section under the Plans & Options tab:  
-![image](assets/image-4.png)  
+![image](/knowledge-center/assets/image-4.png)
 Please note:  
 The “activates on” field refers to the punctual date of subscription of the add-on, which has no relation to the parent bundle.  
 The “expires on” field refers to the date where the add-on expires – this will be the same date and time as the parent bundle

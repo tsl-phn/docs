@@ -74,7 +74,7 @@ There are 3 ways to retrieve the SIM’s IP address:
 
 - In the information pane in the Line Details in Auriga
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 - Using the Single IP Report
 

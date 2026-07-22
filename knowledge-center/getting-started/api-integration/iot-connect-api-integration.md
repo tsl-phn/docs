@@ -95,7 +95,7 @@ The Services that can be applied to the SIMs are Options that are also managed a
 For example, here is a call to bar SMS  
 It includes the rate plan to identify the offer, then the option to bar all outgoing SMS:  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 – [SIM Search API](https://developers.transatel.com/docs/sim-search-overview/)  
 Use this API to search, filter, sort, and paginate SIM data across your fleet.  
@@ -143,15 +143,15 @@ Regarding OCS APIs
 ****How to find your service’s specific options for the API calls**?** 
 
 All the options’ values can be found in the Catalogue > Options menu of the SIM management platform  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 There you will be able to find all the technical names of the offer’s options, to include in your API calls.  
 If you have multiple rate plans (for example various pooled bundles) available in your contract, you will find them in a drop down list:  
   
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
   
 Here is an example for one of our generic IoT offers:  
-![image](assets/image-4.png)  
+![image](/knowledge-center/assets/image-4.png)
 **They are the exact values used to create and modify [Service Profiles](../../services/what-is-a-service-profile.md) when using our SIM Management Portal**  
 The API call to activate a SIM will contain the exact same information as a Service Profile:  
 – the Rate Plan (which is the link to the offer)  
@@ -161,7 +161,7 @@ Note: At the moment Service Profiles cannot be used with APIs, but you can “re
   
 Some options have multiple choices, and only one can be selected. In our UI, they correspond to the choices in drop-down lists in our SIM Management Portal  
 For example, for “Outgoing SMS”, you can select: “Enabled”, “Disabled” or “Enabled for on-net SMS only”:  
-![image](assets/image-5.png)  
+![image](/knowledge-center/assets/image-5.png)
   
 Each selection also has a default value – if you do not select one in your call, this is the one that will be implemented. In our SMS example, the default value is to “Enabled”.
 

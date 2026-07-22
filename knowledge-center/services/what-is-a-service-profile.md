@@ -102,7 +102,7 @@ For IoT customers, to activate a SIM card, you must select a Service Profile –
   
 **To create or modify a Service Profile**,   
 Go to Catalogue > Service Profile  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 All your existing Service Profiles will be displayed there, and you have the button to create new ones.  
 **[How to create a Service Profile](https://docs.transatel.com/services-setup/how-to-create-a-service-profile/)**  

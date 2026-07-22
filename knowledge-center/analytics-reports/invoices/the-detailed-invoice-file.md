@@ -63,7 +63,7 @@ change.
 *• xxxxxxxx: Transatel reference number for Customer (CustomerNumber). 8 digits. This does not change.*   
 • YYYYMM is the Data-Time stamp of the Bill Cycle concerned by the file.  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 The detailed invoice file is also used as reference data for the [Billing Reports](../business-intelligence-reports/billing-reports.md) in the “Analytics Reports” menu.
 
@@ -75,13 +75,13 @@ There are 2 “types” of Subscriber:
 This account subscriber has the number xxxxxxx.0000000 -where “xxxxxx” is your Customer Number.  
 – “line” subscriber, each SIM/line has a dedicated number.   
   
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 **Charge categories** 
 
 The charge categories are as follows:  
   
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 Can't find your answer?
 

@@ -95,11 +95,11 @@ To check and manage bundle for a SIM, to to the SIM’s detailed view.
   
 The latest bundle added to the SIM’s inventory can be checked in the checkup panel  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 For further details, go to the **Plans and Options** Tab  
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 This page will display:   
 – bundles currently active in the SIM’s inventory  
@@ -109,14 +109,14 @@ The page is split between one-off and recurring bundles.
   
 Here is the detail shown for a recurring plan:  
   
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
   
 **Managing bundles**  
 To remove or stop the renewal of a bundle, use the buttons to the right.   
   
-![image](assets/image-4.png)  
+![image](/knowledge-center/assets/image-4.png)
 You might need to hide the checkup panel and use the horizontal scroll to access them  
-![image](assets/image-5.gif)  
+![image](/knowledge-center/assets/image-5.gif)
   
 Use these buttons to :  
 – delete a data plan – it will immediately be expired   
@@ -125,7 +125,7 @@ Use these buttons to :
 **Displaying further details**  
 The details of the bundle can then be displayed by using the arrow button to unfold the section :   
   
-![image](assets/image-6.png)
+![image](/knowledge-center/assets/image-6.png)
 
 Can't find your answer?
 

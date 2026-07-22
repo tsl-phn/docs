@@ -30,16 +30,16 @@ By using this report, the service provider can maintain their systems up to date
 
 **Portability information report specification**
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **Field descriptions**
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 **Content example**
 
 Below, you can find an example of the portability information report   
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
 \*LEO = Transatel
 
 Can't find your answer?

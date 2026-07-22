@@ -75,11 +75,11 @@ The filter panel can be used in any screen/menu where you can search through you
 It is displayed in a panel on the right side of the screen.   
 If hidden, you can click on the filter icon to get it displayed again
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 And if you wish to hide it to keep all the screen space to display the fields of a table, you can hide it by clicking on the arrows icon.
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Here are the search possibilities at your disposal:
 
@@ -90,7 +90,7 @@ This enables you to search with a partial reference (ICCID or MSISDN)
 Type \* in front or before of at least 4 characters  
 For example: \*123475 for a SIM ending with 123456, or 123456\* for a reference starting with these numbers.
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 ## Search by usage volume
 
@@ -98,7 +98,7 @@ You can use the filter panel to search for SIMs that made a specific volume in G
 
 for example…between 0.5 and 2.3GB
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 ## Search by last seen date
 
@@ -108,7 +108,7 @@ You can search SIMs by the date they were the last active on the network.
 
 You can enter dates, or use a pre-defined period in the drop-down list.
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 ## Search by metadata
 
@@ -121,11 +121,11 @@ To learn more about metadata, [click here](../sim-management/metadata-custom-fie
 Search by range of ICCID, MSISDN, IMEI… – very useful for SIMs with consecutive references (which is usually the case of SIM orders)  
 Click on **range** and enter the 1st and last of the SIMs of your range
 
-![image](assets/image-6.png)
+![image](/knowledge-center/assets/image-6.png)
 
 Here is the full list of range filters:
 
-![image](assets/image-7.png)
+![image](/knowledge-center/assets/image-7.png)
 
 ## CSV upload
 
@@ -138,13 +138,13 @@ The file must comply with the following criteria:
 You have the possibility to download the template, which contains an example, to help create your file.  
 After that, just drag & drop your file or use the file explorer.
 
-![image](assets/image-8.png)
+![image](/knowledge-center/assets/image-8.png)
 
 ## Other search criteria
 
 You can also use the following fields – some may not be applicable to your business
 
-![image](assets/image-9.png)
+![image](/knowledge-center/assets/image-9.png)
 
 Can't find your answer?
 

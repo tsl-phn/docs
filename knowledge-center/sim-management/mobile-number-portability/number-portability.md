@@ -76,7 +76,7 @@ A portability involves different actors, here is the description of the main one
 
 A portability is split in 2 steps:  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 There are two types of portability:  
   

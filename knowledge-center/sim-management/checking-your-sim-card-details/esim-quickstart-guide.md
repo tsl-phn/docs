@@ -82,24 +82,24 @@ MVNOs can order eSIMs via the SIM order form (it is possible to order both physi
 
 The QR codes can be displayed in 3 different ways:  
 – In Auriga > select an available eSIM > Other actions > Retrieve eSIM activation code  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
 – Via SIM Management API > [Get eSIM details](https://api.transatel.com/sim-management/sims/docs/index.html#operation/getEsimDetailsUsingGET) > QR code  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
 – Use a conversion tool to convert the activation code supplied in the SIM Delivery file into a QR code  
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 ****eSIM lifecycle****
 
 eSIMs and Subscribers follow two different lifecycles:  
 For Transatel eSIMs, these only have the status “released” meaning they are ready for download. No other statuses are available.  
-![image](assets/image-4.png)  
+![image](/knowledge-center/assets/image-4.png)
 The Subscriber lifecycle remains the same as physical SIMs:  
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 ****Activating Subscribers for eSIMs****
 
 For an optimum client experience, we recommend that the Subscriber be activated before the eSIM is downloaded, as downloading an inactive eSIM will leave the SIM status on the handset as “pending activation”. You can activate an eSIM Subscriber using the standard procedure as per physical SIMs. Once the Subscriber has been activated, the device must be restarted to enable the eSIM.  
-![image](assets/image-6.png)  
+![image](/knowledge-center/assets/image-6.png)
 /!\ Remember the subscriber must be connected to the internet to download an eSIM /!\  
 /!\ As the SIM is activated before being installed, the OTA mechanism for the SPN is triggered before it can be received by the device. The OTA should be resent via a SIM Refresh following eSIM installation /!\
 

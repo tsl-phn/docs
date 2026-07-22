@@ -68,10 +68,10 @@ Error CDRs will help you diagnose Subscriber issues, as well as check if the Sub
 
 As the most common use of CDRs is to verify usage, error CDRs will not automatically display on the usage tables – by default they will be filtered out. You can choose to include them into the usage tables in one of two ways:  
 Either you can remove the filters from the top of the screen, which will then automatically include all filtered items:  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
 Or you can select to include them from the filter panel under “Status”.  
    
-![image](assets/image-2.gif)
+![image](/knowledge-center/assets/image-2.gif)
 
 **New CDR Attributes**
 
@@ -85,7 +85,7 @@ As well as the error CDRs, there are new CDR attributes will appear in several n
 ****Displaying the new CDR attributes****
 
 If you can’t see these columns, you will need to add them via clicking on the (+) *Manage Columns* button at the top-right hand side of the usage table:  
-![image](assets/image-3.gif)  
+![image](/knowledge-center/assets/image-3.gif)
    
 Here is a description of the new attributes:    
   
@@ -114,7 +114,7 @@ Example values:
 **Termination cause** (Only data CDRs)  
 Description: MVNOs can now see why a data session ended using the termination cause field. The Termination-Cause AVP is used to indicate the reason why a session was terminated on the access device. This information is only present for “Terminate” requests. In case where the data session is granted or ongoing (i.e. no “Terminate”), the value displayed is -1.  
 *Example values*: -1, 1 (roll your mouse over the (?) to show the details):  
-![image](assets/image-4.png)  
+![image](/knowledge-center/assets/image-4.png)
   
 **Result code**  
 Description: SCP logic linked to error codes management. The generic result code in the case of the multi-rating group. Any response provided by SCP data with global result code in the ranges 3xxx, 5xxx will break the session. SCP will then receive a Gy terminate for this session. When the result code is 2001, it means success/no errors occurred.  

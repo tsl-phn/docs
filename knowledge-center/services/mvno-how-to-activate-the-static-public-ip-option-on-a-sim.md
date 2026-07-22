@@ -93,11 +93,11 @@ Simply choose the SIM on which you want to turn on the service.
   
 Go to the ‘Configured services’ tab in the SIM management platform:  
   
-![image](assets/image-1.gif)  
+![image](/knowledge-center/assets/image-1.gif)
   
 Go to the ‘Data Service Options’ and activate the option by choosing it from the drop-down bar:  
   
-![image](assets/image-2.gif)  
+![image](/knowledge-center/assets/image-2.gif)
   
 Your subscriber will then have access to the ‘Static public IP’ option.  
   

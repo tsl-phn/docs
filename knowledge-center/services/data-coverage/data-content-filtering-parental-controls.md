@@ -90,7 +90,7 @@ title: "Data Content Filtering/Parental Controls"
 **What are the Data Content Filtering/Parental Controls?**
 
 Parental controls can allow and block access to certain types of websites to protect vulnerable persons and children from accessing content, voluntarily or not. It is also often used for business who wish to ensure that use of professional equipment is kept for professional use only.  
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **How do they work?**
 

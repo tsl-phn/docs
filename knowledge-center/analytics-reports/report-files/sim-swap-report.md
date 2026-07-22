@@ -52,16 +52,16 @@ The portability information report allows the service provider to have all the n
 
 **Portability information report specification**
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **Field descriptions**
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 **Content example**
 
 Below, you can find an example of the SIM Swap report  
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 Can't find your answer?
 

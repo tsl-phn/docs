@@ -54,7 +54,7 @@ Where can they be consulted?
 – If your offer includes NRT CDRs, they are be deposited on your [Transatel SFTP directory](https://docs.transatel.com/analytics-reports/iot-your-transatel-sftp-account/).  
 – In our SIM Management Platform, they’re displayed in the [Usage tabs of a SIM’s detailed view](../sim-management/sim-usage-history.md) in table and histogram format  
   
-![image](assets/image-1.gif)
+![image](/knowledge-center/assets/image-1.gif)
 
 **What do they contain?**
 
@@ -68,7 +68,7 @@ NRT CDRs are split between types of usage. You will find only usage of each spec
 – SMS  
 – MMS  
 – Premium  
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 [NRT-CDR-details](https://docs.transatel.com/wp-content/uploads/2022/08/NRT-CDR-details.pdf)[Download](https://docs.transatel.com/wp-content/uploads/2022/08/NRT-CDR-details.pdf)
 

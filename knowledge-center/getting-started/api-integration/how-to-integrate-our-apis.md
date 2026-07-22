@@ -83,12 +83,12 @@ API credentials are given to you if you have requested them when your account wa
   
 **How to find your service’s specific options for the API calls**  
 All the options’ values can be found in the Catalogue > Options menu of the SIM management platform  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 There you will be able to find all the technical names to pass in your API calls for each option  
 Here is an example for one of our IoT generic offers :
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Can't find your answer?
 

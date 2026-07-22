@@ -106,7 +106,7 @@ Please note: this map is only a guide and not a guarantee of service availabilit
 
 To check coverage you will need to enter the coverage checker and enter the postcode location where you want the coverage information.  
 Optionally, you can include the information on the device being used. This will allow the coverage checker to display the data availability according to the technology that is compatible with your handset (i.e. it will tell you that you can’t get 5G coverage with an iPhone 6S).  
-![image](assets/image-1.gif)
+![image](/knowledge-center/assets/image-1.gif)
 
 **How do I integrate the coverage checker?**
 

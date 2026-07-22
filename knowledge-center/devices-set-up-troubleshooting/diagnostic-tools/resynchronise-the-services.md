@@ -70,9 +70,9 @@ We recommend advising end-users to restart their devices after each use of the o
   
 **Where do I find this option?**  
 After having chosen the SIM you wish to resynchronise, go to “Other actions” in the top right-hand corner:  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
 You will then be prompted if you wish to proceed:  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 In summary, “Resynchronise the services” is a tool used to reset and re-provision all services associated with a SIM card to resolve network-related issues or resend OTA updates like the SPN. However, it should be used judiciously as it resets custom configurations and requires a device restart.
 

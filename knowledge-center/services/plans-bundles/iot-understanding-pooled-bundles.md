@@ -98,12 +98,12 @@ Pooled bundles are linked to the monthly billing cycle :
 When you first activate a SIM, the quota of data is prorated – so a SIM first activated mid-month will bring about half of its quota to the pool.   
 Also, if you switch a SIM to a pooled bundle in the middle of the month, the change will be applied the 1st of the following month, like all rate plan changes.  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
 – Our Pooled bundles are determined by a geographic area, and by the volume of data added to the pool by each SIM   
 – With this system, the peak consumptions of a fleet of SIMs with similar usage can be averaged: a few SIMs can use less data, and a few SIMs can use a little more.  
 – This pricing model is recommended only if your SIMs have similar data usage. With irregular usages, one SIM might use all the pool data and cause the rest of the fleet to be consuming out-of-bundle  
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 **How to use Pooled Bundles for your fleet?**   
 – Each Pooled Bundle is in fact a specific **Rate Plan**.  
@@ -111,7 +111,7 @@ Also, if you switch a SIM to a pooled bundle in the middle of the month, the cha
 – Upon request (at the service’s launch or later in your contract), your account manager will add the Rate Plans corresponding to the Pooled Bundle to your account.   
   
 – You will then be able to select this Rate Plan when creating a **Service Profile**  
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
   
 [Click here](https://docs.transatel.com/services-setup/how-to-create-a-service-profile/) to learn how to create Service Profiles and apply them to your SIMs.  
   

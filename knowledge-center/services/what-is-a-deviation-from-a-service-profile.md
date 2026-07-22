@@ -98,14 +98,14 @@ It can also happen if a change was made through API calls – API changes do not
 It will be displayes in the following menus:s  
 – The interface will show this “wave” icon next to the Service Profile’s name in the lists of SIMs:  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 – In the SIM’s detailed view, the following message will appear in the “configured services” tab :  
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 In this screen, click on “See Profile” and you’ll be able to see side by side the SIM’s settings, and the Profile’s settings – and therefore see what change was made (if the change has not been reverted to the original value)  
-![image](assets/image-3.gif)
+![image](/knowledge-center/assets/image-3.gif)
 
 **How to remove the deviation?**
 

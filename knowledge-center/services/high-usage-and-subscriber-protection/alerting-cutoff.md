@@ -180,7 +180,7 @@ This allows authorized users to remove the restriction on behalf of the subscrib
 3. Select **Unblock roaming data usage**.
 4. Confirm the action.
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 The request is sent to Orange and the roaming data restriction is removed.
 

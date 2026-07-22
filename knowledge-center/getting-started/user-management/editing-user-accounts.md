@@ -78,10 +78,10 @@ Please note that you cannot modify your own user account.
   
 To manage users, click on the Admin icon and select Manage Users  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 In the list, find the user account you wish to edit, and click on the edit icon  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 You will arrive in the edition menu, where you’ll be able to   
 – change the user’s details (name, email linked to the account…)  
@@ -93,7 +93,7 @@ You will arrive in the edition menu, where you’ll be able to
 The page shows the rights the user already possesses in the left section, and rights you can give them in the right section.  
 To add rights, tick the boxes in the right-side section, then use the arrow to move them to the left section.  
   
-![image](assets/image-3.gif)
+![image](/knowledge-center/assets/image-3.gif)
 
 Can't find your answer?
 

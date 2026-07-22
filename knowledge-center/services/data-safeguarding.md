@@ -87,7 +87,7 @@ title: "Data Safeguarding"
 
 **Data Safeguarding** 
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 **What is Data Safeguarding?**
 
@@ -112,13 +112,13 @@ Transatel allows the MVNO to manage the Data Safeguarding service via the web po
 Depending on the configuration set by the MVNO on the subscriber’s line, the following settings are available:   
   
 ·       **Suspend Temporarily**: when the subscribers consume £45 of data whilst roaming, they will be suspended temporarily until the next calendar month.  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
 ·       **Cancel Permanently**: the Data Safeguarding service will not apply to this line forever. i.e. they will never be notified or blocked by the service, nor need to reply “OK data”.  
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
 ·       **Subscribe to the option**: when a subscriber is cancelled permanently, they can request to reactivate Data Safeguarding.  
-![image](assets/image-4.png)  
+![image](/knowledge-center/assets/image-4.png)
 ·       **Modify the renewal date**: MVNOs can change the date in which the counter is reset. I.e. if your billing cycle is from the 15th of the month, you can align the Data Safeguarding to reset on this date.  
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 **How does data safeguarding combine with RTCP and capped daily roaming passes?**
 

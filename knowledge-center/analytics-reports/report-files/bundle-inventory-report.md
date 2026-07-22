@@ -52,10 +52,10 @@ This file report contains the details of all the real-time bundles subscribed on
 – additional fields to help you identify the SIMs: ICCID, MSISDN, Group, Service Profile and External reference  
   
 Here is the full description:  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 You can access the reports in Auriga in Tracking & Reports > File Reports > Bundle Overview  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 The report is generated on a daily basis if it has been activated for your account.  
 If your offer contains real-time bundles, and that you want to use this report, please request its activation to your account manager.

@@ -100,7 +100,7 @@ You will need:
 
 Here is an example of an activation call for a SIM that will be on the Bundles pricing model:
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 Note: If you do not include a specific value for Pricing Model in your SIM activation, the SIM will be configured for Pay-per-Use Premium Networks as default value
 
@@ -158,14 +158,14 @@ As the API documentation is generic and does not list offer-specific values, her
 **mvnoRef**: the name of your SPC account, and starts with “M2MA\_WW\_TSL\_…..”  
 You can find it easily in our SIM Management Platform:
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 **COS:** this refers to the catalog of the offer.  
 – the value for production accounts is **WW\_COS\_UBG\_MKP\_EUR**  
   
 **Payment:** As you – Transatel’s customer- are paying the bundles to Transatel, the value to input in the subscription requests is “Customer“
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 **RatePlan**  
 This is a value required only if you are planning to use the optional Subscriptions Management API.  

@@ -76,11 +76,11 @@ Please note that you cannot modify your own user account.
   
 To manage users, click on the Admin icon and select Manage Users  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 For each user, you have the following actions available:  
   
-![image](assets/image-2.gif)  
+![image](/knowledge-center/assets/image-2.gif)
   
 – Details: shows the user’s settings (read only view)  
 – Clone: enables you to duplicate this user account to create a new user. [Click here to learn how](https://docs.transatel.com/user-management/cloning-an-existing-user-account/)  

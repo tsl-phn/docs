@@ -115,11 +115,11 @@ This is coming in the near future 🙂
 The IMEI Lock comes as a drop-down list in your offer, named “IMEI Management”  
 By default, the IMEI Lock option is set to “Disabled”, which means that the SIM can work in any device.  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 The option has 3 other values:  
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
   
 ***IMEI Lock*** ***is disabled*** : This means allowing data sessions to be opened on all devices where it is inserted. No equivalence check between the saved IMEI and the presented IMEI is performed by RADIUS.  
   
@@ -137,7 +137,7 @@ This means that
 – if you are activating the SIM, the IMEI Lock will not be “on” until the activation is processed  
 – if you are changing the value of the service (via Service Profile or directly for the SIM), you must wait until you see that the change has been successfully processed.   
   
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 ****If you want to pair with a new IMEI:****
 
@@ -152,7 +152,7 @@ The fee is charged only when you apply the IMEI Lock, as stated in the label “
 There is no fee applied to SIMs while “IMEI Lock is disabled” or “IMEI Pairing” are applied.  
 The fee is only charged once, if you change the value multiple times during the month, the fee will only be applied once  
   
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Can't find your answer?
 

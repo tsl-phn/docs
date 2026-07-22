@@ -104,11 +104,11 @@ Capped bundles are managed in the interface, in the SIM’s page.
 To add a bundle, the SIM must be already active or preactivated (Adding a bundle to a preactivated SIM will automatically activate it).  
 In the SIM’s page, go to the “Plans and options” tab
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 On the right, ou will see 2 “add” buttons, one giving access to the catalogue of **one-off bundles**, the second to add **recurring bundles**.
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Click on **Add** for the type of bundle you wish to add, and the catalogue of your offer will be displayed.
 
@@ -124,11 +124,11 @@ Now you will have to make a few choices:
 The first selection is **Order Type**, and offers a choice only if the SIM is in Preactivated status  
 If your SIM is already active, the choice “**Subscribe**” will be the only choice and selected by default.
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 But if your SIM is in Preactivated status, you will have 2 possibilities: “**Subscribe**” and “**Preload**“
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 “**Subscribe**” adds and activates the bundle immediately. If your SIM is in preactivated status, the subscription will trigger the activation of the SIM.  
 “**Preload**” (only for SIMs in Preactivated status) adds the bundle, but it will not activate until the SIM itself activates, at the first usage of the SIM, or manual activation.
@@ -143,11 +143,11 @@ Select a **payment method** (based on the choices available to your offer)
 
 Now, select the bundle in the list – you can use the **search bar** to look up by name or description
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 Now, click on **Apply**, and that’s it!
 
-![image](assets/image-6.png)
+![image](/knowledge-center/assets/image-6.png)
 
 A confirmation message will briefly appear, and you will see the bundle displayed in the inventory.
 

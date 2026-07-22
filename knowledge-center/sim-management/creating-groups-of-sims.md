@@ -71,17 +71,17 @@ Finally, please remember that a SIM can only be part of one group. If you add it
   
 **How to manage groups?**  
 You can access the group management menu from All Assets > Groups, or also directly from the dashboard, by clicking on “Manage my groups”  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
   
 **How to create a group**  
 Creating a group couldn’t be easier! All you need for it is a name.  
 Go to the Groups menu and click on “**Create a group**”   
   
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
 A modal window will open, and you can enter the name of your group, then just click “Confirm”  
   
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
 That’s it! You can now add SIMs to your new group, and find it in all filters.  
   
 You can now learn how to  

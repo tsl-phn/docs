@@ -91,9 +91,9 @@ Using our SIM Management platform, you should check that the SIM has been provis
 Transatel’s data safeguarding solution may have stepped in to prevent the subscriber from bill shock. This will block access to roaming data to prevent the subscriber from going over £45 of roaming data usage.   
 The subscriber will have received an SMS informing them that they have hit 80% of the threshold, and again when they have reached the threshold. They are prompted to reply “OK data” to acknowledge the charge and to continue using data.   
 You can check if this has been hit on the check-up:   
-![image](assets/image-1.png)   
+![image](/knowledge-center/assets/image-1.png) 
 Alternatively, it will also show on the Plans and Options tab:   
-![image](assets/image-2.png)   
+![image](/knowledge-center/assets/image-2.png) 
 Here, you also have options to open the data access back up.   
   
 More information on Data Safeguarding can be found [here](https://docs.transatel.com/services-setup/data-safeguarding/).

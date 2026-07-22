@@ -60,7 +60,7 @@ The configuration of a user role can be done by the fleet manager using Auriga f
   
 Go to the top navigation bar then settings:  
   
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
 Then you have the possibility to create a new user or select from your user options and allocate a role as follows:
 
 Can't find your answer?

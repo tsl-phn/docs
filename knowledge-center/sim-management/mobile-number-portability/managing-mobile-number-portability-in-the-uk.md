@@ -83,7 +83,7 @@ Follow our [step-by-step guide](https://papyrus-dev.priv.transatel.net/docs/conn
 
 ****How does a subscriber port their number to my MVNO?**  
   
-![image](assets/image-1.png)**
+![image](/knowledge-center/assets/image-1.png)**
 
 ****What is the portability/**switching **process in t**he **UK?****
 

@@ -33,11 +33,11 @@ There are many services available to subscribers, such as barring (i.e. bar roam
 
 The default services are defined in your IT Catalogue. These may be specific per MVNO, or generic. To find out which specific services are enabled by default, rendezvous in Auriga!  
 1.      Go to Catalogue -> Options  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
 2.      If you have several offers, select the rateplan for which you want to see your services. If you only have one offer, skip this step  
-![image](assets/image-2.png)  
+![image](/knowledge-center/assets/image-2.png)
 3.      In the table of services, check the column “Default Value”  
-![image](assets/image-3.png)  
+![image](/knowledge-center/assets/image-3.png)
 The default value can be:  
 –        Enabled (on) / disabled (off)  
 –        A specific value where a multiple choice of values is presented (i.e. 3G or 3G/4G or 3G/4G/5G)

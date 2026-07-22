@@ -142,7 +142,7 @@ If the subscriber is using the eSIM Transfer option during iPhone setup, this is
   
 **Will eSIMs be identified / appear differently in existing Transatel systems?**  
 Yes! MVNOs will be able to filter by SIM type in Auriga using the filters on the right-hand side of the Auriga screen.  
-![image](assets/image-1.png)  
+![image](/knowledge-center/assets/image-1.png)
   
 **Is there any change to lead times for ordering eSIMs?**  
 Delivery lead times remain the same for physical and eSIM, however expect eSIMs to be delivered faster as we don’t have to rely on shipping carriers!  

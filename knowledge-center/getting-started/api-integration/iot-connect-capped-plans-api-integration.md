@@ -105,16 +105,16 @@ You will need:
 
 All the options’ values can be found in the Catalogue > Options menu of the SIM management platform
 
-![image](assets/image-1.png)
+![image](/knowledge-center/assets/image-1.png)
 
 There you will be able to find all the technical names of the offer’s options, to include in your API calls.  
 If you have multiple rate plans (for example various pooled bundles) available in your contract, you will find them in a drop down list:
 
-![image](assets/image-2.png)
+![image](/knowledge-center/assets/image-2.png)
 
 Here is an example for one of our generic IoT offers:
 
-![image](assets/image-3.png)
+![image](/knowledge-center/assets/image-3.png)
 
 **They are the exact values used to create and modify [Service Profiles](../../services/what-is-a-service-profile.md) when using our SIM Management Portal**  
 The API call to activate a SIM will contain the exact same information as a Service Profile:  
@@ -126,13 +126,13 @@ Note: At the moment Service Profiles cannot be used with APIs, but you can “re
 Some options have multiple choices, and only one can be selected. In our UI, they correspond to the choices in drop-down lists in our SIM Management Portal  
 For example, for “Pricing Model”, you must choose between the values for Capped Plans and Pay per Use
 
-![image](assets/image-4.png)
+![image](/knowledge-center/assets/image-4.png)
 
 Each selection also has a default value – if you do not select one in your call, this is the one that will be implemented. In our SMS example, the default value is to “Enabled”.
 
 Here is an example of an activation call for a SIM that will be on the Bundles pricing model:
 
-![image](assets/image-5.png)
+![image](/knowledge-center/assets/image-5.png)
 
 Note: If you do not include a specific value for Pricing Model in your SIM activation, the SIM will be configured for the Capped Plans model as default value
 
@@ -189,14 +189,14 @@ As the API documentation is generic and does not list offer-specific values, her
 **mvnoRef**: the name of your account, and starts with “M2MA\_WW\_TSL\_…..”  
 You can find it easily in our SIM Management Platform:
 
-![image](assets/image-6.png)
+![image](/knowledge-center/assets/image-6.png)
 
 **COS:**this refers to the catalog of the offer. It is required when requesting the catalog of plans for SIMs in the Capped Plans model  
 – the value for production accounts is **WW\_M2MA\_COS\_IOT\_CONNECT**  
   
 **Payment:** As you – Transatel’s customer- are paying the bundles to Transatel, the value to input in the subscription requests is “Customer“
 
-![image](assets/image-7.png)
+![image](/knowledge-center/assets/image-7.png)
 
 **RatePlan**  
 This is a value required only if you are planning to use the optional Subscriptions Management API.  
