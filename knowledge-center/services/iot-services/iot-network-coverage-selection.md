@@ -2,25 +2,6 @@
 title: "Network Coverage Selection"
 ---
 
-# Network Coverage Selection
-
-## Uncategorized
-
-## [Uncategorized](../../uncategorized/README.md)
-
-- [Adding Capped Bundles in Bulk](../../uncategorized/adding-capped-bundles-in-bulk.md)
-
-- [All about Static IP](../../uncategorized/all-about-public-static-ip.md)
-- [Default Services](default-services.md)
-- [Activating a single SIM card](../../uncategorized/activating-a-single-sim-card.md)
-- [Portability information report](../../uncategorized/portability-information-report.md)
-- [Network Coverage Selection - Advanced](../../uncategorized/iot-network-coverage-selection-advanced.md)
-- [Network Coverage Selection](iot-network-coverage-selection.md)
-
-## On this page
-
-# Network Coverage Selection
-
 ****Network Coverage Selection**** 
 
 The Network Coverage control offers you the choice between 2 different network coverages.  

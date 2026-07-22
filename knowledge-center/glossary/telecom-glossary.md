@@ -2,27 +2,6 @@
 title: "Telecom glossary"
 ---
 
-# Telecom glossary
-
-## Glossary
-
-## [Glossary](glossary-2/README.md)
-
-- [Glossary of eSIM status](glossary-2/glossary-of-esim-status.md)
-- [Telecom glossary](telecom-glossary.md)
-- [OCS Glossary](glossary.md)
-
-## [SIM Lifecycle glossary](sim-lifecycle-glossary/README.md)
-
-- [The Sleep Mode (Tariff Holiday) - IoT optional status](sim-lifecycle-glossary/the-sleep-mode-tariff-holiday-iot-optional-status.md)
-- [the Test Mode for IoT SIMs](../services/iot-services/the-test-mode.md)
-- [IoT SIM Lifecycle](sim-lifecycle-glossary/iot-sim-lifecycle.md)
-- [SIM Statuses](sim-statuses.md)
-
-## On this page
-
-# Telecom glossary
-
 **Telecom glossary**
 
 Let’s talk the same language!  

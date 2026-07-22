@@ -2,25 +2,6 @@
 title: "Auriga Role-based User Management"
 ---
 
-# Auriga Role-based User Management
-
-## Uncategorized
-
-## [Uncategorized](README.md)
-
-- [Adding Capped Bundles in Bulk](adding-capped-bundles-in-bulk.md)
-
-- [All about Static IP](all-about-public-static-ip.md)
-- [Default Services](../services/iot-services/default-services.md)
-- [Activating a single SIM card](activating-a-single-sim-card.md)
-- [Portability information report](portability-information-report.md)
-- [Network Coverage Selection - Advanced](iot-network-coverage-selection-advanced.md)
-- [Network Coverage Selection](../services/iot-services/iot-network-coverage-selection.md)
-
-## On this page
-
-# Auriga Role-based User Management
-
 **What is Role-based user management?**
 
 RBUM is a smart way to control access in your Auriga platform. Instead of managing permissions for each user individually, you assign **roles** that define what actions they can perform. This makes administration easier, faster, and more secure.

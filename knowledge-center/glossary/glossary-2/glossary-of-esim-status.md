@@ -2,27 +2,6 @@
 title: "Glossary of eSIM status"
 ---
 
-# Glossary of eSIM status
-
-## Glossary
-
-## [Glossary](README.md)
-
-- [Glossary of eSIM status](glossary-of-esim-status.md)
-- [Telecom glossary](../telecom-glossary.md)
-- [OCS Glossary](../glossary.md)
-
-## [SIM Lifecycle glossary](../sim-lifecycle-glossary/README.md)
-
-- [The Sleep Mode (Tariff Holiday) - IoT optional status](../sim-lifecycle-glossary/the-sleep-mode-tariff-holiday-iot-optional-status.md)
-- [the Test Mode for IoT SIMs](../../services/iot-services/the-test-mode.md)
-- [IoT SIM Lifecycle](../sim-lifecycle-glossary/iot-sim-lifecycle.md)
-- [SIM Statuses](../sim-statuses.md)
-
-## On this page
-
-# Glossary of eSIM status
-
 ## Glossary of eSIM status
 
 Our interface displays the status of the eSIM profile on the device in real time (as long as the device is connected)  

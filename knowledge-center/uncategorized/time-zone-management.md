@@ -2,25 +2,6 @@
 title: "Time Zone Management"
 ---
 
-# Time Zone Management
-
-## Uncategorized
-
-## [Uncategorized](README.md)
-
-- [Adding Capped Bundles in Bulk](adding-capped-bundles-in-bulk.md)
-
-- [All about Static IP](all-about-public-static-ip.md)
-- [Default Services](../services/iot-services/default-services.md)
-- [Activating a single SIM card](activating-a-single-sim-card.md)
-- [Portability information report](portability-information-report.md)
-- [Network Coverage Selection - Advanced](iot-network-coverage-selection-advanced.md)
-- [Network Coverage Selection](../services/iot-services/iot-network-coverage-selection.md)
-
-## On this page
-
-# Time Zone Management
-
 ## About the Time zone button
 
 If you are following a fleet of devices worldwide, or work with users in different time zones, it can be difficult to track time.

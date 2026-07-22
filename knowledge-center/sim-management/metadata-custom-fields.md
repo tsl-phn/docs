@@ -2,25 +2,6 @@
 title: "Using Metadata (custom fields)"
 ---
 
-# Using Metadata (custom fields)
-
-## Uncategorized
-
-## [Uncategorized](../uncategorized/README.md)
-
-- [Adding Capped Bundles in Bulk](../uncategorized/adding-capped-bundles-in-bulk.md)
-
-- [All about Static IP](../uncategorized/all-about-public-static-ip.md)
-- [Default Services](../services/iot-services/default-services.md)
-- [Activating a single SIM card](../uncategorized/activating-a-single-sim-card.md)
-- [Portability information report](../uncategorized/portability-information-report.md)
-- [Network Coverage Selection - Advanced](../uncategorized/iot-network-coverage-selection-advanced.md)
-- [Network Coverage Selection](../services/iot-services/iot-network-coverage-selection.md)
-
-## On this page
-
-# Using Metadata (custom fields)
-
 ## What are metadata
 
 As we work with a wide range of customers with very different use cases, the management of these fleets can vary greatly from one customer to another,

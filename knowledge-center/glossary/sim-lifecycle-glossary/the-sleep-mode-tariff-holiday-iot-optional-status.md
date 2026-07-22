@@ -2,27 +2,6 @@
 title: "The Sleep Mode (Tariff Holiday) \u2013 IoT optional status"
 ---
 
-# The Sleep Mode (Tariff Holiday) – IoT optional status
-
-## Glossary
-
-## [Glossary](../glossary-2/README.md)
-
-- [Glossary of eSIM status](../glossary-2/glossary-of-esim-status.md)
-- [Telecom glossary](../telecom-glossary.md)
-- [OCS Glossary](../glossary.md)
-
-## [SIM Lifecycle glossary](README.md)
-
-- [The Sleep Mode (Tariff Holiday) - IoT optional status](the-sleep-mode-tariff-holiday-iot-optional-status.md)
-- [the Test Mode for IoT SIMs](../../services/iot-services/the-test-mode.md)
-- [IoT SIM Lifecycle](iot-sim-lifecycle.md)
-- [SIM Statuses](../sim-statuses.md)
-
-## On this page
-
-# The Sleep Mode (Tariff Holiday) – IoT optional status
-
 **The Sleep Mode (Tariff Holiday) – IoT optional status**
 
 The Sleep Mode is an optional status that can be used for IoT SIMs.  

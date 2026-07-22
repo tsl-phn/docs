@@ -2,25 +2,6 @@
 title: "All about Public Static IP"
 ---
 
-# All about Public Static IP
-
-## Uncategorized
-
-## [Uncategorized](README.md)
-
-- [Adding Capped Bundles in Bulk](adding-capped-bundles-in-bulk.md)
-
-- [All about Static IP](all-about-public-static-ip.md)
-- [Default Services](../services/iot-services/default-services.md)
-- [Activating a single SIM card](activating-a-single-sim-card.md)
-- [Portability information report](portability-information-report.md)
-- [Network Coverage Selection - Advanced](iot-network-coverage-selection-advanced.md)
-- [Network Coverage Selection](../services/iot-services/iot-network-coverage-selection.md)
-
-## On this page
-
-# All about Public Static IP
-
 # Public Fixed IP – Light France Offer
 
 Activate a **Public Fixed IP** on your Light France plan, via API or directly from our SIM management platform Auriga.
