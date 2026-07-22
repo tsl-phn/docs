@@ -65,6 +65,17 @@
         ]
       },
       {
+        "tab": "Knowledge Center",
+        "groups": [
+          {
+            "group": "Analytics Reports",
+            "pages": [
+              "analytics-reports/near-real-time-cdrs"
+            ]
+          }
+        ]
+      }
+      {
         "tab": "API Reference",
         "groups": [
           {
